@@ -1,0 +1,589 @@
+{
+  "careers": [
+    {
+      "id": "c001",
+      "title": "Software Engineer",
+      "description": "Software engineers design, develop, and maintain software applications and systems. They work with programming languages, frameworks, and tools to create solutions for various industries.",
+      "responsibilities": [
+        "Design and implement software solutions",
+        "Write clean, maintainable code",
+        "Debug and troubleshoot issues",
+        "Collaborate with cross-functional teams",
+        "Participate in code reviews",
+        "Optimize application performance",
+        "Implement security best practices",
+        "Document technical specifications"
+      ],
+      "required_skills": [
+        "Programming",
+        "Software Development",
+        "Problem Solving",
+        "System Design",
+        "Version Control",
+        "Testing",
+        "Debugging",
+        "Algorithms"
+      ],
+      "preferred_skills": [
+        "Cloud Computing",
+        "DevOps",
+        "Microservices",
+        "API Development",
+        "Database Management"
+      ],
+      "education": "Bachelor's degree in Computer Science or related field",
+      "experience": "0-3 years for entry level, 3-5 years for mid level",
+      "salary_range": "$80,000 - $160,000",
+      "job_outlook": "Very positive (22% growth expected)",
+      "work_environment": "Office, remote, or hybrid",
+      "holland_codes": ["IRE", "IRS", "IER"],
+      "industries": ["Technology", "Finance", "Healthcare", "E-commerce", "Entertainment"]
+    },
+    {
+      "id": "c002",
+      "title": "Data Scientist",
+      "description": "Data scientists analyze complex data to help organizations make informed decisions. They use statistical methods, machine learning, and data visualization to uncover insights and patterns.",
+      "responsibilities": [
+        "Collect and clean large datasets",
+        "Develop predictive models",
+        "Analyze business problems using data",
+        "Create data visualizations and reports",
+        "Communicate findings to stakeholders",
+        "Implement machine learning algorithms",
+        "Design experiments and A/B tests",
+        "Collaborate with data engineers"
+      ],
+      "required_skills": [
+        "Statistics",
+        "Machine Learning",
+        "Python",
+        "R",
+        "Data Analysis",
+        "SQL",
+        "Data Visualization",
+        "Critical Thinking"
+      ],
+      "preferred_skills": [
+        "Deep Learning",
+        "Natural Language Processing",
+        "Big Data Technologies",
+        "Cloud Platforms",
+        "Experimental Design"
+      ],
+      "education": "Master's degree in Data Science, Statistics, or related field",
+      "experience": "2-5 years for entry level, 5+ years for senior roles",
+      "salary_range": "$95,000 - $180,000",
+      "job_outlook": "Excellent (35% growth expected)",
+      "work_environment": "Office, remote, or hybrid",
+      "holland_codes": ["IRE", "IRS", "ISR"],
+      "industries": ["Technology", "Healthcare", "Finance", "Retail", "Consulting"]
+    },
+    {
+      "id": "c003",
+      "title": "UX Designer",
+      "description": "UX designers create user-centered digital experiences by conducting research, designing interfaces, and testing usability. They focus on making products intuitive and enjoyable to use.",
+      "responsibilities": [
+        "Conduct user research and interviews",
+        "Create user personas and journey maps",
+        "Design wireframes and prototypes",
+        "Conduct usability testing",
+        "Collaborate with product managers and developers",
+        "Design responsive interfaces",
+        "Create design systems",
+        "Iterate based on feedback"
+      ],
+      "required_skills": [
+        "User Research",
+        "Wireframing",
+        "Prototyping",
+        "Visual Design",
+        "Usability Testing",
+        "User Empathy",
+        "Information Architecture",
+        "Design Thinking"
+      ],
+      "preferred_skills": [
+        "Interaction Design",
+        "Motion Design",
+        "Frontend Development",
+        "Accessibility",
+        "Design Tools (Figma, Sketch)"
+      ],
+      "education": "Bachelor's degree in Design, HCI, or related field",
+      "experience": "1-3 years for entry level, 3-5 years for mid level",
+      "salary_range": "$70,000 - $130,000",
+      "job_outlook": "Positive (16% growth expected)",
+      "work_environment": "Office, remote, or hybrid",
+      "holland_codes": ["AIE", "AIS", "AES"],
+      "industries": ["Technology", "E-commerce", "Healthcare", "Finance", "Entertainment"]
+    },
+    {
+      "id": "c004",
+      "title": "Product Manager",
+      "description": "Product managers oversee the development and launch of products. They define product strategy, prioritize features, and coordinate between engineering, design, and marketing teams.",
+      "responsibilities": [
+        "Define product vision and strategy",
+        "Create product roadmaps",
+        "Prioritize features and requirements",
+        "Conduct market research",
+        "Collaborate with cross-functional teams",
+        "Analyze product metrics and KPIs",
+        "Gather and prioritize user feedback",
+        "Manage product lifecycle"
+      ],
+      "required_skills": [
+        "Product Strategy",
+        "Project Management",
+        "Communication",
+        "Analytics",
+        "Market Research",
+        "Prioritization",
+        "Stakeholder Management",
+        "Problem Solving"
+      ],
+      "preferred_skills": [
+        "Technical Understanding",
+        "Business Acumen",
+        "Agile Methodologies",
+        "Data Analysis",
+        "User Research"
+      ],
+      "education": "Bachelor's degree in Business, Engineering, or related field",
+      "experience": "3-5 years for entry level, 5+ years for senior roles",
+      "salary_range": "$100,000 - $180,000",
+      "job_outlook": "Positive (10% growth expected)",
+      "work_environment": "Office, remote, or hybrid",
+      "holland_codes": ["EIS", "ESR", "ERS"],
+      "industries": ["Technology", "Finance", "Healthcare", "E-commerce", "Manufacturing"]
+    },
+    {
+      "id": "c005",
+      "title": "Marketing Manager",
+      "description": "Marketing managers develop and execute marketing strategies to promote products and services. They analyze market trends, manage campaigns, and work to increase brand awareness and sales.",
+      "responsibilities": [
+        "Develop marketing strategies and campaigns",
+        "Manage marketing budget",
+        "Analyze market trends and competition",
+        "Oversee digital marketing efforts",
+        "Manage marketing team",
+        "Measure campaign effectiveness",
+        "Build brand awareness",
+        "Collaborate with sales and product teams"
+      ],
+      "required_skills": [
+        "Marketing Strategy",
+        "Digital Marketing",
+        "Content Creation",
+        "Analytics",
+        "Communication",
+        "Project Management",
+        "Budget Management",
+        "Market Research"
+      ],
+      "preferred_skills": [
+        "SEO/SEM",
+        "Social Media Marketing",
+        "Email Marketing",
+        "Marketing Automation",
+        "Brand Management"
+      ],
+      "education": "Bachelor's degree in Marketing, Business, or related field",
+      "experience": "3-5 years for entry level, 5+ years for senior roles",
+      "salary_range": "$75,000 - $140,000",
+      "job_outlook": "Positive (10% growth expected)",
+      "work_environment": "Office, remote, or hybrid",
+      "holland_codes": ["ESA", "EAS", "ECS"],
+      "industries": ["Technology", "Retail", "Healthcare", "Finance", "Consumer Goods"]
+    },
+    {
+      "id": "c006",
+      "title": "Financial Analyst",
+      "description": "Financial analysts analyze financial data and provide recommendations to businesses and individuals. They assess economic trends, evaluate investment opportunities, and create financial models.",
+      "responsibilities": [
+        "Analyze financial data and trends",
+        "Create financial models and forecasts",
+        "Evaluate investment opportunities",
+        "Prepare financial reports",
+        "Monitor economic indicators",
+        "Assess risk and return",
+        "Present findings to management",
+        "Recommend investment strategies"
+      ],
+      "required_skills": [
+        "Financial Analysis",
+        "Excel",
+        "Financial Modeling",
+        "Accounting",
+        "Data Analysis",
+        "Critical Thinking",
+        "Attention to Detail",
+        "Report Writing"
+      ],
+      "preferred_skills": [
+        "SQL",
+        "Python",
+        "Financial Software",
+        "Risk Management",
+        "Valuation Techniques"
+      ],
+      "education": "Bachelor's degree in Finance, Economics, or related field",
+      "experience": "1-3 years for entry level, 3-5 years for mid level",
+      "salary_range": "$65,000 - $120,000",
+      "job_outlook": "Positive (9% growth expected)",
+      "work_environment": "Office",
+      "holland_codes": ["CIE", "CIR", "CER"],
+      "industries": ["Finance", "Banking", "Insurance", "Consulting", "Corporate"]
+    },
+    {
+      "id": "c007",
+      "title": "Human Resources Manager",
+      "description": "HR managers oversee employee relations, recruitment, and organizational development. They ensure compliance with labor laws, manage benefits, and foster a positive work environment.",
+      "responsibilities": [
+        "Recruit and hire talent",
+        "Manage employee relations",
+        "Oversee compensation and benefits",
+        "Develop HR policies and procedures",
+        "Handle employee conflicts",
+        "Conduct performance reviews",
+        "Ensure legal compliance",
+        "Organize training programs"
+      ],
+      "required_skills": [
+        "Communication",
+        "Conflict Resolution",
+        "Employee Relations",
+        "Recruitment",
+        "HR Policies",
+        "Performance Management",
+        "Interpersonal Skills",
+        "Organizational Development"
+      ],
+      "preferred_skills": [
+        "HRIS Systems",
+        "Talent Management",
+        "Compensation Analysis",
+        "Employment Law",
+        "Strategic Planning"
+      ],
+      "education": "Bachelor's degree in HR, Business, or related field",
+      "experience": "3-5 years for entry level, 5+ years for senior roles",
+      "salary_range": "$65,000 - $110,000",
+      "job_outlook": "Positive (7% growth expected)",
+      "work_environment": "Office",
+      "holland_codes": ["SCE", "SEC", "SER"],
+      "industries": ["All Industries"]
+    },
+    {
+      "id": "c008",
+      "title": "Research Scientist",
+      "description": "Research scientists conduct scientific research to advance knowledge in their field. They design experiments, analyze data, publish findings, and often work in academic or industrial research settings.",
+      "responsibilities": [
+        "Design and conduct experiments",
+        "Analyze research data",
+        "Write research papers and reports",
+        "Present findings at conferences",
+        "Secure research funding",
+        "Collaborate with other researchers",
+        "Mentor junior researchers",
+        "Stay current with literature"
+      ],
+      "required_skills": [
+        "Research Methods",
+        "Data Analysis",
+        "Critical Thinking",
+        "Scientific Writing",
+        "Experimental Design",
+        "Statistics",
+        "Laboratory Techniques",
+        "Problem Solving"
+      ],
+      "preferred_skills": [
+        "Grant Writing",
+        "Specialized Software",
+        "Publication Skills",
+        "Project Management",
+        "Teaching/Mentoring"
+      ],
+      "education": "PhD in relevant scientific field",
+      "experience": "Post-doctoral experience often required",
+      "salary_range": "$80,000 - $150,000",
+      "job_outlook": "Positive (8% growth expected)",
+      "work_environment": "Laboratory, academic institution, or research facility",
+      "holland_codes": ["IRE", "IRS", "ISR"],
+      "industries": ["Pharmaceuticals", "Biotechnology", "Academia", "Government", "Technology"]
+    },
+    {
+      "id": "c009",
+      "title": "Entrepreneur",
+      "description": "Entrepreneurs start and manage their own business ventures. They identify market opportunities, develop business plans, secure funding, and take on the risks and rewards of business ownership.",
+      "responsibilities": [
+        "Identify business opportunities",
+        "Develop business plans and strategies",
+        "Secure funding and investment",
+        "Manage business operations",
+        "Build and lead teams",
+        "Market products or services",
+        "Manage finances and budgets",
+        "Adapt to market changes"
+      ],
+      "required_skills": [
+        "Innovation",
+        "Risk Management",
+        "Leadership",
+        "Strategic Planning",
+        "Financial Management",
+        "Networking",
+        "Problem Solving",
+        "Resilience"
+      ],
+      "preferred_skills": [
+        "Sales",
+        "Marketing",
+        "Product Development",
+        "Legal Knowledge",
+        "Industry Expertise"
+      ],
+      "education": "Varies (business education helpful but not required)",
+      "experience": "Varies widely",
+      "salary_range": "Variable (uncapped potential)",
+      "job_outlook": "Variable (depends on economic conditions)",
+      "work_environment": "Flexible (office, home, co-working spaces)",
+      "holland_codes": ["EAS", "ECS", "ERS"],
+      "industries": ["All Industries"]
+    },
+    {
+      "id": "c010",
+      "title": "Clinical Psychologist",
+      "description": "Clinical psychologists diagnose and treat mental health disorders. They provide therapy, conduct assessments, and help clients improve their psychological well-being and coping strategies.",
+      "responsibilities": [
+        "Conduct psychological assessments",
+        "Diagnose mental health conditions",
+        "Provide individual and group therapy",
+        "Develop treatment plans",
+        "Maintain client records",
+        "Collaborate with healthcare professionals",
+        "Conduct research",
+        "Provide crisis intervention"
+      ],
+      "required_skills": [
+        "Active Listening",
+        "Empathy",
+        "Assessment",
+        "Therapy Techniques",
+        "Communication",
+        "Ethical Judgment",
+        "Patience",
+        "Critical Thinking"
+      ],
+      "preferred_skills": [
+        "Specialized Therapy Modalities",
+        "Research Skills",
+        "Program Development",
+        "Cultural Competence",
+        "Group Facilitation"
+      ],
+      "education": "Doctoral degree (PhD or PsyD) in Psychology",
+      "experience": "Supervised clinical hours required for licensure",
+      "salary_range": "$70,000 - $120,000",
+      "job_outlook": "Positive (14% growth expected)",
+      "work_environment": "Private practice, hospitals, clinics, or schools",
+      "holland_codes": ["SIA", "SIS", "SIE"],
+      "industries": ["Healthcare", "Education", "Government", "Non-profit"]
+    },
+    {
+      "id": "c011",
+      "title": "DevOps Engineer",
+      "description": "DevOps engineers bridge the gap between development and operations. They automate processes, manage infrastructure, and ensure smooth deployment and operation of software systems.",
+      "responsibilities": [
+        "Design and implement CI/CD pipelines",
+        "Manage cloud infrastructure",
+        "Automate deployment processes",
+        "Monitor system performance",
+        "Troubleshoot production issues",
+        "Implement security best practices",
+        "Collaborate with development teams",
+        "Optimize system scalability"
+      ],
+      "required_skills": [
+        "Cloud Computing",
+        "Containerization (Docker, Kubernetes)",
+        "CI/CD",
+        "Scripting",
+        "Linux",
+        "Infrastructure as Code",
+        "Monitoring",
+        "Automation"
+      ],
+      "preferred_skills": [
+        "AWS/Azure/GCP",
+        "Terraform",
+        "Ansible",
+        "Networking",
+        "Security"
+      ],
+      "education": "Bachelor's degree in Computer Science or related field",
+      "experience": "2-4 years for entry level, 4+ years for senior roles",
+      "salary_range": "$90,000 - $160,000",
+      "job_outlook": "Very positive (21% growth expected)",
+      "work_environment": "Office, remote, or hybrid",
+      "holland_codes": ["IRE", "IRC", "IRC"],
+      "industries": ["Technology", "Finance", "Healthcare", "E-commerce"]
+    },
+    {
+      "id": "c012",
+      "title": "Cybersecurity Analyst",
+      "description": "Cybersecurity analysts protect organizations from cyber threats. They monitor security systems, investigate breaches, and implement security measures to safeguard data and systems.",
+      "responsibilities": [
+        "Monitor security systems and alerts",
+        "Investigate security incidents",
+        "Implement security protocols",
+        "Conduct vulnerability assessments",
+        "Develop security policies",
+        "Respond to security breaches",
+        "Stay updated on threats",
+        "Train staff on security"
+      ],
+      "required_skills": [
+        "Network Security",
+        "Threat Analysis",
+        "Incident Response",
+        "Security Tools",
+        "Risk Assessment",
+        "Compliance",
+        "Problem Solving",
+        "Attention to Detail"
+      ],
+      "preferred_skills": [
+        "Penetration Testing",
+        "Forensics",
+        "Cloud Security",
+        "Scripting",
+        "Certifications (CISSP, CEH)"
+      ],
+      "education": "Bachelor's degree in Cybersecurity, IT, or related field",
+      "experience": "1-3 years for entry level, 3-5 years for mid level",
+      "salary_range": "$85,000 - $150,000",
+      "job_outlook": "Excellent (33% growth expected)",
+      "work_environment": "Office, security operations center, or remote",
+      "holland_codes": ["IRE", "IRC", "CIR"],
+      "industries": ["Technology", "Finance", "Government", "Healthcare"]
+    },
+    {
+      "id": "c013",
+      "title": "Machine Learning Engineer",
+      "description": "Machine learning engineers design and implement ML systems. They work with data scientists to deploy models, optimize performance, and integrate ML solutions into production environments.",
+      "responsibilities": [
+        "Design ML architectures",
+        "Implement machine learning models",
+        "Optimize model performance",
+        "Deploy models to production",
+        "Monitor model performance",
+        "Collaborate with data scientists",
+        "Build data pipelines",
+        "Ensure model scalability"
+      ],
+      "required_skills": [
+        "Machine Learning",
+        "Python",
+        "Deep Learning",
+        "MLOps",
+        "Software Engineering",
+        "Data Structures",
+        "Algorithms",
+        "Cloud Computing"
+      ],
+      "preferred_skills": [
+        "TensorFlow/PyTorch",
+        "Kubernetes",
+        "Big Data Technologies",
+        "Natural Language Processing",
+        "Computer Vision"
+      ],
+      "education": "Master's degree in Computer Science, ML, or related field",
+      "experience": "2-4 years for entry level, 4+ years for senior roles",
+      "salary_range": "$110,000 - $200,000",
+      "job_outlook": "Excellent (40% growth expected)",
+      "work_environment": "Office, remote, or hybrid",
+      "holland_codes": ["IRE", "IRS", "IER"],
+      "industries": ["Technology", "Healthcare", "Finance", "Automotive"]
+    },
+    {
+      "id": "c014",
+      "title": "Project Manager",
+      "description": "Project managers plan, execute, and close projects. They coordinate teams, manage budgets and timelines, and ensure projects meet their objectives and stakeholder expectations.",
+      "responsibilities": [
+        "Define project scope and objectives",
+        "Create project plans and schedules",
+        "Manage project budgets",
+        "Coordinate project teams",
+        "Monitor project progress",
+        "Manage risks and issues",
+        "Communicate with stakeholders",
+        "Ensure quality deliverables"
+      ],
+      "required_skills": [
+        "Project Management",
+        "Leadership",
+        "Communication",
+        "Planning",
+        "Risk Management",
+        "Budgeting",
+        "Time Management",
+        "Problem Solving"
+      ],
+      "preferred_skills": [
+        "Agile/Scrum",
+        "PMP Certification",
+        "Stakeholder Management",
+        "Resource Allocation",
+        "Reporting"
+      ],
+      "education": "Bachelor's degree in Business, Engineering, or related field",
+      "experience": "3-5 years for entry level, 5+ years for senior roles",
+      "salary_range": "$75,000 - $130,000",
+      "job_outlook": "Positive (7% growth expected)",
+      "work_environment": "Office, remote, or hybrid",
+      "holland_codes": ["EIS", "ESR", "CER"],
+      "industries": ["All Industries"]
+    },
+    {
+      "id": "c015",
+      "title": "Content Writer",
+      "description": "Content writers create engaging written content for various platforms. They research topics, write articles, blog posts, and marketing copy, and adapt their style for different audiences.",
+      "responsibilities": [
+        "Research topics and industries",
+        "Write clear, engaging content",
+        "Edit and proofread content",
+        "Optimize content for SEO",
+        "Adapt tone for different audiences",
+        "Collaborate with marketing teams",
+        "Meet deadlines consistently",
+        "Stay updated on industry trends"
+      ],
+      "required_skills": [
+        "Writing",
+        "Research",
+        "Editing",
+        "SEO",
+        "Creativity",
+        "Grammar",
+        "Time Management",
+        "Adaptability"
+      ],
+      "preferred_skills": [
+        "Copywriting",
+        "Technical Writing",
+        "Social Media",
+        "Content Strategy",
+        "CMS Platforms"
+      ],
+      "education": "Bachelor's degree in English, Communications, Journalism, or related field",
+      "experience": "1-3 years for entry level, 3-5 years for mid level",
+      "salary_range": "$45,000 - $85,000",
+      "job_outlook": "Positive (8% growth expected)",
+      "work_environment": "Office, remote, or freelance",
+      "holland_codes": ["AIE", "AIS", "AES"],
+      "industries": ["Marketing", "Technology", "Publishing", "E-commerce", "Media"]
+    }
+  ]
+}

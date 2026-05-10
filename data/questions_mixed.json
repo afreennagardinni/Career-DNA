@@ -1,0 +1,262 @@
+{
+  "big_five_ocean": {
+    "name": "Big Five + RIASEC Combined Assessment",
+    "description": "20 questions that measure both personality traits and career interests",
+    "traits": {
+      "openness": {
+        "name": "Openness to Experience",
+        "description": "Curiosity, creativity, and preference for variety"
+      },
+      "conscientiousness": {
+        "name": "Conscientiousness", 
+        "description": "Organization, responsibility, and goal-directed behavior"
+      },
+      "extraversion": {
+        "name": "Extraversion",
+        "description": "Sociability, assertiveness, and emotional expression"
+      },
+      "agreeableness": {
+        "name": "Agreeableness",
+        "description": "Cooperation, trust, and pro-social behavior"
+      },
+      "neuroticism": {
+        "name": "Neuroticism",
+        "description": "Emotional stability and stress tolerance"
+      }
+    },
+    "questions": [
+      {
+        "id": "Q1",
+        "text": "Which activity excites you most?",
+        "type": "card_select",
+        "options": [
+          {
+            "id": "a", "emoji": "🤖",
+            "text": "Building AI/ML systems",
+            "riasec": {"I": 2, "R": 1},
+            "big5": {"O": 2, "C": 1}
+          },
+          {
+            "id": "b", "emoji": "🎨",
+            "text": "Designing interfaces",
+            "riasec": {"A": 2, "S": 1},
+            "big5": {"O": 2, "A": 1}
+          },
+          {
+            "id": "c", "emoji": "📊",
+            "text": "Analyzing data patterns",
+            "riasec": {"I": 2, "C": 1},
+            "big5": {"C": 2, "O": 1}
+          },
+          {
+            "id": "d", "emoji": "🔧",
+            "text": "Engineering systems",
+            "riasec": {"R": 2, "I": 1},
+            "big5": {"C": 2, "N": -1}
+          }
+        ]
+      },
+      {
+        "id": "Q2",
+        "text": "Your ideal work environment?",
+        "type": "card_select",
+        "options": [
+          {"id":"a","emoji":"🚀","text":"Fast startup",
+           "riasec":{"E":2,"I":1},"big5":{"O":2,"E":1}},
+          {"id":"b","emoji":"🔬","text":"Research lab",
+           "riasec":{"I":2,"R":1},"big5":{"O":2,"C":1}},
+          {"id":"c","emoji":"🏢","text":"Corporate office",
+           "riasec":{"C":2,"E":1},"big5":{"C":2,"E":-1}},
+          {"id":"d","emoji":"🌍","text":"Remote/freelance",
+           "riasec":{"A":2,"E":1},"big5":{"O":2,"A":1}}
+        ]
+      },
+      {
+        "id": "Q3",
+        "text": "When facing a hard problem you...",
+        "type": "card_select",
+        "options": [
+          {"id":"a","emoji":"🧮","text":"Break into logic steps",
+           "riasec":{"I":2,"C":1},"big5":{"C":2,"O":1}},
+          {"id":"b","emoji":"💡","text":"Brainstorm creative solutions",
+           "riasec":{"A":2,"I":1},"big5":{"O":2,"E":1}},
+          {"id":"c","emoji":"👥","text":"Collaborate with team",
+           "riasec":{"S":2,"E":1},"big5":{"A":2,"E":2}},
+          {"id":"d","emoji":"📚","text":"Research existing solutions",
+           "riasec":{"I":2,"R":1},"big5":{"C":2,"O":1}}
+        ]
+      },
+      {
+        "id": "Q4",
+        "text": "Which skill do you want to master?",
+        "type": "card_select",
+        "options": [
+          {"id":"a","emoji":"🤖","text":"Machine Learning",
+           "riasec":{"I":2,"R":1},"big5":{"O":2,"C":1}},
+          {"id":"b","emoji":"🎨","text":"UI/UX Design",
+           "riasec":{"A":2,"S":1},"big5":{"O":2,"A":1}},
+          {"id":"c","emoji":"💼","text":"Business Analytics",
+           "riasec":{"E":2,"C":1},"big5":{"C":2,"E":1}},
+          {"id":"d","emoji":"🔒","text":"Cybersecurity",
+           "riasec":{"R":2,"I":1},"big5":{"C":2,"N":-1}}
+        ]
+      },
+      {
+        "id": "Q5",
+        "text": "Which describes you best?",
+        "type": "card_select",
+        "options": [
+          {"id":"a","emoji":"🔭","text":"Curious Explorer",
+           "riasec":{"I":2,"A":1},"big5":{"O":3}},
+          {"id":"b","emoji":"🏗️","text":"Practical Builder",
+           "riasec":{"R":2,"C":1},"big5":{"C":2,"O":-1}},
+          {"id":"c","emoji":"🤝","text":"Collaborative Leader",
+           "riasec":{"S":2,"E":2},"big5":{"A":2,"E":2}},
+          {"id":"d","emoji":"🎯","text":"Focused Specialist",
+           "riasec":{"C":2,"I":1},"big5":{"C":3,"N":-1}}
+        ]
+      },
+      {
+        "id": "Q6",
+        "text": "I enjoy working independently more than in teams",
+        "type": "scale_5",
+        "riasec_map": {"low":"S","high":"I"},
+        "big5_dimension": "extraversion",
+        "direction": "negative"
+      },
+      {
+        "id": "Q7", 
+        "text": "I prefer having a clear plan before starting any project",
+        "type": "scale_5",
+        "riasec_map": {"high":"C"},
+        "big5_dimension": "conscientiousness",
+        "direction": "positive"
+      },
+      {
+        "id": "Q8",
+        "text": "I get energized by meeting new people and networking",
+        "type": "scale_5",
+        "riasec_map": {"high":"S","low":"I"},
+        "big5_dimension": "extraversion",
+        "direction": "positive"
+      },
+      {
+        "id": "Q9",
+        "text": "I enjoy taking risks and trying new unproven approaches",
+        "type": "scale_5",
+        "riasec_map": {"high":"E","low":"C"},
+        "big5_dimension": "openness",
+        "direction": "positive"
+      },
+      {
+        "id": "Q10",
+        "text": "I prefer concrete tasks over abstract theoretical thinking",
+        "type": "scale_5",
+        "riasec_map": {"high":"R","low":"I"},
+        "big5_dimension": "openness",
+        "direction": "negative"
+      },
+      {
+        "id": "Q11",
+        "text": "I want my work to help and support other people directly",
+        "type": "scale_5",
+        "riasec_map": {"high":"S","low":"R"},
+        "big5_dimension": "agreeableness",
+        "direction": "positive"
+      },
+      {
+        "id": "Q12",
+        "text": "I stay calm and focused even under pressure and deadlines",
+        "type": "scale_5",
+        "riasec_map": {"high":"C"},
+        "big5_dimension": "neuroticism",
+        "direction": "negative"
+      },
+      {
+        "id": "Q13",
+        "text": "I enjoy leading projects and motivating others",
+        "type": "scale_5",
+        "riasec_map": {"high":"E","low":"C"},
+        "big5_dimension": "extraversion",
+        "direction": "positive"
+      },
+      {
+        "id": "Q14",
+        "text": "I love exploring new ideas even without practical use",
+        "type": "scale_5",
+        "riasec_map": {"high":"I","low":"R"},
+        "big5_dimension": "openness",
+        "direction": "positive"
+      },
+      {
+        "id": "Q15",
+        "text": "I pay close attention to details and rarely make errors",
+        "type": "scale_5",
+        "riasec_map": {"high":"C"},
+        "big5_dimension": "conscientiousness",
+        "direction": "positive"
+      },
+      {
+        "id": "Q16",
+        "text": "Which project excites you most?",
+        "type": "card_select",
+        "options": [
+          {"id":"a","emoji":"🌐","text":"Build a web app",
+           "riasec":{"R":1,"I":1},"big5":{"C":1,"O":1}},
+          {"id":"b","emoji":"📊","text":"Build data dashboard",
+           "riasec":{"I":2,"C":1},"big5":{"C":2,"O":1}},
+          {"id":"c","emoji":"🤖","text":"Train an AI model",
+           "riasec":{"I":3},"big5":{"O":2,"C":2}},
+          {"id":"d","emoji":"⚙️","text":"Design hardware system",
+           "riasec":{"R":3},"big5":{"C":2,"O":1}}
+        ]
+      },
+      {
+        "id": "Q17",
+        "text": "Your dream company type?",
+        "type": "card_select",
+        "options": [
+          {"id":"a","emoji":"🏆","text":"Tech giant (Google/Microsoft)",
+           "riasec":{"I":2,"C":1},"big5":{"C":2,"O":1}},
+          {"id":"b","emoji":"🦄","text":"AI/Tech Startup",
+           "riasec":{"E":2,"I":1},"big5":{"O":2,"E":2}},
+          {"id":"c","emoji":"🏛️","text":"Government/Research",
+           "riasec":{"I":2,"S":1},"big5":{"C":2,"A":1}},
+          {"id":"d","emoji":"🌍","text":"MNC/Global company",
+           "riasec":{"E":2,"S":1},"big5":{"E":2,"A":1}}
+        ]
+      },
+      {
+        "id": "Q18",
+        "text": "I feel fulfilled when I create something from scratch",
+        "type": "scale_5",
+        "riasec_map": {"high":"A","low":"C"},
+        "big5_dimension": "openness",
+        "direction": "positive"
+      },
+      {
+        "id": "Q19",
+        "text": "I prefer following proven methods over experimenting",
+        "type": "scale_5",
+        "riasec_map": {"high":"C","low":"A"},
+        "big5_dimension": "openness",
+        "direction": "negative"
+      },
+      {
+        "id": "Q20",
+        "text": "Which learning style fits you best?",
+        "type": "card_select",
+        "options": [
+          {"id":"a","emoji":"🎥","text":"Watch videos and tutorials",
+           "riasec":{"A":1,"I":1},"big5":{"O":2}},
+          {"id":"b","emoji":"🔨","text":"Build projects hands-on",
+           "riasec":{"R":2,"I":1},"big5":{"C":2,"O":1}},
+          {"id":"c","emoji":"📖","text":"Read docs and books",
+           "riasec":{"I":2,"C":1},"big5":{"C":2,"O":2}},
+          {"id":"d","emoji":"👥","text":"Learn with study group",
+           "riasec":{"S":2,"A":1},"big5":{"A":2,"E":2}}
+        ]
+      }
+    ]
+  }
+}

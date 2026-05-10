@@ -1,0 +1,305 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Career DNA{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% if latest_result and latest_riasec %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('dnaChart').getContext('2d');
+    const data = {
+        labels: ['Realistic', 'Investigative', 'Artistic', 'Social', 'Enterprising', 'Conventional'],
+        datasets: [{
+            label: 'RIASEC Score',
+            data: [
+                {{ latest_riasec.get('R', 0) }},
+                {{ latest_riasec.get('I', 0) }},
+                {{ latest_riasec.get('A', 0) }},
+                {{ latest_riasec.get('S', 0) }},
+                {{ latest_riasec.get('E', 0) }},
+                {{ latest_riasec.get('C', 0) }}
+            ],
+            backgroundColor: 'rgba(139, 92, 246, 0.2)',
+            borderColor: 'rgba(139, 92, 246, 1)',
+            pointBackgroundColor: '#fff',
+            pointBorderColor: 'rgba(139, 92, 246, 1)',
+            pointHoverBackgroundColor: 'rgba(139, 92, 246, 1)',
+            pointHoverBorderColor: '#fff',
+            borderWidth: 2
+        }]
+    };
+    
+    new Chart(ctx, {
+        type: 'radar',
+        data: data,
+        options: {
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(255, 255, 255, 0.1)' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                    pointLabels: { color: 'rgba(255, 255, 255, 0.7)', font: { size: 12 } },
+                    ticks: { display: false, min: 0, max: 100 }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+});
+</script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="min-h-screen pb-12" style="background-color: #0f0f1a;">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <!-- Welcome Banner -->
+        <div class="glass-card-dark rounded-3xl p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-accent/20 rounded-full mix-blend-screen filter blur-3xl translate-x-1/2 -translate-y-1/2"></div>
+            
+            <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-white mb-2">Good morning, {{ user.full_name }}! 👋</h1>
+                    {% if latest_result %}
+                        <div class="inline-flex items-center px-4 py-2 rounded-full bg-accent/20 border border-accent/30 text-accent-light mb-4">
+                            <i class="fas fa-brain mr-2"></i> {{ latest_result.dna_type }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="mt-4 md:mt-0 space-y-3">
+                    <div class="flex space-x-6 text-sm">
+                        <div class="flex items-center"><i class="fas fa-fire text-orange-500 mr-2 text-xl"></i> <span class="font-bold text-white">{{ streak }} Days</span></div>
+                        <div class="flex items-center"><i class="fas fa-bolt text-yellow-400 mr-2 text-xl"></i> <span class="font-bold text-white">{{ level }}</span></div>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2 mt-2">
+                        {% set progress = (xp % 100) %}
+                        <div class="bg-gradient-to-r from-accent to-accent-light h-2 rounded-full animate-pulse-glow" style="width: {{ progress }}%"></div>
+                    </div>
+                    <p class="text-xs text-right text-gray-400">{{ xp }} Total XP</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Assessments Card -->
+            <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:border-accent/50 transition-colors">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-gray-400">Assessments</p>
+                        <h3 class="text-2xl font-bold text-white mt-1">{{ assessments_taken }}/2 Taken</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
+                        <i class="fas fa-dna text-xl"></i>
+                    </div>
+                </div>
+                {% if assessments_taken == 0 %}
+                    <a href="/assessment/start" class="text-sm text-accent hover:text-accent-light mt-4 inline-block font-medium">Take First Assessment &rarr;</a>
+                {% elif assessments_remaining > 0 %}
+                    <a href="/assessment/start" class="text-sm text-accent hover:text-accent-light mt-4 inline-block font-medium">Take Second Assessment &rarr;</a>
+                {% else %}
+                    <p class="text-sm text-gray-500 mt-4">Limit Reached</p>
+                {% endif %}
+            </div>
+
+            <!-- Career Match Card -->
+            <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:border-accent/50 transition-colors">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-gray-400">Top Career Match</p>
+                        <h3 class="text-xl font-bold text-white mt-1 leading-tight">
+                            {% if latest_result %}{{ latest_result.top_career }}{% else %}Unknown{% endif %}
+                        </h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center text-green-400 shrink-0">
+                        <i class="fas fa-briefcase text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak Card -->
+            <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:border-accent/50 transition-colors">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-gray-400">Day Streak</p>
+                        <h3 class="text-2xl font-bold text-white mt-1">{{ streak }} Days</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-orange-500/20 flex items-center justify-center text-orange-400">
+                        <i class="fas fa-fire text-xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- XP Card -->
+            <div class="glass-card rounded-2xl p-6 relative overflow-hidden group hover:border-accent/50 transition-colors">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <p class="text-sm text-gray-400">Total Points</p>
+                        <h3 class="text-2xl font-bold text-white mt-1">{{ xp }} XP</h3>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-yellow-500/20 flex items-center justify-center text-yellow-400">
+                        <i class="fas fa-star text-xl"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Results -->
+            <div class="lg:col-span-2 space-y-8">
+                <div class="glass-card rounded-3xl p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-xl font-bold text-white">Latest Analysis</h2>
+                        {% if assessments_taken > 1 %}
+                            <a href="/assessment/results/compare" class="text-accent hover:text-white text-sm font-medium transition-colors">Compare &rarr;</a>
+                        {% endif %}
+                    </div>
+                    
+                    {% if latest_result %}
+                        <div class="flex flex-col md:flex-row items-center gap-8">
+                            <div class="w-full md:w-1/2 max-w-[250px]">
+                                <canvas id="dnaChart"></canvas>
+                            </div>
+                            <div class="w-full md:w-1/2 space-y-4">
+                                <h3 class="text-2xl font-bold text-white glow-text">{{ latest_result.dna_type }}</h3>
+                                <p class="text-gray-400 text-sm leading-relaxed">
+                                    Your DNA indicates a strong preference for complex analytical work blended with dynamic environments.
+                                </p>
+                                <a href="/results/{{ latest_result.id }}" class="inline-block mt-4 w-full text-center px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors font-medium border border-white/10">
+                                    View Full Details
+                                </a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-12">
+                            <div class="w-20 h-20 mx-auto bg-gray-800 rounded-full flex items-center justify-center mb-4">
+                                <i class="fas fa-lock text-2xl text-gray-500"></i>
+                            </div>
+                            <h3 class="text-lg font-medium text-white mb-2">No Data Available</h3>
+                            <p class="text-gray-400 mb-6">Take your first assessment to unlock your Career DNA.</p>
+                            <a href="/assessment/start" class="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent-dark transition-colors inline-block font-medium">Start Assessment</a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="glass-card rounded-3xl p-8">
+                    <h2 class="text-xl font-bold text-white mb-6">100-Day Roadmap</h2>
+                    <div class="relative">
+                        <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-700"></div>
+                        <div class="space-y-6 relative">
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full bg-accent flex items-center justify-center z-10 shrink-0 border-4 border-[#0f0f1a] -ml-4">
+                                    <i class="fas fa-check text-xs text-white"></i>
+                                </div>
+                                <div class="ml-6">
+                                    <h4 class="text-white font-medium">Discover DNA</h4>
+                                    <p class="text-sm text-gray-400">Complete your baseline assessment</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-8 h-8 rounded-full border-2 border-accent bg-[#0f0f1a] flex items-center justify-center z-10 shrink-0 -ml-4">
+                                    <div class="w-2 h-2 rounded-full bg-accent animate-pulse"></div>
+                                </div>
+                                <div class="ml-6">
+                                    <h4 class="text-accent font-medium">Skill Alignment</h4>
+                                    <p class="text-sm text-gray-400">Complete recommended micro-courses</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start opacity-50">
+                                <div class="w-8 h-8 rounded-full border-2 border-gray-600 bg-[#0f0f1a] flex items-center justify-center z-10 shrink-0 -ml-4">
+                                </div>
+                                <div class="ml-6">
+                                    <h4 class="text-white font-medium">Market Readiness</h4>
+                                    <p class="text-sm text-gray-400">Resume and portfolio optimization</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Daily Interactions -->
+            <div class="space-y-8">
+                <!-- Daily Tip -->
+                <div class="glass-card rounded-3xl p-6 relative overflow-hidden border-t-4 border-t-accent">
+                    <div class="flex items-center space-x-2 mb-4 text-accent">
+                        <i class="fas fa-lightbulb"></i>
+                        <span class="text-xs font-bold tracking-wider uppercase">Daily Insight</span>
+                    </div>
+                    <p class="text-white font-medium leading-relaxed mb-6">
+                        "{{ daily_tip }}"
+                    </p>
+                    <div class="flex justify-end space-x-2 border-t border-white/10 pt-4 mt-auto">
+                        <button onclick="showToast('Tip liked! +5 XP', 'success')" class="p-2 text-gray-400 hover:text-green-400 hover:bg-white/5 rounded-lg transition-colors"><i class="far fa-thumbs-up"></i></button>
+                        <button onclick="showToast('Feedback recorded', 'info')" class="p-2 text-gray-400 hover:text-red-400 hover:bg-white/5 rounded-lg transition-colors"><i class="far fa-thumbs-down"></i></button>
+                    </div>
+                </div>
+
+                <!-- Daily Challenge -->
+                <div class="glass-card rounded-3xl p-6 relative overflow-hidden bg-gradient-to-b from-white/5 to-transparent">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2 text-yellow-500">
+                            <i class="fas fa-trophy"></i>
+                            <span class="text-xs font-bold tracking-wider uppercase">Daily Challenge</span>
+                        </div>
+                        <span class="px-2 py-1 text-xs font-bold bg-yellow-500/20 text-yellow-500 rounded-lg">+20 XP</span>
+                    </div>
+                    <p class="text-white mb-6">
+                        {{ daily_challenge }}
+                    </p>
+                    
+                    {% if challenge_done %}
+                        <div class="w-full py-3 text-center rounded-xl bg-green-500/20 text-green-400 font-medium border border-green-500/30">
+                            <i class="fas fa-check-circle mr-2"></i> Completed
+                        </div>
+                    {% else %}
+                        <button onclick="this.innerHTML='<i class=\'fas fa-spinner fa-spin\'></i>'; setTimeout(() => { this.outerHTML='<div class=\'w-full py-3 text-center rounded-xl bg-green-500/20 text-green-400 font-medium border border-green-500/30\'><i class=\'fas fa-check-circle mr-2\'></i> Completed</div>'; showToast('Challenge Complete! +20 XP', 'success'); }, 1000)" class="w-full py-3 text-center rounded-xl bg-white/10 hover:bg-white/20 text-white font-medium border border-white/10 transition-colors">
+                            Mark Complete ✓
+                        </button>
+                    {% endif %}
+                </div>
+
+                <!-- Activity Feed -->
+                <div class="glass-card rounded-3xl p-6">
+                    <h3 class="text-white font-bold mb-4">Recent Activity</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3 text-sm">
+                            <div class="w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center shrink-0">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div>
+                                <p class="text-white">Daily login bonus</p>
+                                <p class="text-xs text-gray-500">Today</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-3 text-sm">
+                            <div class="w-8 h-8 rounded-full bg-orange-500/20 text-orange-400 flex items-center justify-center shrink-0">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div>
+                                <p class="text-white">{{ streak }}-day streak achieved!</p>
+                                <p class="text-xs text-gray-500">Yesterday</p>
+                            </div>
+                        </div>
+                        {% if assessments_taken > 0 %}
+                        <div class="flex items-center space-x-3 text-sm">
+                            <div class="w-8 h-8 rounded-full bg-accent/20 text-accent-light flex items-center justify-center shrink-0">
+                                <i class="fas fa-dna"></i>
+                            </div>
+                            <div>
+                                <p class="text-white">Took Career DNA Assessment</p>
+                                <p class="text-xs text-gray-500">Recently</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

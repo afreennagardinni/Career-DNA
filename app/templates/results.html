@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block title %}Career DNA - Your Results{% endblock %}
+
+{% block content %}
+{% set result_data = result_data if result_data is defined else none %}
+<div class="min-h-screen py-12 px-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12 animate-fade-in">
+            <h1 class="text-4xl font-bold mb-4 glow-text">Your Career Analysis Results</h1>
+            <p class="text-gray-400 text-lg">Based on your personality traits and interests</p>
+        </div>
+
+        <!-- Confidence Score -->
+        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up">
+            <div class="flex flex-col md:flex-row items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-semibold mb-2">Overall Confidence</h2>
+                    <p class="text-gray-400">Based on psychometric analysis and AI recommendations</p>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <div class="relative w-32 h-32">
+                        <svg class="w-32 h-32 transform -rotate-90">
+                            <circle cx="64" cy="64" r="56" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
+                            <circle cx="64" cy="64" r="56" stroke="#8B5CF6" stroke-width="8" fill="none" 
+                                    stroke-dasharray="352" stroke-dashoffset="352" id="confidence-circle"
+                                    class="transition-all duration-1000"/>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-3xl font-bold text-accent" id="confidence-value">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Personality Profile -->
+        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up" style="animation-delay: 0.2s;">
+            <h2 class="text-2xl font-semibold mb-6">Personality Profile</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- Big Five Traits -->
+                <div>
+                    <h3 class="text-lg font-medium mb-4 text-accent">Big Five Traits</h3>
+                    <div id="big-five-traits" class="space-y-4">
+                        <!-- Traits will be populated by JavaScript -->
+                    </div>
+                </div>
+                
+                <!-- Holland Code -->
+                <div>
+                    <h3 class="text-lg font-medium mb-4 text-accent">Holland Code</h3>
+                    <div class="glass-card-dark rounded-lg p-6 text-center">
+                        <div class="text-5xl font-bold text-accent mb-2" id="holland-code">---</div>
+                        <p class="text-gray-400 text-sm" id="holland-description">Complete RIASEC assessment</p>
+                    </div>
+                    
+                    <h3 class="text-lg font-medium mb-4 mt-6 text-accent">Dominant Traits</h3>
+                    <div id="dominant-traits" class="flex flex-wrap gap-2">
+                        <!-- Traits will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Career Recommendations -->
+        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up" style="animation-delay: 0.4s;">
+            <h2 class="text-2xl font-semibold mb-6">Top Career Recommendations</h2>
+            <div id="career-recommendations" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Careers will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Explanation -->
+        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up" style="animation-delay: 0.6s;">
+            <h2 class="text-2xl font-semibold mb-6">Analysis Explanation</h2>
+            <div class="glass-card-dark rounded-lg p-6">
+                <p class="text-gray-300 leading-relaxed" id="explanation-text">
+                    Run the full analysis to see your personalized explanation.
+                </p>
+            </div>
+        </div>
+
+        <!-- Action Plan -->
+        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up" style="animation-delay: 0.8s;">
+            <h2 class="text-2xl font-semibold mb-6">Your Personalized Action Plan</h2>
+            <div id="action-plan" class="grid md:grid-cols-3 gap-6">
+                <!-- Action plan will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Confidence Breakdown -->
+        <div class="glass-card rounded-xl p-8 animate-slide-up" style="animation-delay: 1s;">
+            <h2 class="text-2xl font-semibold mb-6">Confidence Breakdown</h2>
+            <div id="confidence-breakdown" class="grid md:grid-cols-5 gap-4">
+                <!-- Confidence scores will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
+            <button onclick="window.print()" class="glass-card hover:bg-glass px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105">
+                Print Results
+            </button>
+            <a href="/dashboard" class="bg-accent hover:bg-accent-dark px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 animate-pulse-glow text-center">
+                Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+let resultsData = null;
+
+// Check if result data is already available from server
+{% if result_data %}
+resultsData = {{ result_data | tojson }};
+{% endif %}
+
+async function loadResults() {
+    // If we already have result data from server, use it
+    if (resultsData) {
+        displayResults(resultsData);
+        return;
+    }
+    
+    try {
+        const response = await fetch('/assessment/pipeline', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                source: 'profile',
+                user_context: {}
+            })
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            resultsData = result;
+            displayResults(result);
+        } else {
+            document.getElementById('explanation-text').textContent = 
+                result.message || 'Please complete both assessments to see your results.';
+        }
+    } catch (error) {
+        console.error('Error loading results:', error);
+        document.getElementById('explanation-text').textContent = 
+            'Failed to load results. Please try again.';
+    }
+}
+
+function displayResults(result) {
+    // Animate confidence circle
+    const overallConfidence = result.confidence_scores?.overall || 0;
+    const circle = document.getElementById('confidence-circle');
+    const circumference = 352;
+    const offset = circumference - (overallConfidence / 100) * circumference;
+    
+    setTimeout(() => {
+        circle.style.strokeDashoffset = offset;
+    }, 100);
+    
+    // Animate confidence value
+    let currentValue = 0;
+    const interval = setInterval(() => {
+        if (currentValue >= overallConfidence) {
+            clearInterval(interval);
+        } else {
+            currentValue += 1;
+            document.getElementById('confidence-value').textContent = `${currentValue}%`;
+        }
+    }, 20);
+    
+    // Display Big Five traits
+    const bigFiveContainer = document.getElementById('big-five-traits');
+    const traits = result.personality?.traits?.big_five || {};
+    
+    const traitLabels = {
+        openness: 'Openness',
+        conscientiousness: 'Conscientiousness',
+        extraversion: 'Extraversion',
+        agreeableness: 'Agreeableness',
+        neuroticism: 'Neuroticism'
+    };
+    
+    Object.entries(traits).forEach(([key, value]) => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+            <div class="flex justify-between mb-1">
+                <span class="text-sm">${traitLabels[key] || key}</span>
+                <span class="text-sm text-accent">${value.toFixed(1)}%</span>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2">
+                <div class="progress-bar h-2 rounded-full" style="width: ${value}%"></div>
+            </div>
+        `;
+        bigFiveContainer.appendChild(div);
+    });
+    
+    // Display Holland Code
+    const riasec = result.personality?.traits?.riasec || {};
+    const hollandCode = result.personality?.traits?.holland_code || '';
+    if (hollandCode) {
+        document.getElementById('holland-code').textContent = hollandCode;
+        document.getElementById('holland-description').textContent = 'Your career interests';
+    }
+    
+    // Display dominant traits
+    const dominantTraits = result.personality?.dominant_traits || [];
+    const dominantContainer = document.getElementById('dominant-traits');
+    dominantTraits.forEach(trait => {
+        const span = document.createElement('span');
+        span.className = 'bg-accent bg-opacity-20 text-accent px-3 py-1 rounded-full text-sm';
+        span.textContent = trait;
+        dominantContainer.appendChild(span);
+    });
+    
+    // Display career recommendations
+    const careersContainer = document.getElementById('career-recommendations');
+    careersContainer.innerHTML = '';
+    
+    result.top_careers.forEach((career, index) => {
+        const div = document.createElement('div');
+        div.className = 'glass-card-dark rounded-lg p-6 hover:scale-105 transition-transform cursor-pointer';
+        div.innerHTML = `
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-2xl font-bold text-accent">#${index + 1}</span>
+                <span class="text-sm text-gray-400">${career.match_score?.toFixed(1) || 0}% match</span>
+            </div>
+            <h3 class="font-semibold text-lg mb-2">${career.career || career.title || 'Unknown'}</h3>
+            <p class="text-sm text-gray-400 mb-3">${career.description || ''}</p>
+            <div class="flex flex-wrap gap-2">
+                ${(career.skills || []).slice(0, 3).map(skill => 
+                    `<span class="bg-glass px-2 py-1 rounded text-xs">${skill}</span>`
+                ).join('')}
+            </div>
+        `;
+        careersContainer.appendChild(div);
+    });
+    
+    // Display explanation
+    document.getElementById('explanation-text').textContent = result.explanation || 
+        'Based on your personality profile, we have identified career paths that align with your traits and interests.';
+    
+    // Display action plan
+    const actionPlanContainer = document.getElementById('action-plan');
+    const actionPlan = result.action_plan || {};
+    
+    const timeframes = [
+        { key: 'short_term', label: 'Short Term', color: 'bg-green-500' },
+        { key: 'medium_term', label: 'Medium Term', color: 'bg-yellow-500' },
+        { key: 'long_term', label: 'Long Term', color: 'bg-blue-500' }
+    ];
+    
+    timeframes.forEach(({ key, label, color }) => {
+        const div = document.createElement('div');
+        div.className = 'glass-card-dark rounded-lg p-6';
+        div.innerHTML = `
+            <h3 class="font-semibold text-accent mb-4 flex items-center">
+                <span class="w-3 h-3 ${color} rounded-full mr-2"></span>
+                ${label}
+            </h3>
+            <ul class="text-sm text-gray-300 space-y-2">
+                ${(actionPlan[key] || []).map(item => `<li>• ${item}</li>`).join('') || '<li class="text-gray-500">No recommendations yet</li>'}
+            </ul>
+        `;
+        actionPlanContainer.appendChild(div);
+    });
+    
+    // Display confidence breakdown
+    const confidenceContainer = document.getElementById('confidence-breakdown');
+    const confidenceScores = result.confidence_scores || {};
+    
+    const scoreLabels = {
+        psychometric: 'Psychometric',
+        pattern: 'Pattern',
+        career_query: 'Career Query',
+        rag: 'RAG',
+        overall: 'Overall'
+    };
+    
+    Object.entries(confidenceScores).forEach(([key, value]) => {
+        const div = document.createElement('div');
+        div.className = 'glass-card-dark rounded-lg p-4 text-center';
+        div.innerHTML = `
+            <div class="text-2xl font-bold text-accent mb-1">${(value * 100).toFixed(0)}%</div>
+            <div class="text-xs text-gray-400">${scoreLabels[key] || key}</div>
+        `;
+        confidenceContainer.appendChild(div);
+    });
+}
+
+// Load results on page load
+document.addEventListener('DOMContentLoaded', loadResults);
+</script>
+{% endblock %}

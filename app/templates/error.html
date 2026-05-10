@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Career DNA - Error{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-12 px-4 flex items-center justify-center">
+    <div class="max-w-2xl mx-auto">
+        <div class="glass-card rounded-xl p-8 text-center animate-fade-in">
+            <div class="w-20 h-20 bg-red-500 bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+            
+            <h1 class="text-3xl font-bold mb-4 text-red-400">{{ error or 'Error' }}</h1>
+            <p class="text-gray-300 text-lg mb-8">{{ message or 'An unexpected error occurred.' }}</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="/dashboard" class="glass-card hover:bg-glass px-6 py-3 rounded-xl transition-all hover:scale-105">
+                    Back to Dashboard
+                </a>
+                <a href="/assessment" class="bg-accent hover:bg-accent-dark px-6 py-3 rounded-xl transition-all hover:scale-105">
+                    Take Assessment
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

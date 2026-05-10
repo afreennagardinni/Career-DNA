@@ -1,0 +1,344 @@
+{
+  "skills": [
+    {
+      "id": "s001",
+      "name": "Programming",
+      "category": "Technical",
+      "description": "The ability to write code in various programming languages to create software applications, scripts, and automated solutions.",
+      "related_careers": ["Software Engineer", "Data Scientist", "DevOps Engineer", "Machine Learning Engineer", "Cybersecurity Analyst"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Understands basic syntax, can write simple programs"},
+        {"level": "Intermediate", "description": "Can build complete applications, understands design patterns"},
+        {"level": "Advanced", "description": "Expert in multiple languages, can architect complex systems"}
+      ],
+      "learning_resources": [
+        {"name": "Codecademy", "type": "Online Course", "url": "https://codecademy.com"},
+        {"name": "freeCodeCamp", "type": "Free Course", "url": "https://freecodecamp.org"},
+        {"name": "LeetCode", "type": "Practice Platform", "url": "https://leetcode.com"}
+      ]
+    },
+    {
+      "id": "s002",
+      "name": "Data Analysis",
+      "category": "Technical",
+      "description": "The ability to collect, process, and analyze data to extract meaningful insights and support decision-making.",
+      "related_careers": ["Data Scientist", "Financial Analyst", "Marketing Manager", "Research Scientist"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can work with spreadsheets, basic charts"},
+        {"level": "Intermediate", "description": "Proficient in SQL, Python/R for analysis"},
+        {"level": "Advanced", "description": "Expert in statistical analysis, big data tools"}
+      ],
+      "learning_resources": [
+        {"name": "Kaggle", "type": "Practice Platform", "url": "https://kaggle.com"},
+        {"name": "DataCamp", "type": "Online Course", "url": "https://datacamp.com"},
+        {"name": "Coursera Data Science", "type": "Online Course", "url": "https://coursera.org"}
+      ]
+    },
+    {
+      "id": "s003",
+      "name": "Machine Learning",
+      "category": "Technical",
+      "description": "The ability to develop and deploy machine learning models to solve complex problems and make predictions.",
+      "related_careers": ["Data Scientist", "Machine Learning Engineer", "Research Scientist"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Understands ML concepts, can use basic algorithms"},
+        {"level": "Intermediate", "description": "Can build and tune models, understands frameworks"},
+        {"level": "Advanced", "description": "Expert in deep learning, can architect ML systems"}
+      ],
+      "learning_resources": [
+        {"name": "Andrew Ng's ML Course", "type": "Online Course", "url": "https://coursera.org/learn/machine-learning"},
+        {"name": "Fast.ai", "type": "Online Course", "url": "https://fast.ai"},
+        {"name": "Papers with Code", "type": "Research Resource", "url": "https://paperswithcode.com"}
+      ]
+    },
+    {
+      "id": "s004",
+      "name": "Communication",
+      "category": "Soft Skills",
+      "description": "The ability to effectively convey information, ideas, and messages to others through various channels.",
+      "related_careers": ["Product Manager", "Marketing Manager", "Human Resources Manager", "Project Manager"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can express ideas clearly in basic situations"},
+        {"level": "Intermediate", "description": "Effective in team meetings, presentations"},
+        {"level": "Advanced", "description": "Expert communicator, can influence and negotiate"}
+      ],
+      "learning_resources": [
+        {"name": "Toastmasters", "type": "Practice Organization", "url": "https://toastmasters.org"},
+        {"name": "TED Talks", "type": "Learning Resource", "url": "https://ted.com"},
+        {"name": "Coursera Communication", "type": "Online Course", "url": "https://coursera.org"}
+      ]
+    },
+    {
+      "id": "s005",
+      "name": "Project Management",
+      "category": "Business",
+      "description": "The ability to plan, execute, and oversee projects to ensure they are completed on time, within budget, and to specifications.",
+      "related_careers": ["Product Manager", "Project Manager", "DevOps Engineer", "Entrepreneur"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can manage small tasks, basic planning"},
+        {"level": "Intermediate", "description": "Can lead medium projects, use PM tools"},
+        {"level": "Advanced", "description": "Expert in PM methodologies, leads complex initiatives"}
+      ],
+      "learning_resources": [
+        {"name": "PMI", "type": "Certification Body", "url": "https://pmi.org"},
+        {"name": "Coursera Google PM", "type": "Online Course", "url": "https://coursera.org"},
+        {"name": "Asana Academy", "type": "Tool Training", "url": "https://asana.com"}
+      ]
+    },
+    {
+      "id": "s006",
+      "name": "User Research",
+      "category": "Design",
+      "description": "The ability to understand user needs, behaviors, and motivations through various research methods.",
+      "related_careers": ["UX Designer", "Product Manager", "Marketing Manager"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can conduct basic interviews and surveys"},
+        {"level": "Intermediate", "description": "Proficient in multiple research methods"},
+        {"level": "Advanced", "description": "Expert in research design, analysis, and synthesis"}
+      ],
+      "learning_resources": [
+        {"name": "Nielsen Norman Group", "type": "Research Resource", "url": "https://nngroup.com"},
+        {"name": "Coursera UX Research", "type": "Online Course", "url": "https://coursera.org"},
+        {"name": "UserTesting", "type": "Research Platform", "url": "https://usertesting.com"}
+      ]
+    },
+    {
+      "id": "s007",
+      "name": "Cloud Computing",
+      "category": "Technical",
+      "description": "The ability to design, deploy, and manage applications and services on cloud platforms like AWS, Azure, or GCP.",
+      "related_careers": ["Software Engineer", "DevOps Engineer", "Machine Learning Engineer", "Cybersecurity Analyst"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Understands cloud concepts, basic services"},
+        {"level": "Intermediate", "description": "Can deploy applications, manage resources"},
+        {"level": "Advanced", "description": "Expert in cloud architecture, optimization"}
+      ],
+      "learning_resources": [
+        {"name": "AWS Training", "type": "Official Training", "url": "https://aws.amazon.com/training"},
+        {"name": "Azure Learn", "type": "Official Training", "url": "https://azure.microsoft.com/learn"},
+        {"name": "Google Cloud Skills Boost", "type": "Official Training", "url": "https://cloud.google.com/training"}
+      ]
+    },
+    {
+      "id": "s008",
+      "name": "Problem Solving",
+      "category": "Soft Skills",
+      "description": "The ability to identify problems, analyze situations, and develop effective solutions.",
+      "related_careers": ["Software Engineer", "Data Scientist", "Product Manager", "Research Scientist"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can solve routine problems with guidance"},
+        {"level": "Intermediate", "description": "Independent problem solver, analytical thinker"},
+        {"level": "Advanced", "description": "Expert problem solver, innovative solutions"}
+      ],
+      "learning_resources": [
+        {"name": "MindTools", "type": "Learning Resource", "url": "https://mindtools.com"},
+        {"name": "Coursera Critical Thinking", "type": "Online Course", "url": "https://coursera.org"},
+        {"name": "Harvard Business Review", "type": "Articles", "url": "https://hbr.org"}
+      ]
+    },
+    {
+      "id": "s009",
+      "name": "Leadership",
+      "category": "Soft Skills",
+      "description": "The ability to guide, motivate, and influence others to achieve common goals.",
+      "related_careers": ["Product Manager", "Marketing Manager", "Human Resources Manager", "Entrepreneur"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can lead small teams, basic motivation"},
+        {"level": "Intermediate", "description": "Effective team leader, good decision maker"},
+        {"level": "Advanced", "description": "Inspirational leader, strategic vision"}
+      ],
+      "learning_resources": [
+        {"name": "Harvard Business School Online", "type": "Online Course", "url": "https://online.hbs.edu"},
+        {"name": "LinkedIn Learning Leadership", "type": "Online Course", "url": "https://linkedin.com/learning"},
+        {"name": "Center for Creative Leadership", "type": "Training", "url": "https://ccl.org"}
+      ]
+    },
+    {
+      "id": "s010",
+      "name": "Statistics",
+      "category": "Technical",
+      "description": "The ability to collect, analyze, interpret, and present quantitative data.",
+      "related_careers": ["Data Scientist", "Financial Analyst", "Research Scientist", "Marketing Manager"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Understands basic concepts, descriptive statistics"},
+        {"level": "Intermediate", "description": "Proficient in inferential statistics, hypothesis testing"},
+        {"level": "Advanced", "description": "Expert in advanced statistical methods, modeling"}
+      ],
+      "learning_resources": [
+        {"name": "Khan Academy Statistics", "type": "Free Course", "url": "https://khanacademy.org"},
+        {"name": "Coursera Statistics", "type": "Online Course", "url": "https://coursera.org"},
+        {"name": "StatQuest", "type": "YouTube Channel", "url": "https://youtube.com/statquest"}
+      ]
+    },
+    {
+      "id": "s011",
+      "name": "System Design",
+      "category": "Technical",
+      "description": "The ability to architect scalable, reliable, and maintainable software systems.",
+      "related_careers": ["Software Engineer", "DevOps Engineer", "Machine Learning Engineer"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Understands basic architecture patterns"},
+        {"level": "Intermediate", "description": "Can design medium-complexity systems"},
+        {"level": "Advanced", "description": "Expert in distributed systems, scalability"}
+      ],
+      "learning_resources": [
+        {"name": "System Design Primer", "type": "GitHub Resource", "url": "https://github.com/donnemartin/system-design-primer"},
+        {"name": "High Scalability", "type": "Blog", "url": "https://highscalability.com"},
+        {"name": "Coursera System Design", "type": "Online Course", "url": "https://coursera.org"}
+      ]
+    },
+    {
+      "id": "s012",
+      "name": "Marketing Strategy",
+      "category": "Business",
+      "description": "The ability to develop and execute comprehensive marketing plans to achieve business objectives.",
+      "related_careers": ["Marketing Manager", "Product Manager", "Entrepreneur"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Understands marketing basics, can execute campaigns"},
+        {"level": "Intermediate", "description": "Can develop strategies, analyze results"},
+        {"level": "Advanced", "description": "Expert in strategic marketing, brand building"}
+      ],
+      "learning_resources": [
+        {"name": "HubSpot Academy", "type": "Free Course", "url": "https://hubspot.com/academy"},
+        {"name": "Google Digital Garage", "type": "Free Course", "url": "https://learndigital.withgoogle.com"},
+        {"name": "Coursera Marketing", "type": "Online Course", "url": "https://coursera.org"}
+      ]
+    },
+    {
+      "id": "s013",
+      "name": "Financial Analysis",
+      "category": "Business",
+      "description": "The ability to analyze financial data, create models, and provide investment recommendations.",
+      "related_careers": ["Financial Analyst", "Product Manager", "Entrepreneur"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can read financial statements, basic analysis"},
+        {"level": "Intermediate", "description": "Proficient in financial modeling, valuation"},
+        {"level": "Advanced", "description": "Expert in complex analysis, investment strategies"}
+      ],
+      "learning_resources": [
+        {"name": "CFA Institute", "type": "Certification", "url": "https://cfainstitute.org"},
+        {"name": "Investopedia", "type": "Learning Resource", "url": "https://investopedia.com"},
+        {"name": "Coursera Finance", "type": "Online Course", "url": "https://coursera.org"}
+      ]
+    },
+    {
+      "id": "s014",
+      "name": "Creativity",
+      "category": "Soft Skills",
+      "description": "The ability to generate original ideas, think outside the box, and innovate.",
+      "related_careers": ["UX Designer", "Product Manager", "Marketing Manager", "Entrepreneur"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can generate basic creative ideas"},
+        {"level": "Intermediate", "description": "Consistently creative, good ideation skills"},
+        {"level": "Advanced", "description": "Highly innovative, breakthrough thinker"}
+      ],
+      "learning_resources": [
+        {"name": "IDEO U", "type": "Online Course", "url": "https://ideo.com/u"},
+        {"name": "Coursera Creativity", "type": "Online Course", "url": "https://coursera.org"},
+        {"name": "TED Talks Creativity", "type": "Inspiration", "url": "https://ted.com"}
+      ]
+    },
+    {
+      "id": "s015",
+      "name": "Networking",
+      "category": "Soft Skills",
+      "description": "The ability to build and maintain professional relationships for career growth and opportunities.",
+      "related_careers": ["Product Manager", "Marketing Manager", "Entrepreneur", "Human Resources Manager"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can make basic professional connections"},
+        {"level": "Intermediate", "description": "Active networker, maintains relationships"},
+        {"level": "Advanced", "description": "Expert networker, influential connector"}
+      ],
+      "learning_resources": [
+        {"name": "LinkedIn", "type": "Platform", "url": "https://linkedin.com"},
+        {"name": "Meetup", "type": "Networking Events", "url": "https://meetup.com"},
+        {"name": "Toastmasters", "type": "Practice Organization", "url": "https://toastmasters.org"}
+      ]
+    },
+    {
+      "id": "s016",
+      "name": "SQL",
+      "category": "Technical",
+      "description": "The ability to query, manipulate, and manage data using Structured Query Language.",
+      "related_careers": ["Data Scientist", "Software Engineer", "Financial Analyst", "DevOps Engineer"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Basic SELECT queries, simple joins"},
+        {"level": "Intermediate", "description": "Complex queries, optimization, stored procedures"},
+        {"level": "Advanced", "description": "Expert in database design, performance tuning"}
+      ],
+      "learning_resources": [
+        {"name": "SQLZoo", "type": "Interactive Tutorial", "url": "https://sqlzoo.net"},
+        {"name": "Mode Analytics SQL Tutorial", "type": "Interactive Tutorial", "url": "https://mode.com/sql-tutorial"},
+        {"name": "LeetCode Database", "type": "Practice Platform", "url": "https://leetcode.com"}
+      ]
+    },
+    {
+      "id": "s017",
+      "name": "Python",
+      "category": "Technical",
+      "description": "Proficiency in the Python programming language for various applications including data science, web development, and automation.",
+      "related_careers": ["Data Scientist", "Software Engineer", "Machine Learning Engineer", "DevOps Engineer"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Basic syntax, simple scripts"},
+        {"level": "Intermediate", "description": "Object-oriented programming, libraries"},
+        {"level": "Advanced", "description": "Expert in frameworks, performance optimization"}
+      ],
+      "learning_resources": [
+        {"name": "Python.org Tutorial", "type": "Official Documentation", "url": "https://python.org"},
+        {"name": "Real Python", "type": "Learning Resource", "url": "https://realpython.com"},
+        {"name": "Automate the Boring Stuff", "type": "Book/Course", "url": "https://automatetheboringstuff.com"}
+      ]
+    },
+    {
+      "id": "s018",
+      "name": "Research Methods",
+      "category": "Academic",
+      "description": "The ability to design and conduct systematic investigations to answer research questions.",
+      "related_careers": ["Research Scientist", "Data Scientist", "UX Designer", "Clinical Psychologist"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Understands basic research design"},
+        {"level": "Intermediate", "description": "Can design and conduct studies"},
+        {"level": "Advanced", "description": "Expert in complex methodologies, publication"}
+      ],
+      "learning_resources": [
+        {"name": "Coursera Research Methods", "type": "Online Course", "url": "https://coursera.org"},
+        {"name": "SAGE Research Methods", "type": "Resource", "url": "https://methods.sagepub.com"},
+        {"name": "PubMed", "type": "Research Database", "url": "https://pubmed.gov"}
+      ]
+    },
+    {
+      "id": "s019",
+      "name": "Empathy",
+      "category": "Soft Skills",
+      "description": "The ability to understand and share the feelings of others, crucial for user-centered work and team collaboration.",
+      "related_careers": ["UX Designer", "Human Resources Manager", "Clinical Psychologist", "Product Manager"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Basic understanding of others' perspectives"},
+        {"level": "Intermediate", "description": "Good listener, considers user needs"},
+        {"level": "Advanced", "description": "Highly empathetic, excellent user advocate"}
+      ],
+      "learning_resources": [
+        {"name": "Coursera Empathy", "type": "Online Course", "url": "https://coursera.org"},
+        {"name": "School of Life", "type": "Videos", "url": "https://theschooloflife.com"},
+        {"name": "Greater Good Science Center", "type": "Resource", "url": "https://greatergood.berkeley.edu"}
+      ]
+    },
+    {
+      "id": "s020",
+      "name": "Critical Thinking",
+      "category": "Soft Skills",
+      "description": "The ability to analyze information objectively, evaluate arguments, and make reasoned judgments.",
+      "related_careers": ["Data Scientist", "Research Scientist", "Financial Analyst", "Product Manager"],
+      "proficiency_levels": [
+        {"level": "Beginner", "description": "Can identify basic logical fallacies"},
+        {"level": "Intermediate", "description": "Good analytical skills, sound reasoning"},
+        {"level": "Advanced", "description": "Expert critical thinker, strategic analyst"}
+      ],
+      "learning_resources": [
+        {"name": "Coursera Critical Thinking", "type": "Online Course", "url": "https://coursera.org"},
+        {"name": "Foundation for Critical Thinking", "type": "Resource", "url": "https://criticalthinking.org"},
+        {"name": "Khan Academy Logic", "type": "Free Course", "url": "https://khanacademy.org"}
+      ]
+    }
+  ]
+}

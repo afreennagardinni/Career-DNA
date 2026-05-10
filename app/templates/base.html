@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Career DNA{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'glass': 'rgba(255, 255, 255, 0.1)',
+                        'glass-dark': 'rgba(0, 0, 0, 0.3)',
+                        'accent': '#8B5CF6',
+                        'accent-light': '#A78BFA',
+                        'accent-dark': '#7C3AED',
+                    },
+                    backdropBlur: {
+                        'xs': '2px',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'slide-down': 'slideDown 0.5s ease-out',
+                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.5)' },
+                            '50%': { boxShadow: '0 0 40px rgba(139, 92, 246, 0.8)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
+            min-height: 100vh;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .glass-card-dark {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .circular-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .circular-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+        }
+        
+        .circular-btn.selected {
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.8);
+            border: 2px solid #8B5CF6;
+        }
+        
+        .glow-text {
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #8B5CF6, #A78BFA);
+            transition: width 0.5s ease;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(139, 92, 246, 0.8);
+        }
+    </style>
+</head>
+<body class="text-white font-sans">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-card-dark">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold glow-text">Career DNA</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="/" class="hover:text-accent-light transition-colors px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                        <a href="/assessment" class="hover:text-accent-light transition-colors px-3 py-2 rounded-md text-sm font-medium">Assessment</a>
+                        <a href="/dashboard" class="hover:text-accent-light transition-colors px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    {% if current_user.is_authenticated %}
+                        <span class="text-sm text-gray-300">{{ current_user.email }}</span>
+                        <a href="/logout" class="bg-accent hover:bg-accent-dark px-4 py-2 rounded-lg transition-colors text-sm">Logout</a>
+                    {% else %}
+                        <a href="/login" class="hover:text-accent-light transition-colors px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                        <a href="/register" class="bg-accent hover:bg-accent-dark px-4 py-2 rounded-lg transition-colors text-sm">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-card-dark mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="text-center text-gray-400 text-sm">
+                <p>&copy; 2024 Career DNA. Discover your perfect career path.</p>
+            </div>
+        </div>
+    </footer>
+
+    {% block scripts %}{% endblock %}
+    
+    <script>
+    function showToast(message, type='success') {
+        const colors = {
+            success: 'bg-green-500',
+            error: 'bg-red-500', 
+            warning: 'bg-yellow-500',
+            info: 'bg-purple-500'
+        }
+        const toast = document.createElement('div')
+        toast.className = `
+            fixed top-24 right-4 z-[100] px-6 py-4 rounded-xl
+            text-white font-semibold shadow-2xl
+            transform translate-x-[150%] transition-all duration-300
+            ${colors[type]}
+        `
+        toast.textContent = message
+        document.body.appendChild(toast)
+        
+        // Force reflow
+        void toast.offsetWidth;
+        
+        // Slide in
+        setTimeout(() => toast.classList.remove('translate-x-[150%]'), 10)
+        
+        // Slide out and remove
+        setTimeout(() => {
+            toast.classList.add('translate-x-[150%]')
+            setTimeout(() => toast.remove(), 300)
+        }, 3000)
+    }
+    
+    // Display flashed messages as toasts
+    document.addEventListener("DOMContentLoaded", function() {
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    // Map flask categories to toast categories
+                    let type = 'info';
+                    if ('{{ category }}' === 'success') type = 'success';
+                    if ('{{ category }}' === 'error' || '{{ category }}' === 'danger') type = 'error';
+                    if ('{{ category }}' === 'warning') type = 'warning';
+                    
+                    setTimeout(() => showToast("{{ message }}", type), 100 * {{ loop.index }});
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    });
+    </script>
+</body>
+</html>
