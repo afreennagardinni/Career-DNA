@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Career DNA Report – {{ current_user.full_name }}</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    background: #fff;
+    color: #1e1b4b;
+    font-size: 11px;
+    line-height: 1.4;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page { max-width: 760px; margin: 0 auto; padding: 8px; }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+    color: #fff;
+    padding: 14px 18px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .header-logo { font-size: 20px; font-weight: 900; letter-spacing: -0.5px; }
+  .header-logo span { display: block; font-size: 9px; font-weight: 400; opacity: 0.85; margin-top: 2px; }
+  .header-meta { text-align: right; font-size: 10px; line-height: 1.7; }
+  .header-meta strong { font-size: 13px; display: block; }
+
+  /* ── DNA HERO ── */
+  .hero {
+    background: linear-gradient(135deg, #ede9fe 0%, #e0e7ff 100%);
+    border: 2px solid #7c3aed;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 14px;
+    page-break-inside: avoid;
+  }
+  .hero-badge { font-size: 8px; font-weight: 700; color: #7c3aed; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+  .hero h1 { font-size: 24px; font-weight: 900; color: #4c1d95; margin: 4px 0 8px; }
+  .hero p { font-size: 11px; color: #4c1d95; max-width: 520px; margin: 0 auto 12px; line-height: 1.5; }
+  .hero-badges { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+  .badge { background: #7c3aed; color: #fff; padding: 5px 14px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+  .badge.alt { background: #4f46e5; }
+
+  /* ── SECTION ── */
+  section { margin-bottom: 14px; page-break-inside: avoid; }
+  h2 {
+    font-size: 12px; font-weight: 800; color: #4c1d95;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    border-bottom: 2px solid #7c3aed;
+    padding-bottom: 4px; margin-bottom: 10px;
+  }
+
+  /* ── GRIDS ── */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+  .grid5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+
+  /* ── SCORE CARDS ── */
+  .score-card {
+    background: #f5f3ff;
+    border: 1px solid #c4b5fd;
+    border-radius: 8px;
+    padding: 12px;
+  }
+  .score-card h3 { font-size: 11px; font-weight: 700; color: #4c1d95; margin-bottom: 8px; }
+
+  /* ── SCORE ROW ── */
+  .score-row { margin-bottom: 8px; }
+  .score-row-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+  .score-label { font-size: 10px; color: #333; }
+  .score-label.top { font-weight: 700; color: #4c1d95; }
+  .score-value { font-size: 12px; font-weight: 700; }
+  .top-badge { font-size: 7px; padding: 1px 5px; border-radius: 8px; color: #fff; margin-left: 4px; font-weight: 700; }
+
+  /* ── PROGRESS BAR ── */
+  .bar-wrap { background: #e5e7eb; border-radius: 4px; height: 9px; width: 100%; overflow: hidden; }
+  .bar-fill { height: 9px; border-radius: 4px; }
+
+  /* ── TRAIT CARDS (Big Five) ── */
+  .trait-card {
+    background: #f5f3ff;
+    border: 1px solid #c4b5fd;
+    border-radius: 8px;
+    padding: 10px 8px;
+    text-align: center;
+  }
+  .trait-icon { font-size: 18px; margin-bottom: 3px; }
+  .trait-name { font-size: 8px; font-weight: 700; color: #4c1d95; text-transform: uppercase; letter-spacing: 0.3px; }
+  .trait-score { font-size: 20px; font-weight: 900; margin: 3px 0; }
+  .trait-desc { font-size: 8px; color: #555; margin-top: 4px; line-height: 1.4; }
+
+  /* ── RIASEC CARDS ── */
+  .riasec-card {
+    background: #f5f3ff;
+    border: 1px solid #c4b5fd;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .riasec-card-header { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .riasec-icon { font-size: 16px; }
+  .riasec-label { font-size: 10px; font-weight: 700; color: #4c1d95; }
+  .riasec-score { font-size: 18px; font-weight: 900; margin: 3px 0; }
+  .riasec-desc { font-size: 8px; color: #555; margin-top: 4px; line-height: 1.4; }
+
+  /* ── FOOTER ── */
+  .footer {
+    border-top: 1px solid #c4b5fd;
+    padding-top: 6px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 8px;
+    color: #888;
+    margin-top: 10px;
+  }
+
+  /* ── Print button (screen only) ── */
+  .print-btn {
+    display: block;
+    width: 200px;
+    margin: 16px auto;
+    padding: 10px;
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    text-align: center;
+  }
+  @media print {
+    .print-btn { display: none !important; }
+    .no-print { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print" style="background:#ede9fe;padding:10px;text-align:center;font-family:sans-serif;">
+  <strong style="color:#4c1d95;">Your Career DNA Report is ready.</strong>
+  <button class="print-btn" onclick="window.print()">🖨️ Print / Save as PDF</button>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="header-logo">🧬 Career DNA
+        <span>Professional Career Assessment Report</span>
+      </div>
+    </div>
+    <div class="header-meta">
+      <strong>{{ current_user.full_name }}</strong>
+      {{ current_user.email }}<br>
+      Assessment #{{ assessment_number }} of {{ total_assessments }}
+      &nbsp;|&nbsp; <span id="rpt-date"></span>
+    </div>
+  </div>
+
+  <!-- DNA HERO -->
+  <div class="hero">
+    <div class="hero-badge">Career DNA Profile · Assessment {{ assessment_number }} of {{ total_assessments }}</div>
+    <h1>{{ assessment.dna_type }}</h1>
+    <p>{{ dna_description }}</p>
+    <div class="hero-badges">
+      <span class="badge">🏆 {{ assessment.top_career }}</span>
+      <span class="badge alt">🧬 Holland Code: {{ holland_code }}</span>
+    </div>
+  </div>
+
+  <!-- PSYCHOMETRIC SCORES -->
+  <section>
+    <h2>Psychometric Scores</h2>
+    <div class="grid2">
+
+      <!-- RIASEC -->
+      <div class="score-card">
+        <h3>RIASEC Interest Profile</h3>
+        {% set riasec_info = {
+          'R': {'icon':'🔧','color':'#ea580c'},
+          'I': {'icon':'🔬','color':'#2563eb'},
+          'A': {'icon':'🎨','color':'#db2777'},
+          'S': {'icon':'🤝','color':'#059669'},
+          'E': {'icon':'🚀','color':'#d97706'},
+          'C': {'icon':'📊','color':'#7c3aed'}
+        } %}
+        {% for item in riasec_display %}
+        {% set info = riasec_info.get(item.key, {'icon':'•','color':'#7c3aed'}) %}
+        <div class="score-row">
+          <div class="score-row-header">
+            <span class="score-label {% if loop.index <= 2 %}top{% endif %}">
+              {{ info.icon }} {{ item.label }}
+              {% if loop.index <= 2 %}
+              <span class="top-badge" style="background:{{ info.color }};">TOP {{ loop.index }}</span>
+              {% endif %}
+            </span>
+            <span class="score-value" style="color:{{ info.color }};">{{ item.score }}%</span>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-fill" style="width:{{ item.score }}%;background:{{ info.color }};"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- BIG FIVE -->
+      <div class="score-card">
+        <h3>Big Five Personality Traits</h3>
+        {% set big5_info = {
+          'O': {'icon':'🌟','color':'#7c3aed'},
+          'C': {'icon':'📋','color':'#6366f1'},
+          'E': {'icon':'⚡','color':'#2563eb'},
+          'A': {'icon':'🤝','color':'#059669'},
+          'N': {'icon':'🌊','color':'#d97706'}
+        } %}
+        {% for item in big5_display %}
+        {% set info = big5_info.get(item.key, {'icon':'•','color':'#7c3aed'}) %}
+        <div class="score-row">
+          <div class="score-row-header">
+            <span class="score-label">{{ info.icon }} {{ item.label }}</span>
+            <span class="score-value" style="color:{{ info.color }};">{{ item.score }}%</span>
+          </div>
+          <div class="bar-wrap">
+            <div class="bar-fill" style="width:{{ item.score }}%;background:{{ info.color }};"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONALITY TRAIT ANALYSIS -->
+  <section>
+    <h2>Personality Trait Analysis</h2>
+    {% set trait_info = {
+      'O': {'label':'Openness','icon':'🌟','color':'#7c3aed','high':'Highly creative, curious, and open to new experiences.','low':'Prefers routine and practical, conventional approaches.'},
+      'C': {'label':'Conscientiousness','icon':'📋','color':'#6366f1','high':'Organized, disciplined, and highly goal-oriented.','low':'Flexible and spontaneous, prefers adaptability.'},
+      'E': {'label':'Extraversion','icon':'⚡','color':'#2563eb','high':'Energetic, sociable, and thrives in group settings.','low':'Thoughtful and independent, recharges through solitude.'},
+      'A': {'label':'Agreeableness','icon':'🤝','color':'#059669','high':'Empathetic, cooperative, and values harmony.','low':'Direct and independent, prioritizes logic.'},
+      'N': {'label':'Neuroticism','icon':'🌊','color':'#d97706','high':'Sensitive to stress, experiences emotions deeply.','low':'Emotionally stable and calm under pressure.'}
+    } %}
+    <div class="grid5">
+      {% for key, score in big5.items() %}
+      {% set info = trait_info.get(key, {'label':key,'icon':'•','color':'#7c3aed','high':'','low':''}) %}
+      {% set is_high = score >= 50 %}
+      <div class="trait-card" style="border-top: 4px solid {{ info.color }};">
+        <div class="trait-icon">{{ info.icon }}</div>
+        <div class="trait-name">{{ info.label }}</div>
+        <div class="trait-score" style="color:{{ info.color }};">{{ score }}%</div>
+        <div class="bar-wrap" style="margin:4px 0;">
+          <div class="bar-fill" style="width:{{ score }}%;background:{{ info.color }};"></div>
+        </div>
+        <div class="trait-desc">{% if is_high %}{{ info.high }}{% else %}{{ info.low }}{% endif %}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- HOLLAND CODE CAREER INTERESTS -->
+  <section>
+    <h2>Holland Code Career Interest Areas</h2>
+    {% set riasec_full = {
+      'R': {'label':'Realistic','icon':'🔧','color':'#ea580c','desc':'Enjoys working with tools, machines, and physical things. Engineering, construction, and trades.'},
+      'I': {'label':'Investigative','icon':'🔬','color':'#2563eb','desc':'Analytical and curious. Loves solving complex problems. Science, research, and technology.'},
+      'A': {'label':'Artistic','icon':'🎨','color':'#db2777','desc':'Values creativity and self-expression. Design, arts, writing, and media.'},
+      'S': {'label':'Social','icon':'🤝','color':'#059669','desc':'People-oriented and empathetic. Teaching, counseling, and healthcare.'},
+      'E': {'label':'Enterprising','icon':'🚀','color':'#d97706','desc':'Ambitious and persuasive. Business, management, and sales.'},
+      'C': {'label':'Conventional','icon':'📊','color':'#7c3aed','desc':'Prefers structure and order. Finance, administration, and data management.'}
+    } %}
+    <div class="grid3">
+      {% for item in riasec_display %}
+      {% set info = riasec_full.get(item.key, {'label':item.key,'icon':'•','color':'#7c3aed','desc':''}) %}
+      <div class="riasec-card" style="border-left: 5px solid {{ info.color }};">
+        <div class="riasec-card-header">
+          <span class="riasec-icon">{{ info.icon }}</span>
+          <div>
+            <div class="riasec-label">
+              {{ info.label }}
+              {% if loop.index <= 2 %}
+              <span class="top-badge" style="background:{{ info.color }};">TOP {{ loop.index }}</span>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="riasec-score" style="color:{{ info.color }};">{{ item.score }}%</div>
+        <div class="bar-wrap">
+          <div class="bar-fill" style="width:{{ item.score }}%;background:{{ info.color }};"></div>
+        </div>
+        <div class="riasec-desc">{{ info.desc }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <span>🧬 Career DNA Platform &nbsp;·&nbsp; Confidential Report &nbsp;·&nbsp; {{ assessment.dna_type }}</span>
+    <span>Generated for {{ current_user.full_name }} &nbsp;·&nbsp; {{ current_user.email }}</span>
+  </div>
+
+</div>
+
+<script>
+  document.getElementById('rpt-date').textContent = new Date().toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
+</script>
+</body>
+</html>

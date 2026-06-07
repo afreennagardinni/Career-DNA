@@ -1,115 +1,129 @@
 {% extends "base.html" %}
 
-{% block title %}Career DNA - Discover Your Perfect Career{% endblock %}
+{% block title %}Home - Career DNA{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
-<section class="min-h-screen flex items-center justify-center relative overflow-hidden">
-    <!-- Animated Background Elements -->
-    <div class="absolute inset-0 overflow-hidden">
-        <div class="absolute top-20 left-20 w-72 h-72 bg-accent opacity-20 rounded-full blur-3xl animate-float"></div>
-        <div class="absolute bottom-20 right-20 w-96 h-96 bg-accent-light opacity-10 rounded-full blur-3xl animate-float" style="animation-delay: 1s;"></div>
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-accent-dark opacity-15 rounded-full blur-3xl animate-float" style="animation-delay: 2s;"></div>
-    </div>
+<div class="relative min-h-[80vh] flex items-center justify-center py-20">
+    <!-- Background Glow -->
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[120px] -z-10"></div>
 
-    <div class="relative z-10 text-center px-4 max-w-5xl mx-auto">
-        <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in glow-text">
-            Discover Your <span class="text-accent">Career DNA</span>
+    <div class="neuro-card max-w-4xl w-full p-12 text-center animate-fade-in">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6 gradient-text">
+            Discover Your Career DNA
         </h1>
-        <p class="text-xl md:text-2xl text-gray-300 mb-8 animate-slide-up" style="animation-delay: 0.2s;">
-            Unlock your potential with AI-powered career analysis
-        </p>
-        <p class="text-lg text-gray-400 mb-12 max-w-2xl mx-auto animate-slide-up" style="animation-delay: 0.4s;">
-            Our advanced psychometric assessment analyzes your personality traits, interests, and patterns to recommend careers that truly fit you.
+        <p class="text-xl text-text-secondary mb-10 max-w-2xl mx-auto">
+            Unlock your professional potential with our advanced AI-powered career analysis. 
+            Find the path that truly matches your unique traits.
         </p>
         
-        <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style="animation-delay: 0.6s;">
-            <a href="/assessment" class="bg-accent hover:bg-accent-dark px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 animate-pulse-glow">
+        <div class="flex flex-wrap items-center justify-center gap-6">
+            <a href="/assessment" class="btn-accent text-lg px-10 py-4">
                 Start Assessment
             </a>
-            <a href="/dashboard" class="glass-card hover:bg-glass px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105">
+            <a href="/dashboard" class="neuro-btn text-lg px-10 py-4">
                 View Dashboard
             </a>
         </div>
     </div>
-</section>
+</div>
 
-<!-- Features Section -->
-<section class="py-20 px-4">
-    <div class="max-w-7xl mx-auto">
-        <h2 class="text-4xl font-bold text-center mb-16 glow-text">How It Works</h2>
-        
-        <div class="grid md:grid-cols-3 gap-8">
-            <!-- Feature 1 -->
-            <div class="glass-card rounded-2xl p-8 text-center hover:scale-105 transition-transform animate-slide-up" style="animation-delay: 0.2s;">
-                <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold mb-4">Take Assessment</h3>
-                <p class="text-gray-400">Complete our scientifically-backed psychometric assessment based on Big Five and RIASEC models.</p>
+<!-- How It Works -->
+<section class="py-24">
+    <h2 class="text-3xl font-bold text-center mb-16 text-primary">How It Works</h2>
+    <div class="grid md:grid-cols-3 gap-10">
+        <!-- Step 1 -->
+        <div class="neuro-card p-8 text-center relative group hover:scale-105 transition-transform duration-300">
+            <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 neuro-inset flex items-center justify-center text-accent-light font-bold text-xl">1</div>
+            <div class="w-16 h-16 neuro-inset flex items-center justify-center mx-auto mb-6 text-accent-light text-2xl">
+                <i class="fas fa-clipboard-list"></i>
             </div>
+            <h3 class="text-xl font-bold mb-4 text-primary">Take Assessment</h3>
+            <p class="text-text-secondary">Complete our psychometric survey designed to map your core professional traits.</p>
+        </div>
 
-            <!-- Feature 2 -->
-            <div class="glass-card rounded-2xl p-8 text-center hover:scale-105 transition-transform animate-slide-up" style="animation-delay: 0.4s;">
-                <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold mb-4">AI Analysis</h3>
-                <p class="text-gray-400">Our multi-agent AI system analyzes your traits, detects patterns, and retrieves relevant career data.</p>
+        <!-- Step 2 -->
+        <div class="neuro-card p-8 text-center relative group hover:scale-105 transition-transform duration-300">
+            <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 neuro-inset flex items-center justify-center text-accent-light font-bold text-xl">2</div>
+            <div class="w-16 h-16 neuro-inset flex items-center justify-center mx-auto mb-6 text-accent-light text-2xl">
+                <i class="fas fa-robot"></i>
             </div>
+            <h3 class="text-xl font-bold mb-4 text-primary">AI Analysis</h3>
+            <p class="text-text-secondary">Our multi-agent AI system analyzes your results against global career data.</p>
+        </div>
 
-            <!-- Feature 3 -->
-            <div class="glass-card rounded-2xl p-8 text-center hover:scale-105 transition-transform animate-slide-up" style="animation-delay: 0.6s;">
-                <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
-                </div>
-                <h3 class="text-xl font-semibold mb-4">Get Results</h3>
-                <p class="text-gray-400">Receive personalized career recommendations with confidence scores and actionable insights.</p>
+        <!-- Step 3 -->
+        <div class="neuro-card p-8 text-center relative group hover:scale-105 transition-transform duration-300">
+            <div class="absolute -top-6 left-1/2 -translate-x-1/2 w-12 h-12 neuro-inset flex items-center justify-center text-accent-light font-bold text-xl">3</div>
+            <div class="w-16 h-16 neuro-inset flex items-center justify-center mx-auto mb-6 text-accent-light text-2xl">
+                <i class="fas fa-dna"></i>
             </div>
+            <h3 class="text-xl font-bold mb-4 text-primary">Get Your DNA</h3>
+            <p class="text-text-secondary">Receive a personalized Career DNA report with ranked path recommendations.</p>
         </div>
     </div>
 </section>
 
-<!-- Stats Section -->
-<section class="py-20 px-4">
-    <div class="max-w-7xl mx-auto">
-        <div class="glass-card rounded-2xl p-12">
-            <div class="grid md:grid-cols-4 gap-8 text-center">
-                <div>
-                    <div class="text-4xl font-bold text-accent mb-2">5</div>
-                    <div class="text-gray-400">AI Agents</div>
+<!-- Stats Row -->
+<section class="py-20 bg-neuro-dark/30 rounded-3xl mb-20">
+    <div class="grid md:grid-cols-3 gap-8 px-8">
+        <div class="neuro-card p-10 text-center">
+            <div class="text-4xl font-bold text-accent-light mb-2">500K+</div>
+            <div class="text-text-muted uppercase tracking-wider text-sm font-semibold">Students Helped</div>
+        </div>
+        <div class="neuro-card p-10 text-center">
+            <div class="text-4xl font-bold text-accent-light mb-2">95%</div>
+            <div class="text-text-muted uppercase tracking-wider text-sm font-semibold">Accuracy Rate</div>
+        </div>
+        <div class="neuro-card p-10 text-center">
+            <div class="text-4xl font-bold text-accent-light mb-2">Free</div>
+            <div class="text-text-muted uppercase tracking-wider text-sm font-semibold">Forever Access</div>
+        </div>
+    </div>
+<!-- Footer -->
+<footer class="mt-20 pt-16 pb-12 px-12 bg-accent rounded-3xl text-white shadow-xl mb-12">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 pb-12">
+        <div class="space-y-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center text-white">
+                    <i class="fas fa-dna"></i>
                 </div>
-                <div>
-                    <div class="text-4xl font-bold text-accent mb-2">15+</div>
-                    <div class="text-gray-400">Career Paths</div>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-accent mb-2">20+</div>
-                    <div class="text-gray-400">Skills Analyzed</div>
-                </div>
-                <div>
-                    <div class="text-4xl font-bold text-accent mb-2">95%</div>
-                    <div class="text-gray-400">Accuracy</div>
-                </div>
+                <span class="font-bold text-xl text-white">Career DNA</span>
+            </div>
+            <p class="text-xs text-white/80 leading-relaxed">
+                Empowering students to navigate their career trajectory using state-of-the-art multi-agent AI diagnostics and opposite-personality mentoring.
+            </p>
+        </div>
+        <div>
+            <h4 class="font-bold text-sm text-white mb-4">Platform</h4>
+            <ul class="space-y-2.5 text-xs text-white/80">
+                <li><a href="/assessment" class="hover:text-white transition-colors">Start Assessment</a></li>
+                <li><a href="/dashboard" class="hover:text-white transition-colors">Student Dashboard</a></li>
+                <li><a href="/login" class="hover:text-white transition-colors">Sign In</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-sm text-white mb-4">Features</h4>
+            <ul class="space-y-2.5 text-xs text-white/80">
+                <li><a href="/dashboard" class="hover:text-white transition-colors">Personalised Videos</a></li>
+                <li><a href="/dashboard" class="hover:text-white transition-colors">Opposite Mentors</a></li>
+                <li><a href="/dashboard" class="hover:text-white transition-colors">Interactive Roadmaps</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 class="font-bold text-sm text-white mb-4">Stay Connected</h4>
+            <p class="text-xs text-white/80 mb-4">Subscribe to receive weekly emerging industry tech trends.</p>
+            <div class="flex gap-2">
+                <input type="email" placeholder="student@vtu.edu" class="bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-xl !py-2 !px-3 text-xs flex-1 outline-none focus:border-white transition-colors">
+                <button class="bg-white text-accent font-bold rounded-xl !px-4 !py-2 text-xs hover:bg-white/90 transition-colors">Join</button>
             </div>
         </div>
     </div>
-</section>
-
-<!-- CTA Section -->
-<section class="py-20 px-4">
-    <div class="max-w-4xl mx-auto text-center">
-        <h2 class="text-4xl font-bold mb-6 glow-text">Ready to Discover Your Career?</h2>
-        <p class="text-xl text-gray-300 mb-8">Join thousands of users who have found their perfect career path.</p>
-        <a href="/assessment" class="bg-accent hover:bg-accent-dark px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 animate-pulse-glow inline-block">
-            Start Your Journey
-        </a>
+    <div class="border-t border-white/20 pt-6 text-center text-[10px] text-white/70 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span>&copy; 2026 Career DNA Platform. All Rights Reserved. Built for high-potential students.</span>
+        <div class="flex gap-6">
+            <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+        </div>
     </div>
-</section>
+</footer>
 {% endblock %}

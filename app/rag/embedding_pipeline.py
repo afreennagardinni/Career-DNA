@@ -6,7 +6,6 @@ Handles text embedding using sentence-transformers for RAG system.
 import json
 import os
 from typing import List, Dict, Any
-from sentence_transformers import SentenceTransformer
 import numpy as np
 
 
@@ -27,8 +26,14 @@ class EmbeddingPipeline:
                       Default: all-MiniLM-L6-v2 (fast, good quality)
         """
         self.model_name = model_name
-        self.model = SentenceTransformer(model_name)
-        self.embedding_dim = self.model.get_sentence_embedding_dimension()
+        try:
+            from sentence_transformers import SentenceTransformer
+            self.model = SentenceTransformer(model_name)
+            self.embedding_dim = self.model.get_sentence_embedding_dimension()
+        except Exception as e:
+            print(f"Error loading SentenceTransformer: {e}")
+            self.model = None
+            self.embedding_dim = 384 # Fallback dimension for MiniLM
     
     def embed_text(self, text: str) -> np.ndarray:
         """

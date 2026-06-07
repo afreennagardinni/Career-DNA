@@ -1,0 +1,561 @@
+{% extends "base.html" %}
+
+{% block title %}Your Mentor - Career DNA{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto space-y-10 animate-fade-in pb-20">
+    <!-- Header -->
+    <div class="text-center space-y-2">
+        <h1 class="text-4xl font-extrabold gradient-text">🧑💼 Your Opposite Personality Mentor</h1>
+        <p class="text-secondary text-lg">Assigned to push your boundaries, challenge your thinking, and balance your weaknesses.</p>
+        
+        <!-- Results Tabs -->
+        <div class="flex justify-center gap-2 mt-8 flex-wrap">
+            <a href="/results/{{ result.id }}" class="neuro-btn !rounded-full px-6 py-2 text-sm">🧬 My DNA</a>
+            <a href="/assessment/videos/{{ result.id }}" class="neuro-btn !rounded-full px-6 py-2 text-sm">🎥 Videos</a>
+            <a href="/assessment/mentors/{{ result.id }}" class="btn-accent !rounded-full px-6 py-2 text-sm">🧑💼 Mentors</a>
+            <a href="/assessment/skill-plan/{{ result.id }}" class="neuro-btn !rounded-full px-6 py-2 text-sm">📚 Skill Plan</a>
+            <a href="/assessment/trends/{{ result.id }}" class="neuro-btn !rounded-full px-6 py-2 text-sm">📈 Trends</a>
+        </div>
+    </div>
+
+    {% if mentor %}
+    <div class="grid lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- LEFT COLUMN: MENTOR PROFILE & CAREER TIMELINE (5 cols) -->
+        <div class="lg:col-span-5 space-y-8">
+            <!-- Profile Card -->
+            <div class="neuro-card p-6 flex flex-col justify-between space-y-6 relative overflow-hidden border-t-4" style="border-top-color: {{ mentor.color or '#0d9488' }}">
+                <div class="space-y-6">
+                    <!-- Profile Header -->
+                    <div class="text-center pb-6 border-b border-border space-y-4">
+                        <div class="w-28 h-28 rounded-full flex items-center justify-center font-bold text-white text-3xl shadow-xl mx-auto border-4 border-accent transition-transform hover:scale-105" style="background-color: {{ mentor.color or '#0d9488' }}">
+                            {{ mentor.photo_initial or mentor.name[:2].upper() }}
+                        </div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-primary">{{ mentor.name }}</h2>
+                            <p class="text-accent font-semibold text-sm">{{ mentor.role }}</p>
+                            <p class="text-text-muted text-xs mt-1"><i class="fas fa-university mr-1"></i> {{ mentor.college }}</p>
+                        </div>
+                        <div class="inline-flex items-center gap-2 bg-green-500/10 border border-green-500/20 text-green-500 text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-wider">
+                            <i class="fas fa-balance-scale"></i> Growth Opposite Match: {{ mentor.personality_type }}
+                        </div>
+                    </div>
+
+                    <!-- Story & Quote -->
+                    <div class="space-y-3">
+                        <h4 class="text-[10px] font-black text-text-muted uppercase tracking-widest">Their Journey</h4>
+                        <p class="text-xs text-text-secondary leading-relaxed">{{ mentor.story }}</p>
+                    </div>
+
+                    <div class="relative py-3">
+                        <i class="fas fa-quote-left absolute -top-1 -left-2 text-accent/15 text-3xl"></i>
+                        <blockquote class="text-sm font-medium italic text-primary pl-4 border-l-4" style="border-left-color: {{ mentor.color or '#0d9488' }}">
+                            "{{ mentor.quote }}"
+                        </blockquote>
+                    </div>
+                </div>
+
+                <!-- Core Advice -->
+                <div class="pt-6 border-t border-border space-y-3">
+                    <h4 class="text-[10px] font-black text-text-muted uppercase tracking-widest">Core Philosophy</h4>
+                    <div class="grid grid-cols-1 gap-2.5">
+                        {% for adv in mentor.advice %}
+                        <div class="neuro-inset p-3 text-left flex items-start gap-3 rounded-xl hover:border-accent/30 border border-transparent transition-all">
+                            <i class="fas fa-lightbulb text-accent mt-0.5 shrink-0"></i>
+                            <span class="text-xs text-secondary font-medium leading-normal">{{ adv }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Career Roadmap Timeline -->
+            <div class="neuro-card p-6 space-y-6">
+                <h3 class="text-lg font-bold text-primary flex items-center gap-2">
+                    <i class="fas fa-road text-accent-light"></i> Career Timeline Path
+                </h3>
+                <div class="relative border-l-2 border-border pl-6 ml-3 space-y-6 py-2">
+                    {% set steps = mentor.his_path.split(' → ') %}
+                    {% for step in steps %}
+                    <div class="relative group">
+                        <!-- Dot -->
+                        <div class="absolute -left-[31px] top-1 w-4.5 h-4.5 rounded-full border-4 border-neuro-dark bg-accent group-hover:scale-125 transition-transform"></div>
+                        <div class="space-y-1">
+                            <span class="text-[9px] font-black text-accent-light uppercase tracking-widest">Stage {{ loop.index }}</span>
+                            <h4 class="text-sm font-bold text-primary group-hover:text-accent transition-colors">{{ step }}</h4>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: INTERACTIVE CHAT, SYNERGY STATS & SCHEDULER (7 cols) -->
+        <div class="lg:col-span-7 space-y-8">
+            
+            <!-- Synergy Stat Analyzer -->
+            <div class="neuro-card p-6 space-y-6">
+                <div class="flex justify-between items-center pb-3 border-b border-border">
+                    <h3 class="text-lg font-bold text-primary flex items-center gap-2">
+                        <i class="fas fa-chart-network text-accent"></i> Growth Synergy Index
+                    </h3>
+                    <span class="bg-accent/15 text-accent text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">98% Synergy Match</span>
+                </div>
+                
+                <p class="text-xs text-text-secondary leading-relaxed">
+                    Opposites attract, but more importantly, they balance. By pairing your creative or visionary insights with your mentor's structured analytical capabilities, you build comprehensive skill versatility.
+                </p>
+
+                <!-- Comparison Bars -->
+                <div class="space-y-4 pt-2">
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-bold">
+                            <span class="text-primary"><i class="fas fa-sparkles text-accent"></i> Your Visionary & Ideation Energy</span>
+                            <span class="text-accent">94%</span>
+                        </div>
+                        <div class="h-2.5 w-full neuro-inset !rounded-full overflow-hidden">
+                            <div class="h-full bg-accent rounded-full" style="width: 94%"></div>
+                        </div>
+                    </div>
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between text-xs font-bold">
+                            <span class="text-primary"><i class="fas fa-arrows-to-dot text-accent-light"></i> Mentor's Systems & Execution Rigor</span>
+                            <span class="text-accent-light">{{ (mentor.name == "Satya Nadella" or mentor.name == "Indra Nooyi") and "96%" or "95%" }}</span>
+                        </div>
+                        <div class="h-2.5 w-full neuro-inset !rounded-full overflow-hidden">
+                            <div class="h-full bg-accent-light rounded-full" style="width: 95%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Simulator -->
+            <div class="neuro-card p-6 flex flex-col justify-between h-[520px]">
+                <!-- Chat Header -->
+                <div class="pb-4 border-b border-border flex items-center justify-between shrink-0">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-full flex items-center justify-center font-bold text-white text-xs shadow-inner" style="background-color: {{ mentor.color or '#0d9488' }}">
+                            {{ mentor.photo_initial or mentor.name[:2].upper() }}
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-bold text-primary">{{ mentor.name }}</h4>
+                            <span class="text-[9px] text-green-500 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                                <span class="inline-block w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span> Online &bull; Direct Advice Channel
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[9px] font-bold text-text-muted uppercase">Interactive Simulator</span>
+                    </div>
+                </div>
+
+                <!-- Messages Log -->
+                <div id="chat-log" class="flex-1 overflow-y-auto py-6 space-y-4 px-2 no-scrollbar">
+                    <!-- Welcome Message from Mentor -->
+                    <div class="flex items-start gap-2.5 max-w-[85%]">
+                        <div class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-white text-[10px] shrink-0 shadow" style="background-color: {{ mentor.color or '#0d9488' }}">
+                            {{ mentor.photo_initial or mentor.name[:2].upper() }}
+                        </div>
+                        <div class="neuro-inset p-3.5 rounded-2xl rounded-tl-none">
+                            <p class="text-xs text-primary leading-relaxed">
+                                Hello! I'm thrilled to connect with you. As your opposite-personality growth mentor ({{ mentor.personality_type }}), I want to challenge you to think differently and master the operational/strategic habits that might not come naturally. Let's build your career together. Ask me anything!
+                            </p>
+                            <span class="text-[8px] text-text-muted mt-1.5 block text-right">Just now</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div id="typing-indicator" class="hidden flex items-start gap-2.5 max-w-[80%] pb-2 px-2 shrink-0">
+                    <div class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-white text-[10px] shrink-0 shadow" style="background-color: {{ mentor.color or '#0d9488' }}">
+                        {{ mentor.photo_initial or mentor.name[:2].upper() }}
+                    </div>
+                    <div class="neuro-inset py-2.5 px-4 rounded-2xl rounded-tl-none flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 bg-accent rounded-full animate-bounce" style="animation-delay: 0s;"></span>
+                        <span class="w-1.5 h-1.5 bg-accent rounded-full animate-bounce" style="animation-delay: 0.15s;"></span>
+                        <span class="w-1.5 h-1.5 bg-accent rounded-full animate-bounce" style="animation-delay: 0.3s;"></span>
+                    </div>
+                </div>
+
+                <!-- Input Box -->
+                <form id="chat-form" class="pt-4 border-t border-border flex items-center gap-3 shrink-0">
+                    <input type="text" id="chat-input" placeholder="Type a message or ask a career question for {{ mentor.name.split()[0] }}..." 
+                           class="neuro-input flex-1 !py-3 !px-4 text-xs" required autocomplete="off">
+                    <button type="submit" class="btn-accent !p-3 rounded-full flex items-center justify-center shrink-0 w-11 h-11 hover:scale-105 transition-transform shadow-lg">
+                        <i class="fas fa-paper-plane text-xs"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Mentor-Assigned Actionable Weekly Tasks Checklist -->
+            <div class="neuro-card p-6 space-y-6">
+                <div class="flex justify-between items-center pb-3 border-b border-border">
+                    <h3 class="text-lg font-bold text-primary flex items-center gap-2">
+                        <i class="fas fa-list-check text-accent-light"></i> Mentor's Weekly Growth Assignments
+                    </h3>
+                    <span class="text-xs bg-accent-light/10 text-accent-light font-bold px-2 py-0.5 rounded-full">+250 XP</span>
+                </div>
+                
+                <div class="space-y-4">
+                    {% set tasks = {
+                        'Analytical': [
+                            'Formulate a data-driven hypothesis testing protocol for a project idea.',
+                            'Deep-dive and organize a massive structural JSON or database schema.',
+                            'Draft a robust error log deconstructing a past project bug.'
+                        ],
+                        'Visionary': [
+                            'Brainstorm a highly speculative 5-year disruptive technological forecast.',
+                            'Draft a one-page vision model proposal for an AI automation product.',
+                            'Record a 2-minute mock tech evangelist elevator pitch.'
+                        ],
+                        'Creative': [
+                            'Build a high-fidelity interactive visual system interface.',
+                            'Conduct a deep UI/UX audit pointing out 5 flaws of your favorite app.',
+                            'Create a visual storytelling mood board for your personal brand.'
+                        ],
+                        'Leader': [
+                            'Map out an organizational delegation outline for a hypothetical team.',
+                            'Write a brief guide on how you would resolve a major project bottleneck.',
+                            'Draft a set of OKRs (Objectives and Key Results) for this quarter.'
+                        ],
+                        'Empath': [
+                            'Perform an in-depth qualitative user empathy mapping exercise.',
+                            'Write a community onboarding roadmap for a developer product.',
+                            'Conduct a role-play customer onboarding call summary.'
+                        ],
+                        'Strategist': [
+                            'Perform a comprehensive SWOT analysis on your top 3 competitors.',
+                            'Build a detailed Excel model mapping a project\'s cash-flow forecast.',
+                            'Organize your calendar using strict lean optimization rules.'
+                        ]
+                    } %}
+
+                    {% set user_pers = 'Strategist' %}
+                    {% if mentor.personality_type == 'Visionary' %}{% set user_pers = 'Visionary' %}
+                    {% elif mentor.personality_type == 'Analytical' %}{% set user_pers = 'Analytical' %}
+                    {% elif mentor.personality_type == 'Creative' %}{% set user_pers = 'Creative' %}
+                    {% elif mentor.personality_type == 'Leader' %}{% set user_pers = 'Leader' %}
+                    {% elif mentor.personality_type == 'Empath' %}{% set user_pers = 'Empath' %}
+                    {% endif %}
+
+                    {% for task in tasks[user_pers] %}
+                    <div class="neuro-card p-4 flex items-center justify-between gap-4 border border-transparent hover:border-accent-light/30 transition-all hover:bg-accent-light/5 rounded-xl group">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="mentor-task-{{ loop.index }}" 
+                                   class="mentor-task-checkbox w-5.5 h-5.5 rounded neuro-inset cursor-pointer accent-accent-light transition-all"
+                                   onclick="handleTaskToggle(this)">
+                            <label for="mentor-task-{{ loop.index }}" class="text-xs text-secondary font-medium leading-relaxed cursor-pointer group-hover:text-primary transition-colors">
+                                {{ task }}
+                            </label>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Session Planner / Virtual Meeting Scheduler -->
+            <div class="neuro-card p-6 space-y-6">
+                <div class="pb-3 border-b border-border">
+                    <h3 class="text-lg font-bold text-primary flex items-center gap-2">
+                        <i class="fas fa-calendar-plus text-accent"></i> Book 1-on-1 Mentorship Session
+                    </h3>
+                    <p class="text-xs text-text-muted mt-1">Schedule a live video consultation with {{ mentor.name }}.</p>
+                </div>
+
+                <!-- Scheduling Form -->
+                <form id="scheduler-form" onsubmit="handleSchedule(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-text-muted uppercase tracking-wider block">Session Topic</label>
+                            <select id="schedule-topic" class="neuro-input w-full text-xs !py-3 !px-3" required>
+                                <option value="" disabled selected>Select a focus area...</option>
+                                <option value="Resume & Portfolio Deconstruction">Resume & Portfolio Deconstruction</option>
+                                <option value="Growth Mindset & Opposite Thinking Coaching">Growth Mindset & Opposite Thinking Coaching</option>
+                                <option value="Mock Technology Interview">Mock Technology Interview</option>
+                                <option value="Long-term Venture Roadmap Review">Long-term Venture Roadmap Review</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-text-muted uppercase tracking-wider block">Video Platform</label>
+                            <select id="schedule-platform" class="neuro-input w-full text-xs !py-3 !px-3" required>
+                                <option value="Google Meet">Google Meet (Integrated Video)</option>
+                                <option value="Zoom">Zoom Client</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-text-muted uppercase tracking-wider block">Date</label>
+                            <input type="date" id="schedule-date" class="neuro-input w-full text-xs !py-3 !px-3" required>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-[10px] font-black text-text-muted uppercase tracking-wider block">Time (IST)</label>
+                            <input type="time" id="schedule-time" class="neuro-input w-full text-xs !py-3 !px-3" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-accent w-full text-xs !py-3 font-bold transition-all hover:scale-[1.01]">
+                        Schedule Live Consultation
+                    </button>
+                </form>
+
+                <!-- Upcoming Scheduled Card -->
+                <div id="upcoming-session-card" class="hidden neuro-card p-6 border-2 border-green-500/30 bg-green-500/5 space-y-4 animate-slide-up relative">
+                    <div class="absolute top-4 right-4 flex items-center gap-1.5 text-green-500 text-[10px] font-black uppercase tracking-wider animate-pulse">
+                        <span class="w-2 h-2 bg-green-500 rounded-full"></span> Booked & Confirmed
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <span class="text-[9px] font-black text-accent uppercase tracking-widest">Upcoming Session</span>
+                        <h4 id="upcoming-topic" class="text-base font-extrabold text-primary">Resume Deconstruction</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-secondary font-medium">
+                            <div><i class="far fa-calendar mr-1.5 text-accent"></i> <span id="upcoming-datetime">May 25, 2026 at 4:00 PM</span></div>
+                            <div><i class="fas fa-video mr-1.5 text-accent-light"></i> Platform: <span id="upcoming-platform">Google Meet</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Countdown Timer -->
+                    <div class="bg-neuro-dark/40 p-4 rounded-xl flex items-center justify-between border border-border/30">
+                        <div class="text-[10px] font-black text-text-muted uppercase tracking-wider">Countdown</div>
+                        <div id="countdown-timer" class="text-sm font-black text-accent-light tracking-wider uppercase">Starting in: 02d 04h 10m</div>
+                    </div>
+
+                    <div class="flex gap-3">
+                        <a href="https://meet.google.com" target="_blank" class="btn-accent text-center block text-xs py-2.5 flex-1 font-bold">
+                            <i class="fas fa-external-link mr-1"></i> Join Call (Google Meet)
+                        </a>
+                        <button onclick="cancelSession()" class="neuro-btn text-xs py-2.5 font-bold hover:text-red-500 hover:border-red-500/20">
+                            Reschedule
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="py-20 text-center space-y-4 neuro-card max-w-lg mx-auto">
+        <div class="w-16 h-16 neuro-inset flex items-center justify-center mx-auto text-text-muted text-2xl">
+            <i class="fas fa-user-lock"></i>
+        </div>
+        <h3 class="text-lg font-bold text-primary">No Mentor Assigned Yet</h3>
+        <p class="text-text-secondary italic text-xs">Complete your first assessment to be matched with an opposite mentor.</p>
+        <a href="/assessment" class="btn-accent inline-block text-xs py-2 px-6">Start Assessment</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Confetti Canvas -->
+<canvas id="confetti-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-50"></canvas>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+{% if mentor %}
+<script>
+    const chatLog = document.getElementById('chat-log');
+    const chatForm = document.getElementById('chat-form');
+    const chatInput = document.getElementById('chat-input');
+    const typingIndicator = document.getElementById('typing-indicator');
+    
+    // Explicitly cast to a number to prevent string SQLAlchemy lookups failing
+    const mentorId = Number("{{ mentor.id }}");
+    const mentorInitials = "{{ mentor.photo_initial or mentor.name[:2].upper() }}";
+    const mentorColor = "{{ mentor.color or '#0d9488' }}";
+
+    const scrollToBottom = () => {
+        chatLog.scrollTop = chatLog.scrollHeight;
+    };
+
+    // Chat form submit
+    chatForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const msgText = chatInput.value.trim();
+        if (!msgText) return;
+
+        chatInput.value = '';
+
+        // Add user message to log
+        const userMsgHtml = `
+            <div class="flex items-start gap-2.5 max-w-[85%] ml-auto justify-end">
+                <div class="bg-accent text-white p-3.5 rounded-2xl rounded-tr-none shadow-md">
+                    <p class="text-xs leading-relaxed">${msgText}</p>
+                    <span class="text-[8px] text-white/70 mt-1 block text-right">Just now</span>
+                </div>
+            </div>
+        `;
+        chatLog.insertAdjacentHTML('beforeend', userMsgHtml);
+        scrollToBottom();
+
+        // Show typing indicator
+        typingIndicator.classList.remove('hidden');
+        scrollToBottom();
+
+        try {
+            const response = await fetch('/assessment/mentors/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: msgText, mentor_id: mentorId })
+            });
+
+            // Send mentor message signal for personality drift tracking
+            fetch('/assessment/signals/mentor-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: msgText })
+            }).catch(()=>{});
+
+            const data = await response.json();
+            
+            // Hide typing indicator after a realistic tiny delay
+            setTimeout(() => {
+                typingIndicator.classList.add('hidden');
+                
+                if (data.success && data.reply) {
+                    const mentorMsgHtml = `
+                        <div class="flex items-start gap-2.5 max-w-[85%]">
+                            <div class="w-7 h-7 rounded-full flex items-center justify-center font-bold text-white text-[10px] shrink-0 shadow" style="background-color: ${mentorColor}">
+                                ${mentorInitials}
+                            </div>
+                            <div class="neuro-inset p-3.5 rounded-2xl rounded-tl-none">
+                                <p class="text-xs text-primary leading-relaxed">${data.reply}</p>
+                                <span class="text-[8px] text-text-muted mt-1 block text-right">Just now</span>
+                            </div>
+                        </div>
+                    `;
+                    chatLog.insertAdjacentHTML('beforeend', mentorMsgHtml);
+                    scrollToBottom();
+                }
+            }, 700);
+
+        } catch (err) {
+            console.error("Chat error:", err);
+            typingIndicator.classList.add('hidden');
+        }
+    });
+
+    // Confetti Explosion helper
+    function triggerConfetti() {
+        confetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    }
+
+    // Handle weekly growth tasks checkbox
+    function handleTaskToggle(checkbox) {
+        if (checkbox.checked) {
+            triggerConfetti();
+            const parent = checkbox.closest('.neuro-card');
+            parent.classList.add('bg-green-500/5', 'border-green-500/20');
+        } else {
+            const parent = checkbox.closest('.neuro-card');
+            parent.classList.remove('bg-green-500/5', 'border-green-500/20');
+        }
+    }
+
+    // Countdown Timer logic
+    let countdownInterval = null;
+
+    function startCountdown(targetDateStr) {
+        if (countdownInterval) clearInterval(countdownInterval);
+        
+        const countdownEl = document.getElementById('countdown-timer');
+        const targetTime = new Date(targetDateStr).getTime();
+
+        const updateTimer = () => {
+            const now = new Date().getTime();
+            const diff = targetTime - now;
+
+            if (diff <= 0) {
+                countdownEl.innerText = "Session Active Now!";
+                clearInterval(countdownInterval);
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            let timerText = "Starting in: ";
+            if (days > 0) timerText += `${days}d `;
+            timerText += `${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+            
+            countdownEl.innerText = timerText;
+        };
+
+        updateTimer();
+        countdownInterval = setInterval(updateTimer, 1000);
+    }
+
+    // Schedule new meeting
+    function handleSchedule(e) {
+        e.preventDefault();
+        
+        const topic = document.getElementById('schedule-topic').value;
+        const platform = document.getElementById('schedule-platform').value;
+        const dateVal = document.getElementById('schedule-date').value;
+        const timeVal = document.getElementById('schedule-time').value;
+
+        if (!topic || !platform || !dateVal || !timeVal) return;
+
+        // Combine date and time
+        const targetDateTimeStr = `${dateVal}T${timeVal}`;
+        const targetDateFormatted = new Date(targetDateTimeStr).toLocaleString('en-US', {
+            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+            hour: '2-digit', minute: '2-digit'
+        });
+
+        // Set Scheduled details
+        document.getElementById('upcoming-topic').innerText = topic;
+        document.getElementById('upcoming-platform').innerText = platform;
+        document.getElementById('upcoming-datetime').innerText = targetDateFormatted;
+
+        // Save to LocalStorage
+        const sessionObj = { topic, platform, targetDateTimeStr, formatted: targetDateFormatted };
+        localStorage.setItem('scheduled_session_DNA_{{ result.id }}', JSON.stringify(sessionObj));
+
+        // Switch Forms
+        document.getElementById('scheduler-form').classList.add('hidden');
+        document.getElementById('upcoming-session-card').classList.remove('hidden');
+
+        // Trigger countdown and celebration
+        startCountdown(targetDateTimeStr);
+        triggerConfetti();
+    }
+
+    // Cancel / Reschedule session
+    function cancelSession() {
+        if (countdownInterval) clearInterval(countdownInterval);
+        localStorage.removeItem('scheduled_session_DNA_{{ result.id }}');
+        
+        document.getElementById('upcoming-session-card').classList.add('hidden');
+        document.getElementById('scheduler-form').classList.remove('hidden');
+    }
+
+    // Initialize scheduled session from localStorage on load
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedSession = localStorage.getItem('scheduled_session_DNA_{{ result.id }}');
+        if (savedSession) {
+            const session = JSON.parse(savedSession);
+            
+            document.getElementById('upcoming-topic').innerText = session.topic;
+            document.getElementById('upcoming-platform').innerText = session.platform;
+            document.getElementById('upcoming-datetime').innerText = session.formatted;
+
+            document.getElementById('scheduler-form').classList.add('hidden');
+            document.getElementById('upcoming-session-card').classList.remove('hidden');
+
+            startCountdown(session.targetDateTimeStr);
+        }
+        
+        // Set default minimum date to today
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('schedule-date').setAttribute('min', todayStr);
+    });
+</script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}My Personality Journey{% endblock %}
+
+{% block content %}
+<div class="space-y-6">
+    <div class="flex items-center justify-between">
+        <h1 class="text-3xl font-extrabold">My Personality Journey</h1>
+        <a href="/dashboard" class="neuro-btn">Back</a>
+    </div>
+
+    <div class="neuro-card p-6">
+        <p class="text-sm text-text-muted">A timeline of your personality profile changes. We never delete old records.</p>
+    </div>
+
+    <div class="space-y-4">
+        {% for record in current_user.personality_history.order_by('start_date').all() %}
+        <div class="neuro-card p-4 flex items-start gap-4">
+            <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold">{{ loop.index }}</div>
+            <div>
+                <div class="flex items-center gap-4">
+                    <h3 class="font-bold">{{ record.personality_type }}</h3>
+                    <span class="text-xs text-text-muted">{{ record.start_date.strftime('%Y-%m-%d') }} — {{ record.end_date.strftime('%Y-%m-%d') if record.end_date else 'Present' }}</span>
+                </div>
+                <p class="text-sm text-secondary mt-2">Reason: {{ record.reason }}</p>
+            </div>
+        </div>
+        {% else %}
+        <div class="neuro-card p-6 text-center text-text-muted">No personality history found yet.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

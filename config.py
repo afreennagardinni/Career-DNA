@@ -22,8 +22,7 @@ class Config:
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'dev-secret-key-change-in-production'
     
     # Database configuration
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(BASE_DIR, 'career_dna.db')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///career_dna.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     
     # Session configuration
@@ -42,6 +41,9 @@ class Config:
     
     # Pagination
     ITEMS_PER_PAGE = 20
+    # Personality drift scheduler settings
+    ENABLE_DRIFT_SCHEDULER = False
+    DRIFT_CHECK_INTERVAL_SECONDS = 7 * 24 * 3600
 
 
 class DevelopmentConfig(Config):

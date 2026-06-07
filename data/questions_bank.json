@@ -1,0 +1,81 @@
+[
+  {"id": "R1", "text": "I enjoy repairing electrical appliances or hardware.", "type": "scale_5", "riasec_map": {"high":"R"}, "category": "RIASEC"},
+  {"id": "R2", "text": "I like working with my hands to build furniture or models.", "type": "scale_5", "riasec_map": {"high":"R"}, "category": "RIASEC"},
+  {"id": "R3", "text": "I prefer operating heavy machinery or specialized tools.", "type": "scale_5", "riasec_map": {"high":"R"}, "category": "RIASEC"},
+  {"id": "R4", "text": "I enjoy being outdoors and doing physical work.", "type": "scale_5", "riasec_map": {"high":"R"}, "category": "RIASEC"},
+  {"id": "R5", "text": "I like fixing mechanical things like engines or bicycles.", "type": "scale_5", "riasec_map": {"high":"R"}, "category": "RIASEC"},
+  {"id": "I1", "text": "I enjoy solving complex math or logic puzzles.", "type": "scale_5", "riasec_map": {"high":"I"}, "category": "RIASEC"},
+  {"id": "I2", "text": "I like researching how things work at a molecular or atomic level.", "type": "scale_5", "riasec_map": {"high":"I"}, "category": "RIASEC"},
+  {"id": "I3", "text": "I enjoy analyzing data to find hidden patterns.", "type": "scale_5", "riasec_map": {"high":"I"}, "category": "RIASEC"},
+  {"id": "I4", "text": "I prefer reading scientific journals over popular magazines.", "type": "scale_5", "riasec_map": {"high":"I"}, "category": "RIASEC"},
+  {"id": "I5", "text": "I enjoy exploring theories about the origin of the universe.", "type": "scale_5", "riasec_map": {"high":"I"}, "category": "RIASEC"},
+  {"id": "A1", "text": "I love designing logos, websites, or visual art.", "type": "scale_5", "riasec_map": {"high":"A"}, "category": "RIASEC"},
+  {"id": "A2", "text": "I enjoy writing creative stories, poems, or scripts.", "type": "scale_5", "riasec_map": {"high":"A"}, "category": "RIASEC"},
+  {"id": "A3", "text": "I like expressing myself through music or performing arts.", "type": "scale_5", "riasec_map": {"high":"A"}, "category": "RIASEC"},
+  {"id": "A4", "text": "I enjoy visiting art galleries and discussing design.", "type": "scale_5", "riasec_map": {"high":"A"}, "category": "RIASEC"},
+  {"id": "A5", "text": "I love creating something new from scratch without instructions.", "type": "scale_5", "riasec_map": {"high":"A"}, "category": "RIASEC"},
+  {"id": "S1", "text": "I enjoy teaching or training others in new skills.", "type": "scale_5", "riasec_map": {"high":"S"}, "category": "RIASEC"},
+  {"id": "S2", "text": "I like helping people solve their personal problems.", "type": "scale_5", "riasec_map": {"high":"S"}, "category": "RIASEC"},
+  {"id": "S3", "text": "I enjoy working in a team toward a common social goal.", "type": "scale_5", "riasec_map": {"high":"S"}, "category": "RIASEC"},
+  {"id": "S4", "text": "I prefer roles where I interact with many people daily.", "type": "scale_5", "riasec_map": {"high":"S"}, "category": "RIASEC"},
+  {"id": "S5", "text": "I feel fulfilled when I contribute to my community's well-being.", "type": "scale_5", "riasec_map": {"high":"S"}, "category": "RIASEC"},
+  {"id": "E1", "text": "I enjoy pitching new business ideas to potential investors.", "type": "scale_5", "riasec_map": {"high":"E"}, "category": "RIASEC"},
+  {"id": "E2", "text": "I like managing a team and making big decisions.", "type": "scale_5", "riasec_map": {"high":"E"}, "category": "RIASEC"},
+  {"id": "E3", "text": "I enjoy negotiating deals and persuading others.", "type": "scale_5", "riasec_map": {"high":"E"}, "category": "RIASEC"},
+  {"id": "E4", "text": "I am motivated by competition and financial success.", "type": "scale_5", "riasec_map": {"high":"E"}, "category": "RIASEC"},
+  {"id": "E5", "text": "I enjoy starting new projects and leading them to profit.", "type": "scale_5", "riasec_map": {"high":"E"}, "category": "RIASEC"},
+  {"id": "C1", "text": "I enjoy organizing data and keeping meticulous records.", "type": "scale_5", "riasec_map": {"high":"C"}, "category": "RIASEC"},
+  {"id": "C2", "text": "I like following a strict, predictable daily routine.", "type": "scale_5", "riasec_map": {"high":"C"}, "category": "RIASEC"},
+  {"id": "C3", "text": "I enjoy auditing financial statements for accuracy.", "type": "scale_5", "riasec_map": {"high":"C"}, "category": "RIASEC"},
+  {"id": "C4", "text": "I prefer structured environments with clear rules.", "type": "scale_5", "riasec_map": {"high":"C"}, "category": "RIASEC"},
+  {"id": "C5", "text": "I enjoy working with numbers and keeping things in order.", "type": "scale_5", "riasec_map": {"high":"C"}, "category": "RIASEC"},
+  
+  {"id": "B1", "text": "When approaching a new idea, you...", "type": "card_select", "category": "Big Five", "options": [
+    {"id":"a","emoji":"🔭","text":"Explore the deep abstract concepts","big5":{"O":2}},
+    {"id":"b","emoji":"📜","text":"Stick to what is traditionally proven","big5":{"O":-1}},
+    {"id":"c","emoji":"🎨","text":"Look for creative ways to apply it","big5":{"O":1}},
+    {"id":"d","emoji":"🛑","text":"Skepticism until there is concrete data","big5":{"C":1}}
+  ]},
+  {"id": "B2", "text": "In a social gathering, you usually...", "type": "card_select", "category": "Big Five", "options": [
+    {"id":"a","emoji":"🎤","text":"Become the center of attention","big5":{"E":2}},
+    {"id":"b","emoji":"🪑","text":"Stay in the background observing","big5":{"E":-1}},
+    {"id":"c","emoji":"🤝","text":"Start conversations with new people","big5":{"E":1}},
+    {"id":"d","emoji":"📱","text":"Stay with a few friends you know","big5":{"A":1}}
+  ]},
+  {"id": "B3", "text": "How do you handle a messy workspace?", "type": "card_select", "category": "Big Five", "options": [
+    {"id":"a","emoji":"🧹","text":"Organize it immediately","big5":{"C":2}},
+    {"id":"b","emoji":"📁","text":"Have a 'organized chaos' system","big5":{"C":-1}},
+    {"id":"c","emoji":"🤷","text":"Don't really notice or mind it","big5":{"C":-2}},
+    {"id":"d","emoji":"📝","text":"Schedule a time to clean it later","big5":{"C":1}}
+  ]},
+  {"id": "B4", "text": "When someone is upset, your reaction is...", "type": "card_select", "category": "Big Five", "options": [
+    {"id":"a","emoji":"🫂","text":"Feel their pain and offer support","big5":{"A":2}},
+    {"id":"b","emoji":"🧐","text":"Try to solve their problem logically","big5":{"C":1}},
+    {"id":"c","emoji":"🤐","text":"Give them space and say nothing","big5":{"A":-1}},
+    {"id":"d","emoji":"💬","text":"Listen without getting too involved","big5":{"A":1}}
+  ]},
+  {"id": "B5", "text": "Under high pressure deadlines, you...", "type": "card_select", "category": "Big Five", "options": [
+    {"id":"a","emoji":"😫","text":"Feel overwhelmed and anxious","big5":{"N":2}},
+    {"id":"b","emoji":"🧊","text":"Stay completely calm and cool","big5":{"N":-2}},
+    {"id":"c","emoji":"☕","text":"Power through with focus","big5":{"C":1}},
+    {"id":"d","emoji":"🗣️","text":"Vent to others to release stress","big5":{"E":1}}
+  ]},
+  {"id": "B6", "text": "Your philosophy on life is...", "type": "card_select", "category": "Big Five", "options": [
+    {"id":"a","emoji":"🌈","text":"Life is a beautiful adventure","big5":{"O":2}},
+    {"id":"b","emoji":"🏗️","text":"Life is about hard work and duty","big5":{"C":2}},
+    {"id":"c","emoji":"🤝","text":"Life is about relationships","big5":{"A":2}},
+    {"id":"d","emoji":"♟️","text":"Life is a series of strategies","big5":{"C":1,"E":1}}
+  ]},
+  {"id": "B7", "text": "In a team project, you prefer to...", "type": "card_select", "category": "Big Five", "options": [
+    {"id":"a","emoji":"📣","text":"Lead and direct the others","big5":{"E":2}},
+    {"id":"b","emoji":"🛠️","text":"Do the specialized task alone","big5":{"E":-1}},
+    {"id":"c","emoji":"🙏","text":"Ensure everyone is getting along","big5":{"A":2}},
+    {"id":"d","emoji":"📅","text":"Keep track of the timeline","big5":{"C":2}}
+  ]},
+  {"id": "B8", "text": "When you make a mistake, you...", "type": "card_select", "category": "Big Five", "options": [
+    {"id":"a","emoji":"🔄","text":"Analyze why it happened to improve","big5":{"O":1,"C":1}},
+    {"id":"b","emoji":"😞","text":"Feel bad about it for a long time","big5":{"N":2}},
+    {"id":"c","emoji":"🤷","text":"Shrug it off and move on","big5":{"N":-2}},
+    {"id":"d","emoji":"🛑","text":"Admit it and apologize immediately","big5":{"A":2}}
+  ]}
+]

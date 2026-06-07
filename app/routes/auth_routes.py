@@ -22,7 +22,7 @@ def register_page():
         Rendered HTML template
     """
     print("DEBUG: GET /auth/register route hit")
-    return render_template('register_simple.html')
+    return render_template('register.html')
 
 
 @auth.route('/register', methods=['POST'])
@@ -63,7 +63,7 @@ def register():
                 'message': error_msg
             }), 400
         else:
-            return render_template('register_new.html', error=error_msg)
+            return render_template('register.html', error=error_msg)
     
     # Map form field names to expected names
     email = data.get('email') or data.get('email', '')
@@ -82,7 +82,7 @@ def register():
                 'message': error_msg
             }), 400
         else:
-            return render_template('register_new.html', error=error_msg)
+            return render_template('register.html', error=error_msg)
     
     # Validate passwords match
     confirm_password = data.get('confirm_password') or data.get('confirm-password', '')
@@ -96,7 +96,7 @@ def register():
                 'message': error_msg
             }), 400
         else:
-            return render_template('register_new.html', error=error_msg)
+            return render_template('register.html', error=error_msg)
     
     # Check if user already exists
     if User.query.filter_by(email=email).first():
@@ -109,7 +109,7 @@ def register():
                 'message': error_msg
             }), 409
         else:
-            return render_template('register_new.html', error=error_msg)
+            return render_template('register.html', error=error_msg)
     
     # Create username from email
     username = data['email'].split('@')[0]
@@ -152,7 +152,7 @@ def register():
             }), 201
         else:
             # For form submission, redirect to dashboard
-            return render_template('register_new.html', success=success_msg)
+            return render_template('register.html', success=success_msg)
     
     except Exception as e:
         print(f"DEBUG: Registration failed - {str(e)}")
@@ -166,7 +166,7 @@ def register():
                 'message': error_msg
             }), 500
         else:
-            return render_template('register_new.html', error=error_msg)
+            return render_template('register.html', error=error_msg)
 
 
 @auth.route('/login', methods=['GET'])
@@ -178,7 +178,7 @@ def login_page():
         Rendered HTML template
     """
     print("DEBUG: GET /auth/login route hit")
-    return render_template('login_new.html')
+    return render_template('login.html')
 
 
 @auth.route('/login', methods=['POST'])
@@ -216,7 +216,7 @@ def login():
                 'message': error_msg
             }), 400
         else:
-            return render_template('login_new.html', error=error_msg)
+            return render_template('login.html', error=error_msg)
     
     # Find user by email
     user = User.query.filter_by(email=data['email']).first()
@@ -232,7 +232,7 @@ def login():
                 'message': error_msg
             }), 401
         else:
-            return render_template('login_new.html', error=error_msg)
+            return render_template('login.html', error=error_msg)
     
     # Check if user is active
     if not user.is_active:
@@ -245,7 +245,7 @@ def login():
                 'message': error_msg
             }), 403
         else:
-            return render_template('login_new.html', error=error_msg)
+            return render_template('login.html', error=error_msg)
     
     # Log in user
     login_user(user)
@@ -260,7 +260,7 @@ def login():
         }), 200
     else:
         # For form submission, redirect to dashboard
-        return render_template('login_new.html', success=success_msg)
+        return render_template('login.html', success=success_msg)
 
 
 @auth.route('/logout', methods=['POST'])
@@ -281,7 +281,7 @@ def logout():
         }), 200
     else:
         # For form submission, redirect to login
-        return render_template('login_new.html', success='Logout successful')
+        return render_template('login.html', success='Logout successful')
 
 
 @auth.route('/api/me', methods=['GET'])

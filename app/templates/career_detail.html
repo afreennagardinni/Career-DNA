@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}{{ career.title }} - Career DNA{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-10 space-y-10 animate-fade-in">
+    <!-- Career Hero Card -->
+    <div class="neuro-card p-10 relative border-t-4 border-accent">
+        <div class="flex flex-col md:flex-row justify-between items-start gap-6">
+            <div class="space-y-4">
+                <div class="neuro-inset inline-flex px-4 py-1.5 rounded-full items-center gap-2">
+                    <i class="fas fa-briefcase text-accent"></i>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-accent-light">Career Profile</span>
+                </div>
+                <h1 class="text-4xl font-bold text-text-primary">{{ career.title }}</h1>
+                <p class="text-lg text-text-secondary leading-relaxed max-w-2xl">
+                    {{ career.description }}
+                </p>
+            </div>
+            
+            <div class="flex flex-col gap-4 min-w-[180px]">
+                <div class="neuro-inset p-4 text-center">
+                    <div class="text-[10px] uppercase font-bold text-text-muted mb-1">Match Score</div>
+                    <div class="text-3xl font-bold text-accent">{{ career.match_score if career.match_score else '94%' }}</div>
+                </div>
+                <div class="neuro-inset p-4 text-center">
+                    <div class="text-[10px] uppercase font-bold text-text-muted mb-1">Avg Salary</div>
+                    <div class="text-xl font-bold text-text-primary">{{ career.salary_range if career.salary_range else career.average_salary }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-10">
+        <!-- Key Responsibilities -->
+        <div class="neuro-card p-8 space-y-6">
+            <h3 class="text-xl font-bold text-text-primary flex items-center gap-3">
+                <i class="fas fa-tasks text-accent"></i>
+                Key Responsibilities
+            </h3>
+            <ul class="space-y-4">
+                {% if career.responsibilities %}
+                    {% for item in career.responsibilities %}
+                    <li class="flex items-start gap-3">
+                        <i class="fas fa-check-circle text-accent-light mt-1"></i>
+                        <span class="text-text-secondary text-sm">{{ item }}</span>
+                    </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="text-text-muted italic">Detailed responsibilities pending AI analysis.</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Required Skills -->
+        <div class="neuro-card p-8 space-y-6">
+            <h3 class="text-xl font-bold text-text-primary flex items-center gap-3">
+                <i class="fas fa-tools text-accent"></i>
+                Required Skills
+            </h3>
+            <div class="flex flex-wrap gap-3">
+                {% if career.required_skills %}
+                    {% for skill in career.required_skills %}
+                    <span class="neuro-inset px-4 py-2 text-xs font-bold text-text-secondary rounded-lg">
+                        {{ skill }}
+                    </span>
+                    {% endfor %}
+                {% else %}
+                    <span class="text-text-muted italic">Skill list pending.</span>
+                {% endif %}
+            </div>
+
+            <div class="pt-6 space-y-4 border-t border-border">
+                <h4 class="text-xs font-bold uppercase tracking-widest text-text-muted">Education Path</h4>
+                <p class="text-sm text-text-secondary">{{ career.education if career.education else 'Bachelor\'s Degree in related field' }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Roadmap Mini -->
+    <div class="neuro-card p-8 bg-gradient-to-br from-bg-card to-accent/5">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="space-y-2">
+                <h3 class="text-xl font-bold text-text-primary">Ready to pursue this path?</h3>
+                <p class="text-text-secondary text-sm">Our AI can generate a personalized 6-month roadmap for this specific career.</p>
+            </div>
+            <button id="generate-roadmap-btn" class="btn-accent px-8 py-3 whitespace-nowrap">
+                Generate Detailed Roadmap
+            </button>
+        </div>
+    </div>
+
+    <!-- Career Roadmap Section (Initially Hidden) -->
+    <div id="roadmap-section" class="hidden space-y-10 animate-slide-up">
+        <h2 class="text-3xl font-bold text-center text-text-primary">6-Month Strategic Roadmap</h2>
+        
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- Phase 1 -->
+            <div class="neuro-card p-8 space-y-6 border-l-4 border-accent">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-accent">Months 1-2</span>
+                    <i class="fas fa-seedling text-accent-light"></i>
+                </div>
+                <h3 class="text-lg font-bold text-text-primary">Foundation & Core Skills</h3>
+                <ul class="space-y-3 text-sm text-text-secondary">
+                    <li class="flex gap-2"><i class="fas fa-circle text-[6px] mt-2 text-accent"></i> Master {{ career.required_skills[0] if career.required_skills else 'Primary Skill' }}</li>
+                    <li class="flex gap-2"><i class="fas fa-circle text-[6px] mt-2 text-accent"></i> Complete industry certification</li>
+                    <li class="flex gap-2"><i class="fas fa-circle text-[6px] mt-2 text-accent"></i> Build 2 foundational projects</li>
+                </ul>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="neuro-card p-8 space-y-6 border-l-4 border-accent">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-accent">Months 3-4</span>
+                    <i class="fas fa-rocket text-accent-light"></i>
+                </div>
+                <h3 class="text-lg font-bold text-text-primary">Advanced Specialization</h3>
+                <ul class="space-y-3 text-sm text-text-secondary">
+                    <li class="flex gap-2"><i class="fas fa-circle text-[6px] mt-2 text-accent"></i> Deep dive into {{ career.required_skills[1] if (career.required_skills and career.required_skills|length > 1) else 'Advanced Tools' }}</li>
+                    <li class="flex gap-2"><i class="fas fa-circle text-[6px] mt-2 text-accent"></i> Networking with 5 senior mentors</li>
+                    <li class="flex gap-2"><i class="fas fa-circle text-[6px] mt-2 text-accent"></i> Contribute to open source/collaboration</li>
+                </ul>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="neuro-card p-8 space-y-6 border-l-4 border-accent">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-accent">Months 5-6</span>
+                    <i class="fas fa-trophy text-accent-light"></i>
+                </div>
+                <h3 class="text-lg font-bold text-text-primary">Launch & Optimization</h3>
+                <ul class="space-y-3 text-sm text-text-secondary">
+                    <li class="flex gap-2"><i class="fas fa-circle text-[6px] mt-2 text-accent"></i> Portfolio optimization</li>
+                    <li class="flex gap-2"><i class="fas fa-circle text-[6px] mt-2 text-accent"></i> Interview preparation & mock trials</li>
+                    <li class="flex gap-2"><i class="fas fa-circle text-[6px] mt-2 text-accent"></i> Strategic job applications</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center pt-10">
+        <a href="/dashboard" class="neuro-btn px-8">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading-overlay" class="hidden fixed inset-0 bg-bg/80 backdrop-blur-sm z-[100] flex items-center justify-center">
+    <div class="neuro-card p-10 text-center space-y-4">
+        <div class="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin mx-auto"></div>
+        <p class="text-text-primary font-bold">AI is generating your custom roadmap...</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('generate-roadmap-btn').addEventListener('click', async function() {
+    const btn = this;
+    const overlay = document.getElementById('loading-overlay');
+    const roadmap = document.getElementById('roadmap-section');
+    
+    // Show loading
+    overlay.classList.remove('hidden');
+    btn.disabled = true;
+    
+    // Simulate AI generation
+    await new Promise(r => setTimeout(r, 2000));
+    
+    // Hide loading and reveal roadmap
+    overlay.classList.add('hidden');
+    roadmap.classList.remove('hidden');
+    
+    // Smooth scroll to roadmap
+    roadmap.scrollIntoView({ behavior: 'smooth' });
+    
+    // Change button text
+    btn.textContent = 'Roadmap Generated';
+    btn.classList.add('opacity-50');
+});
+</script>
+{% endblock %}

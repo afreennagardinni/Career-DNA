@@ -1,0 +1,343 @@
+{% extends "base.html" %}
+
+{% block title %}Skill Development Plan - Career DNA{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto space-y-10 animate-fade-in pb-20">
+    <!-- Header -->
+    <div class="text-center space-y-2">
+        <h1 class="text-4xl font-extrabold gradient-text">📚 Personalised Skill Roadmap</h1>
+        <p class="text-secondary text-lg">Curated checklist to master new growth vectors as a <strong>{{ plan.personality_type }}</strong></p>
+        
+        <!-- Results Tabs -->
+        <div class="flex justify-center gap-2 mt-8 flex-wrap">
+            <a href="/results/{{ result.id }}" class="neuro-btn !rounded-full px-6 py-2 text-sm">🧬 My DNA</a>
+            <a href="/assessment/videos/{{ result.id }}" class="neuro-btn !rounded-full px-6 py-2 text-sm">🎥 Videos</a>
+            <a href="/assessment/mentors/{{ result.id }}" class="neuro-btn !rounded-full px-6 py-2 text-sm">🧑💼 Mentors</a>
+            <a href="/assessment/skill-plan/{{ result.id }}" class="btn-accent !rounded-full px-6 py-2 text-sm">📚 Skill Plan</a>
+            <a href="/assessment/trends/{{ result.id }}" class="neuro-btn !rounded-full px-6 py-2 text-sm">📈 Trends</a>
+        </div>
+    </div>
+
+    <!-- Gamification Dashboard -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Progress Bar -->
+        <div class="neuro-card p-6 md:col-span-2 flex flex-col justify-between space-y-4">
+            <div class="flex justify-between items-center">
+                <h4 class="font-bold text-primary flex items-center gap-2">
+                    <i class="fas fa-chart-line text-accent"></i> Roadmap Completion Progress
+                </h4>
+                <span id="plan-xp-badge" class="text-xs bg-accent/15 text-accent font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">0 XP Earned</span>
+            </div>
+            <div class="space-y-2">
+                <div class="flex justify-between text-xs font-bold">
+                    <span class="text-text-secondary">Skills Mastered</span>
+                    <span id="progress-percentage-label" class="text-accent">0% Completed</span>
+                </div>
+                <div class="h-3.5 w-full neuro-inset !rounded-full overflow-hidden">
+                    <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all duration-700" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Badges Card -->
+        <div class="neuro-card p-6 flex flex-col justify-between items-center text-center space-y-3">
+            <h4 class="text-[10px] font-black text-text-muted uppercase tracking-widest">Active Rank Badge</h4>
+            <div class="w-16 h-16 rounded-full neuro-inset flex items-center justify-center text-accent-light text-2xl shadow-inner" id="rank-badge-icon">
+                <i class="fas fa-seedling"></i>
+            </div>
+            <div>
+                <h3 class="font-extrabold text-primary" id="rank-badge-title">Novice Builder</h3>
+                <p class="text-[10px] text-text-muted mt-0.5" id="rank-badge-subtitle">Check off skills to rank up!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Core Skills Container -->
+    <div class="neuro-card p-6 sm:p-10 space-y-8">
+        <div class="flex items-center justify-between border-b border-border pb-4">
+            <h3 class="text-xl font-bold flex items-center gap-3 text-primary">
+                <i class="fas fa-tasks text-accent"></i> Core Skills Checklist
+            </h3>
+            <span class="text-xs text-text-muted">Expand each skill to complete actionable sub-tasks and unlock milestones.</span>
+        </div>
+
+        <div class="space-y-6">
+            {% for skill in plan.skills %}
+            <div id="skill-row-{{ loop.index }}" class="neuro-card p-6 flex flex-col gap-5 hover:border-accent/30 border border-transparent transition-all group">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="flex items-start gap-4">
+                        <!-- Checkbox container -->
+                        <div class="mt-1 shrink-0">
+                            <input type="checkbox" id="skill-check-{{ loop.index }}" 
+                                   data-skill-name="{{ skill.name }}" 
+                                   class="skill-checkbox w-6 h-6 rounded neuro-inset cursor-pointer accent-accent transition-all"
+                                   {% if skill.completed %}checked{% endif %}>
+                        </div>
+                        
+                        <div class="space-y-1">
+                            <span class="text-[9px] font-bold text-accent uppercase tracking-widest">Skill #{{ skill.order or loop.index }}</span>
+                            <h4 class="text-lg font-bold text-primary flex items-center gap-2.5">
+                                {{ skill.name }}
+                                <span class="skill-status-badge text-[9px] px-2.5 py-0.5 rounded-full font-black uppercase tracking-wider hidden" id="badge-completed-{{ loop.index }}">
+                                    Completed
+                                </span>
+                            </h4>
+                            <p class="text-xs text-text-muted mt-1 leading-relaxed">
+                                <span class="font-bold text-text-secondary">Resource Recommendation:</span> 
+                                <span class="text-accent hover:underline cursor-pointer"><i class="fas fa-external-link-alt mr-1"></i> {{ skill.resource }}</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Milestone Badge -->
+                    <div class="w-full md:w-auto shrink-0 bg-accent/5 p-4 rounded-xl border border-accent/15 md:max-w-xs">
+                        <span class="text-[9px] font-black text-accent uppercase tracking-widest mb-1 block">Milestone Target</span>
+                        <p class="text-xs text-secondary font-medium leading-relaxed">{{ skill.milestone }}</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Sub-tasks and Notes (Collapsible) -->
+                <div class="border-t border-border/30 pt-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Actionable Checklist -->
+                    <div class="space-y-3">
+                        <h5 class="text-[10px] font-black text-text-muted uppercase tracking-widest">Actionable Step-by-Step Sub-tasks</h5>
+                        <div class="space-y-2">
+                            <!-- Custom seed based subtasks -->
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="subtask-{{ loop.index }}-1" class="subtask-checkbox w-4.5 h-4.5 rounded cursor-pointer accent-accent-light" onclick="toggleSubtask({{ loop.index }})">
+                                <label for="subtask-{{ loop.index }}-1" class="text-xs text-secondary cursor-pointer hover:text-primary">Watch introductory tutorials & read core resource (30 mins)</label>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="subtask-{{ loop.index }}-2" class="subtask-checkbox w-4.5 h-4.5 rounded cursor-pointer accent-accent-light" onclick="toggleSubtask({{ loop.index }})">
+                                <label for="subtask-{{ loop.index }}-2" class="text-xs text-secondary cursor-pointer hover:text-primary">Complete a small practice exercise or run simulation (45 mins)</label>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <input type="checkbox" id="subtask-{{ loop.index }}-3" class="subtask-checkbox w-4.5 h-4.5 rounded cursor-pointer accent-accent-light" onclick="toggleSubtask({{ loop.index }})">
+                                <label for="subtask-{{ loop.index }}-3" class="text-xs text-secondary cursor-pointer hover:text-primary">Build and verify final milestone target project (2 hours)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reflection / Notes widget -->
+                    <div class="space-y-2">
+                        <h5 class="text-[10px] font-black text-text-muted uppercase tracking-widest flex items-center justify-between">
+                            <span>Reflection Notes Log</span>
+                            <span class="text-[8px] text-green-500 hidden font-bold" id="notes-status-{{ loop.index }}"><i class="fas fa-check"></i> Saved Auto</span>
+                        </h5>
+                        <textarea id="reflection-{{ loop.index }}" 
+                                  placeholder="Document your milestones, ideas, and links to your practice work here. Saves automatically..."
+                                  oninput="saveNotes({{ loop.index }})"
+                                  class="neuro-input w-full text-xs !p-3 h-24 resize-none no-scrollbar font-medium leading-relaxed"></textarea>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Confetti Canvas -->
+<canvas id="confetti-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-50"></canvas>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    // State maps for subtasks and notes
+    const localSubtasksKey = 'subtasks_DNA_{{ result.id }}';
+    const localNotesKey = 'notes_DNA_{{ result.id }}';
+
+    const subtaskState = JSON.parse(localStorage.getItem(localSubtasksKey) || '{}');
+    const notesState = JSON.parse(localStorage.getItem(localNotesKey) || '{}');
+
+    // Initialize UI
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.skill-checkbox').forEach((checkbox, i) => {
+            const index = i + 1;
+            
+            // Restore subtask checks
+            for (let sub = 1; sub <= 3; sub++) {
+                const subEl = document.getElementById(`subtask-${index}-${sub}`);
+                if (subEl && subtaskState[`${index}_${sub}`]) {
+                    subEl.checked = true;
+                }
+            }
+
+            // Restore reflection notes
+            const noteEl = document.getElementById(`reflection-${index}`);
+            if (noteEl && notesState[index]) {
+                noteEl.value = notesState[index];
+            }
+
+            updateRowUI(checkbox, index);
+        });
+
+        updateProgress();
+    });
+
+    // Update individual skill row appearance
+    function updateRowUI(checkbox, index) {
+        const row = document.getElementById(`skill-row-${index}`);
+        const badge = document.getElementById(`badge-completed-${index}`);
+        
+        if (!row) return;
+
+        if (checkbox.checked) {
+            row.classList.add('bg-accent/5', 'border-accent/25');
+            badge.classList.remove('hidden');
+            badge.classList.add('bg-green-500/10', 'text-green-500');
+        } else {
+            row.classList.remove('bg-accent/5', 'border-accent/25');
+            badge.classList.add('hidden');
+            badge.classList.remove('bg-green-500/10', 'text-green-500');
+        }
+    }
+
+    // Handle overall progress bar and gamified ranking
+    function updateProgress() {
+        const checkboxes = document.querySelectorAll('.skill-checkbox');
+        const total = checkboxes.length;
+        if (total === 0) return;
+
+        let completed = 0;
+        checkboxes.forEach(c => {
+            if (c.checked) completed++;
+        });
+
+        const percentage = Math.round((completed / total) * 100);
+        
+        // Update elements
+        document.getElementById('progress-bar-fill').style.width = `${percentage}%`;
+        document.getElementById('progress-percentage-label').innerText = `${percentage}% Completed (${completed}/${total})`;
+
+        // XP Math: Each skill gives 500 XP
+        const xpEarned = completed * 500;
+        document.getElementById('plan-xp-badge').innerText = `${xpEarned} XP Earned`;
+
+        // Rank updates
+        const iconEl = document.getElementById('rank-badge-icon');
+        const titleEl = document.getElementById('rank-badge-title');
+        const subtitleEl = document.getElementById('rank-badge-subtitle');
+
+        if (percentage >= 100) {
+            iconEl.innerHTML = '<i class="fas fa-crown"></i>';
+            titleEl.innerText = 'Master Architect';
+            subtitleEl.innerText = 'You have conquered your personality limitations!';
+        } else if (percentage >= 50) {
+            iconEl.innerHTML = '<i class="fas fa-medal"></i>';
+            titleEl.innerText = 'Advanced Tactician';
+            subtitleEl.innerText = 'Well on your way to ultimate career mastery.';
+        } else {
+            iconEl.innerHTML = '<i class="fas fa-seedling"></i>';
+            titleEl.innerText = 'Novice Builder';
+            subtitleEl.innerText = 'Keep completing milestones to rank up!';
+        }
+    }
+
+    // Toggle subtasks checking logic
+    function toggleSubtask(index) {
+        // Save subtask checks
+        for (let sub = 1; sub <= 3; sub++) {
+            const subEl = document.getElementById(`subtask-${index}-${sub}`);
+            if (subEl) {
+                subtaskState[`${index}_${sub}`] = subEl.checked;
+            }
+        }
+        localStorage.setItem(localSubtasksKey, JSON.stringify(subtaskState));
+
+        // Auto-complete main skill checklist check if all 3 sub-tasks are done!
+        const sub1 = document.getElementById(`subtask-${index}-1`).checked;
+        const sub2 = document.getElementById(`subtask-${index}-2`).checked;
+        const sub3 = document.getElementById(`subtask-${index}-3`).checked;
+        
+        const mainCheckbox = document.getElementById(`skill-check-${index}`);
+        if (sub1 && sub2 && sub3 && !mainCheckbox.checked) {
+            mainCheckbox.checked = true;
+            mainCheckbox.dispatchEvent(new Event('change'));
+        }
+    }
+
+    // Autosave progress notes
+    let notesTimeout = null;
+    function saveNotes(index) {
+        const val = document.getElementById(`reflection-${index}`).value;
+        const statusEl = document.getElementById(`notes-status-${index}`);
+        
+        // Show saving status
+        statusEl.classList.remove('hidden');
+        statusEl.innerHTML = '<i class="fas fa-spinner animate-spin"></i> Saving...';
+
+        clearTimeout(notesTimeout);
+        notesTimeout = setTimeout(() => {
+            notesState[index] = val;
+            localStorage.setItem(localNotesKey, JSON.stringify(notesState));
+
+            // Show confirmation
+            statusEl.innerHTML = '<i class="fas fa-check"></i> Saved Auto';
+            setTimeout(() => {
+                statusEl.classList.add('hidden');
+            }, 1500);
+        }, 800);
+    }
+
+    // Confetti burst helper
+    function triggerConfetti() {
+        confetti({
+            particleCount: 140,
+            spread: 75,
+            origin: { y: 0.6 }
+        });
+    }
+
+    // Setup main checklists dynamic toggle callbacks
+    document.querySelectorAll('.skill-checkbox').forEach((checkbox, i) => {
+        const index = i + 1;
+
+        checkbox.addEventListener('change', async function() {
+            updateRowUI(this, index);
+            updateProgress();
+            
+            const skillName = this.getAttribute('data-skill-name');
+            const completed = this.checked;
+
+            if (completed) {
+                // If checked, auto-check all child subtasks to represent complete progress!
+                for (let sub = 1; sub <= 3; sub++) {
+                    const subEl = document.getElementById(`subtask-${index}-${sub}`);
+                    if (subEl) {
+                        subEl.checked = true;
+                        subtaskState[`${index}_${sub}`] = true;
+                    }
+                }
+                localStorage.setItem(localSubtasksKey, JSON.stringify(subtaskState));
+                triggerConfetti();
+            } else {
+                // Uncheck subtasks
+                for (let sub = 1; sub <= 3; sub++) {
+                    const subEl = document.getElementById(`subtask-${index}-${sub}`);
+                    if (subEl) {
+                        subEl.checked = false;
+                        subtaskState[`${index}_${sub}`] = false;
+                    }
+                }
+                localStorage.setItem(localSubtasksKey, JSON.stringify(subtaskState));
+            }
+            
+            try {
+                const response = await fetch('/assessment/skill-plan/toggle', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ skill_name: skillName, completed: completed })
+                });
+                
+                if (!response.ok) {
+                    console.error("Failed to toggle skill state");
+                }
+            } catch (err) {
+                console.error("Network error toggling skill state:", err);
+            }
+        });
+    });
+</script>
+{% endblock %}

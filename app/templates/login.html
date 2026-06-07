@@ -2,182 +2,111 @@
 
 {% block title %}Login - Career DNA{% endblock %}
 
+{% set hide_nav = True %}
+{% set hide_footer = True %}
+
 {% block content %}
 <div class="min-h-screen flex items-center justify-center py-12 px-4">
-    <div class="max-w-md w-full space-y-8">
-        <!-- Header -->
-        <div class="text-center animate-fade-in">
-            <h1 class="text-4xl font-bold mb-4 glow-text">Welcome Back</h1>
-            <p class="text-gray-400">Sign in to continue your career journey</p>
-        </div>
+    <div class="max-w-[420px] w-full animate-slide-up">
+        <div class="neuro-card overflow-hidden !p-0">
+            <!-- Teal Header Panel -->
+            <div class="auth-header-panel">
+                <p class="text-white/80 text-sm font-medium uppercase tracking-wider mb-1">Welcome</p>
+                <h1 class="text-white text-3xl font-bold">Sign In</h1>
+            </div>
 
-        <!-- Login Form -->
-        <div class="glass-card rounded-xl p-8 animate-slide-up">
-            <form id="login-form" class="space-y-6">
-                <!-- Email -->
-                <div>
-                    <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
-                        Email Address
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-50 transition-all"
-                        placeholder="your@email.com"
-                    >
+            <!-- Form Content -->
+            <div class="p-10 space-y-6">
+                <form id="login-form" class="space-y-5">
+                    <div class="space-y-1.5">
+                        <label class="text-text-muted text-[11px] uppercase font-bold tracking-widest ml-1">Email Address</label>
+                        <input
+                            type="email"
+                            name="email"
+                            required
+                            class="neuro-input"
+                            placeholder="your@email.com"
+                        >
+                    </div>
+
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center px-1">
+                            <label class="text-text-muted text-[11px] uppercase font-bold tracking-widest">Password</label>
+                            <a href="/forgot-password" class="text-accent-light text-[11px] font-bold hover:underline">Forget Password?</a>
+                        </div>
+                        <input
+                            type="password"
+                            name="password"
+                            required
+                            class="neuro-input"
+                            placeholder="••••••••"
+                        >
+                    </div>
+
+                    <div id="error-message" class="hidden text-red-400 text-xs bg-red-400/10 p-3 rounded-lg border border-red-400/20 text-center"></div>
+
+                    <button type="submit" class="btn-accent w-full py-3.5 mt-4">
+                        Sign In
+                    </button>
+                </form>
+
+                <div class="relative py-4">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-border"></div></div>
+                    <div class="relative flex justify-center text-xs uppercase"><span class="bg-bg-card px-3 text-text-muted">or</span></div>
                 </div>
 
-                <!-- Password -->
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
-                        Password
-                    </label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                        class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent focus:ring-opacity-50 transition-all"
-                        placeholder="••••••••"
-                    >
-                </div>
-
-                <!-- Remember Me -->
-                <div class="flex items-center">
-                    <input
-                        type="checkbox"
-                        id="remember-me"
-                        name="remember-me"
-                        class="w-4 h-4 bg-gray-800 border-gray-700 rounded focus:ring-accent focus:ring-opacity-50"
-                    >
-                    <label for="remember-me" class="ml-2 text-sm text-gray-300">
-                        Remember me
-                    </label>
-                </div>
-
-                <!-- Error Message -->
-                <div id="error-message" class="hidden bg-red-500 bg-opacity-20 border border-red-500 rounded-lg p-3 text-red-400 text-sm">
-                    <!-- Error messages will appear here -->
-                </div>
-
-                <!-- Success Message -->
-                <div id="success-message" class="hidden bg-green-500 bg-opacity-20 border border-green-500 rounded-lg p-3 text-green-400 text-sm">
-                    <!-- Success messages will appear here -->
-                </div>
-
-                <!-- Submit Button -->
-                <button
-                    type="submit"
-                    class="w-full bg-accent hover:bg-accent-dark px-6 py-3 rounded-lg font-semibold transition-all hover:scale-105 animate-pulse-glow"
-                >
-                    Sign In
-                </button>
-            </form>
-
-            <!-- Forgot Password & Register Links -->
-            <div class="text-center mt-6 space-y-2">
-                <div>
-                    <a href="/forgot-password" class="text-accent hover:text-accent-light transition-colors text-sm">
-                        Forgot your password?
-                    </a>
-                </div>
-                <div>
-                    <p class="text-gray-400 text-sm">
-                        Don't have an account?
-                        <a href="/register" class="text-accent hover:text-accent-light transition-colors">
-                            Sign Up
-                        </a>
-                    </p>
-                </div>
+                <p class="text-center text-sm text-text-secondary">
+                    Don't have an account? 
+                    <a href="/register" class="text-accent-light font-bold hover:underline">Sign Up</a>
+                </p>
             </div>
         </div>
-
-        <!-- Quick Stats -->
-        <div class="glass-card-dark rounded-xl p-6 animate-slide-up" style="animation-delay: 0.2s;">
-            <h3 class="text-lg font-semibold mb-4 text-center">Why Choose Career DNA?</h3>
-            <div class="grid grid-cols-2 gap-4 text-center">
-                <div>
-                    <div class="text-2xl font-bold text-accent">5</div>
-                    <div class="text-xs text-gray-400">AI Agents</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold text-accent">15+</div>
-                    <div class="text-xs text-gray-400">Careers</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold text-accent">95%</div>
-                    <div class="text-xs text-gray-400">Accuracy</div>
-                </div>
-                <div>
-                    <div class="text-2xl font-bold text-accent">RAG</div>
-                    <div class="text-xs text-gray-400">Powered</div>
-                </div>
-            </div>
+        
+        <div class="mt-8 text-center">
+            <a href="/" class="logo-text text-xl">Career DNA</a>
         </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block scripts %}
 <script>
 document.getElementById('login-form').addEventListener('submit', async function(e) {
     e.preventDefault();
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.classList.add('hidden');
     
     const formData = new FormData(this);
     const data = {
         email: formData.get('email'),
-        password: formData.get('password'),
-        remember_me: formData.get('remember-me') === 'on'
+        password: formData.get('password')
     };
     
-    // Hide previous messages
-    hideMessages();
+    const btn = this.querySelector('button');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Authenticating...';
     
     try {
         const response = await fetch('/auth/login', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
-        
         const result = await response.json();
-        
         if (response.ok) {
-            showSuccess('Login successful! Redirecting...');
-            setTimeout(() => {
-                window.location.href = '/dashboard';
-            }, 1000);
+            window.location.href = '/dashboard';
         } else {
-            showError(result.message || 'Login failed');
+            errorDiv.textContent = result.message || 'Login failed';
+            errorDiv.classList.remove('hidden');
         }
     } catch (error) {
-        console.error('Login error:', error);
-        showError('An error occurred. Please try again.');
+        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.classList.remove('hidden');
+    } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
     }
 });
-
-function showError(message) {
-    const errorDiv = document.getElementById('error-message');
-    errorDiv.textContent = message;
-    errorDiv.classList.remove('hidden');
-    document.getElementById('success-message').classList.add('hidden');
-}
-
-function showSuccess(message) {
-    const successDiv = document.getElementById('success-message');
-    successDiv.textContent = message;
-    successDiv.classList.remove('hidden');
-    document.getElementById('error-message').classList.add('hidden');
-}
-
-function hideMessages() {
-    document.getElementById('error-message').classList.add('hidden');
-    document.getElementById('success-message').classList.add('hidden');
-}
 </script>
 {% endblock %}

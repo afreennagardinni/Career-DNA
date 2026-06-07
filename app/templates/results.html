@@ -1,302 +1,512 @@
 {% extends "base.html" %}
 
-{% block title %}Career DNA - Your Results{% endblock %}
+{% block title %}Results - Career DNA{% endblock %}
 
 {% block content %}
-{% set result_data = result_data if result_data is defined else none %}
-<div class="min-h-screen py-12 px-4">
-    <div class="max-w-7xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-12 animate-fade-in">
-            <h1 class="text-4xl font-bold mb-4 glow-text">Your Career Analysis Results</h1>
-            <p class="text-gray-400 text-lg">Based on your personality traits and interests</p>
+<div class="space-y-10 animate-fade-in pb-20">
+    <!-- DNA Type Hero -->
+    <div class="neuro-card p-6 sm:p-12 text-center space-y-6 relative border-t-4 border-accent">
+        <div class="neuro-inset inline-flex px-6 py-2 rounded-full gap-3 items-center mx-auto">
+            <i class="fas fa-dna text-accent-light"></i>
+            <span class="text-xs font-bold uppercase tracking-[0.2em] text-accent-light">Personality Match Found</span>
+        </div>
+        
+        <h1 class="text-4xl sm:text-5xl md:text-7xl font-bold gradient-text pb-2">
+            {{ result.dna_type }}
+        </h1>
+        
+        <p class="text-xl text-text-secondary max-w-2xl mx-auto leading-relaxed">
+            {{ result.description }}
+        </p>
+
+        <div class="flex justify-center gap-4 pt-4">
+            <div class="neuro-inset px-6 py-3 flex items-center gap-3">
+                <span class="text-text-muted text-xs font-bold uppercase">Confidence</span>
+                <span class="text-accent-light font-bold">94%</span>
+            </div>
+            <button onclick="window.print()" class="neuro-btn">
+                <i class="fas fa-download mr-2"></i> Save Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Results Tabs -->
+    <div class="results-tabs justify-center">
+        <a href="/results/{{ result.id }}" class="tab active">
+            🧬 My DNA
+        </a>
+        <a href="/assessment/videos/{{ result.id }}" class="tab">
+            🎥 Videos
+        </a>
+        <a href="/assessment/mentors/{{ result.id }}" class="tab">
+            🧑💼 Mentors
+        </a>
+        <a href="/assessment/skill-plan/{{ result.id }}" class="tab">
+            📚 Skill Plan
+        </a>
+        <a href="/assessment/trends/{{ result.id }}" class="tab">
+            📈 Trends
+        </a>
+    </div>
+
+    <!-- Combined Traits Chart -->
+    <div class="neuro-card p-10 space-y-8">
+        <h3 class="text-xl font-bold text-primary flex items-center gap-3">
+            <i class="fas fa-chart-network text-accent-light"></i>
+            Integrated Personality DNA (RIASEC + Big Five)
+        </h3>
+        <div class="relative h-[300px] sm:h-[450px]">
+            <canvas id="resultsRadar"></canvas>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-10">
+        <!-- RIASEC Breakdown -->
+        <div class="neuro-card p-5 sm:p-10 space-y-8">
+            <h3 class="text-xl font-bold text-primary flex items-center gap-3">
+                <i class="fas fa-compass text-accent-light"></i>
+                Interests (RIASEC)
+            </h3>
+            <div class="space-y-6">
+                {% for trait, score in riasec.items() %}
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center px-1">
+                        <span class="text-sm font-bold text-text-primary">{{ trait }}</span>
+                        <span class="text-accent-light font-bold">{{ score }}%</span>
+                    </div>
+                    <div class="h-3 w-full neuro-inset !rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all duration-1000" style="width: {{ score }}%"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
 
-        <!-- Confidence Score -->
-        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div>
-                    <h2 class="text-2xl font-semibold mb-2">Overall Confidence</h2>
-                    <p class="text-gray-400">Based on psychometric analysis and AI recommendations</p>
+        <!-- Big Five Breakdown -->
+        <div class="neuro-card p-5 sm:p-10 space-y-8">
+            <h3 class="text-xl font-bold text-primary flex items-center gap-3">
+                <i class="fas fa-brain text-accent-light"></i>
+                Behavior (Big Five)
+            </h3>
+            <div class="space-y-6">
+                {% for trait, score in big5.items() %}
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center px-1">
+                        <span class="text-sm font-bold text-text-primary">{{ trait }}</span>
+                        <span class="text-accent-light font-bold">{{ score }}%</span>
+                    </div>
+                    <div class="h-3 w-full neuro-inset !rounded-full overflow-hidden">
+                        <div class="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all duration-1000" style="width: {{ score }}%"></div>
+                    </div>
                 </div>
-                <div class="mt-4 md:mt-0">
-                    <div class="relative w-32 h-32">
-                        <svg class="w-32 h-32 transform -rotate-90">
-                            <circle cx="64" cy="64" r="56" stroke="rgba(255,255,255,0.1)" stroke-width="8" fill="none"/>
-                            <circle cx="64" cy="64" r="56" stroke="#8B5CF6" stroke-width="8" fill="none" 
-                                    stroke-dasharray="352" stroke-dashoffset="352" id="confidence-circle"
-                                    class="transition-all duration-1000"/>
-                        </svg>
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-3xl font-bold text-accent" id="confidence-value">0%</span>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Career Recommendations -->
+    <div class="space-y-8">
+        <h2 class="text-3xl font-bold text-center text-primary">Your Top Career Matches</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            {% for career in careers[:3] %}
+            <div class="neuro-card p-8 flex flex-col justify-between space-y-6 group hover:scale-105 transition-transform duration-300 {% if loop.index == 1 %}border-t-4 border-accent accent-glow{% endif %}">
+                <div class="space-y-4">
+                    <div class="flex justify-between items-start">
+                        <div class="w-12 h-12 neuro-inset flex items-center justify-center text-accent-light text-xl">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <span class="btn-accent !py-1 !px-3 text-[10px] rounded-full">{{ career.match_score }} Match</span>
+                    </div>
+                    <h3 class="text-xl font-bold text-primary">{{ career.title }}</h3>
+                    <p class="text-text-secondary text-sm leading-relaxed">
+                        {{ career.description }}
+                    </p>
+                </div>
+                
+                <div class="space-y-4 pt-4 border-t border-border">
+                    <div class="flex flex-wrap gap-2">
+                        {% for skill in career.required_skills[:3] %}
+                        <span class="neuro-inset px-2 py-1 text-[9px] uppercase font-bold text-text-muted">{{ skill }}</span>
+                        {% endfor %}
+                    </div>
+                    <a href="/career/{{ career.id }}" class="neuro-btn w-full text-sm">Details</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- 100-Day Action Plan -->
+    {% set roadmaps = {
+        'Analytical': {
+            'phase1': {
+                'highlights': [
+                    'Deep-dive into technical stack ecosystems (ML, Cloud, Data).',
+                    'Identify 3 deep-tech or database engineering niches.',
+                    'Audit your GitHub portfolio and technical brand.'
+                ],
+                'tip': 'Leverage your analytical nature by preparing data-backed case studies for your informational interviews.'
+            },
+            'phase2': {
+                'learning': [
+                    'Complete a specialization certification (e.g. PyTorch, MLOps, AWS Solution Architect).',
+                    'Build a robust open-source end-to-end model pipeline.',
+                    'Master 3 primary quantitative/engineering tools.'
+                ],
+                'tip': 'Focus on optimizing computational complexity and deploying real models. Analytical roles demand strong system design fundamentals.'
+            },
+            'phase3': {
+                'strategy': [
+                    'Publish a detailed technical case study or deep-dive blog post.',
+                    'Contribute a patch or documentation to an open-source tool.',
+                    'Apply to 10 highly-targeted deeptech and engineering firms.'
+                ],
+                'tip': 'Engineering managers hire for problem-solving. Make sure your portfolio projects have clean documentation and run seamlessly.'
+            }
+        },
+        'Visionary': {
+            'phase1': {
+                'highlights': [
+                    'Research disruptive industry megatrends (GenAI, Web3, Spatials).',
+                    'Target 5 innovative startup founders or product leads.',
+                    'Formulate a personal brand thesis around emerging tech paradigms.'
+                ],
+                'tip': 'As a Visionary, your edge is foresight. Focus on networking with innovation leads and R&D specialists in your field.'
+            },
+            'phase2': {
+                'learning': [
+                    'Enroll in Product Growth, Venture Design, or Innovation Strategy.',
+                    'Map a detailed speculative 5-year product roadmap.',
+                    'Learn basic prototyping tools to turn abstract ideas into wireframes.'
+                ],
+                'tip': 'Do not stay purely theoretical. Learn to communicate your visions visually using product spec sheets and mockups.'
+            },
+            'phase3': {
+                'strategy': [
+                    'Launch a speculative product pitch on LinkedIn or ProductHunt.',
+                    'Pitch your growth/innovation thesis directly to Seed/Series A founders.',
+                    'Apply to highly selective PM or Venture Builder cohorts.'
+                ],
+                'tip': 'Founders hire visionaries who can execute. Deliver instant value by sharing a free 3-page growth audit of their startup.'
+            }
+        },
+        'Creative': {
+            'phase1': {
+                'highlights': [
+                    'Perform a comprehensive visual audit of leading design agencies.',
+                    'Consolidate all design/media drafts into a beautiful Figma/Behance space.',
+                    'Network with 5 Art Directors or Creative Tech Leads.'
+                ],
+                'tip': 'As a Creative, your portfolio is your currency. Make sure it is clean, highly unique, and shows your true visual signature.'
+            },
+            'phase2': {
+                'learning': [
+                    'Master advanced design systems, spatial layout tools, or Web3 design.',
+                    'Build a pixel-perfect, highly responsive interactive prototype.',
+                    'Learn front-end coding fundamentals to better collaborate with devs.'
+                ],
+                'tip': 'Design is not just what it looks like, it is how it works. Focus on detailing user transitions, accessibility, and state changes.'
+            },
+            'phase3': {
+                'strategy': [
+                    'Publish a case study deconstructing a complex UX/visual design problem.',
+                    'Promote micro-interactions and motion design work on Dribbble/X.',
+                    'Apply to 10 leading design-first product teams or digital studios.'
+                ],
+                'tip': 'In visual roles, a custom high-fidelity prototype will land you the job faster than 100 generic CV applications.'
+            }
+        },
+        'Leader': {
+            'phase1': {
+                'highlights': [
+                    'Conduct informational interviews with Product Owners and Program Managers.',
+                    'Audit your professional communication, leadership style, and presence.',
+                    'Connect with 5 startup chief operating officers or venture scaling leads.'
+                ],
+                'tip': 'True leadership starts with self-awareness. Seek anonymous feedback from past peers about your management and delegation style.'
+            },
+            'phase2': {
+                'learning': [
+                    'Get certified in Agile/Scrum (PSM/CSM) or Product Management.',
+                    'Lead a voluntary hackathon or community open-source project team.',
+                    'Learn metric frameworks like OKRs, KPIs, and operational analytics.'
+                ],
+                'tip': 'Demonstrate your ability to coordinate cross-functional teams and drive tangible business metrics. Leaders translate vision to results.'
+            },
+            'phase3': {
+                'strategy': [
+                    'Deliver a talk or presentation at a local technology event or cohort.',
+                    'Position yourself as an active community coordinator on LinkedIn.',
+                    'Apply for management trainee, rotational leadership, or APM programs.'
+                ],
+                'tip': 'Hiring executives look for low-friction leaders. Show how you resolved conflicts and successfully unblocked project bottlenecks.'
+            }
+        },
+        'Empath': {
+            'phase1': {
+                'highlights': [
+                    'Identify 3 human-centric fields like Developer Relations or User Research.',
+                    'Network with Developer Advocates, UX Researchers, or People Ops leads.',
+                    'Conduct empathy mapping exercises for 3 complex target groups.'
+                ],
+                'tip': 'Your natural empathy makes you an elite connector. Use informational chats to deeply understand the pain points of managers in your field.'
+            },
+            'phase2': {
+                'learning': [
+                    'Master active listening techniques and qualitative research frameworks.',
+                    'Conduct 5 user empathy interviews for an active community or product.',
+                    'Learn modern CRM, community management, and customer success suites.'
+                ],
+                'tip': 'Build a deep case study on how solving user frustration directly drives customer lifetime value and retention metrics.'
+            },
+            'phase3': {
+                'strategy': [
+                    'Write an analytical article summarizing user research or developer experience.',
+                    'Engage actively in target developer/customer success communities.',
+                    'Apply to 10 DevRel, community management, or customer success roles.'
+                ],
+                'tip': 'DevRel and customer success roles prioritize high emotional intelligence. Make your communications warm, polished, and authentic.'
+            }
+        },
+        'Strategist': {
+            'phase1': {
+                'highlights': [
+                    'Select 3 major industries undergoing massive competitive shifts.',
+                    'Map out the operational value chain of your target companies.',
+                    'Connect with 5 operations directors or management consultants.'
+                ],
+                'tip': 'Strategists excel at structure. Organize your job search like an enterprise sales pipeline with clear weekly goals and metrics.'
+            },
+            'phase2': {
+                'learning': [
+                    'Master Financial Modeling, competitor analysis framework, or Lean Six Sigma.',
+                    'Build a comprehensive competitor SWOT analysis report for a real firm.',
+                    'Learn SQL, Excel macro analytics, or business intelligence reporting.'
+                ],
+                'tip': 'Always speak in the language of executives: optimization, profit margins, cost reductions, and unit economics.'
+            },
+            'phase3': {
+                'strategy': [
+                    'Send a beautifully formatted 3-page competitive analysis to hiring leads.',
+                    'Apply to operations optimization or corporate strategy roles.',
+                    'Demonstrate your strategic roadmap process through clear LinkedIn articles.'
+                ],
+                'tip': 'Show that you can save a company time or money. A well-designed SWOT report is a highly effective way to open doors directly.'
+            }
+        }
+    } %}
+
+    {# Fallback to Visionary if no match found #}
+    {% set user_pers = 'Visionary' %}
+    {% if 'Analytical' in result.dna_type or 'Investigator' in result.dna_type or 'Research' in result.dna_type or 'Architect' in result.dna_type %}
+        {% set user_pers = 'Analytical' %}
+    {% elif 'Creative' in result.dna_type or 'Artist' in result.dna_type or 'Designer' in result.dna_type or 'Innovator' in result.dna_type %}
+        {% set user_pers = 'Creative' %}
+    {% elif 'Leader' in result.dna_type %}
+        {% set user_pers = 'Leader' %}
+    {% elif 'Empath' in result.dna_type or 'Counselor' in result.dna_type or 'Social' in result.dna_type %}
+        {% set user_pers = 'Empath' %}
+    {% elif 'Strategist' in result.dna_type or 'Systematic' in result.dna_type or 'Builder' in result.dna_type or 'Business' in result.dna_type or 'Guardian' in result.dna_type %}
+        {% set user_pers = 'Strategist' %}
+    {% endif %}
+
+    {% set cur_roadmap = roadmaps.get(user_pers, roadmaps['Visionary']) %}
+
+    <div class="neuro-card p-10 space-y-10">
+        <div class="text-center space-y-2">
+            <h3 class="text-3xl font-bold text-primary">Your 100-Day Career Roadmap</h3>
+            <p class="text-text-secondary">Click each phase to unlock detailed strategies and tips personalized for your <strong>{{ user_pers }}</strong> personality.</p>
+        </div>
+        
+        <div class="grid gap-6">
+            <!-- Phase 1 -->
+            <div class="phase-card cursor-pointer transition-all duration-300" onclick="togglePhase(1)">
+                <div class="neuro-card p-4 sm:p-6 flex items-center gap-3 sm:gap-6 group hover:border-accent/30 border border-transparent">
+                    <div class="w-10 h-10 sm:w-14 sm:h-14 neuro-inset flex items-center justify-center bg-accent accent-glow shrink-0">
+                        <span class="text-white font-bold text-lg sm:text-xl">1</span>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-accent-light font-bold uppercase text-xs tracking-widest mb-1">Phase 1: Discovery (Days 1-30)</h4>
+                        <p class="text-text-primary font-medium">Research industries and connect with 5 professionals.</p>
+                    </div>
+                    <i class="fas fa-chevron-down text-text-muted transition-transform" id="chevron-1"></i>
+                </div>
+                <div id="details-1" class="hidden animate-slide-up mt-4">
+                    <div class="neuro-inset p-8 space-y-6">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <h5 class="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fas fa-bullseye text-accent"></i> Key Highlights
+                                </h5>
+                                <ul class="text-sm text-text-secondary space-y-2">
+                                    {% for hl in cur_roadmap.phase1.highlights %}
+                                    <li>• {{ hl }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="space-y-3">
+                                <h5 class="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fas fa-lightbulb text-accent"></i> Pro Tips
+                                </h5>
+                                <div class="bg-accent/5 p-4 rounded-xl border border-accent/10">
+                                    <p class="text-sm text-text-primary leading-relaxed italic">
+                                        "{{ cur_roadmap.phase1.tip }}"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 2 -->
+            <div class="phase-card cursor-pointer transition-all duration-300" onclick="togglePhase(2)">
+                <div class="neuro-card p-6 flex items-center gap-6 group hover:border-accent/30 border border-transparent">
+                    <div class="w-14 h-14 neuro-inset flex items-center justify-center shrink-0">
+                        <span class="text-text-muted font-bold text-xl">2</span>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-text-muted font-bold uppercase text-xs tracking-widest mb-1">Phase 2: Skill Acquisition (Days 31-70)</h4>
+                        <p class="text-text-secondary font-medium">Enroll in certifications for identified core skills.</p>
+                    </div>
+                    <i class="fas fa-chevron-down text-text-muted transition-transform" id="chevron-2"></i>
+                </div>
+                <div id="details-2" class="hidden animate-slide-up mt-4">
+                    <div class="neuro-inset p-8 space-y-6">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <h5 class="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fas fa-graduation-cap text-accent"></i> Learning Path
+                                </h5>
+                                <ul class="text-sm text-text-secondary space-y-2">
+                                    {% for lp in cur_roadmap.phase2.learning %}
+                                    <li>• {{ lp }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="space-y-3">
+                                <h5 class="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fas fa-tools text-accent"></i> Growth Tip
+                                </h5>
+                                <div class="bg-accent/5 p-4 rounded-xl border border-accent/10">
+                                    <p class="text-sm text-text-primary leading-relaxed italic">
+                                        "{{ cur_roadmap.phase2.tip }}"
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Phase 3 -->
+            <div class="phase-card cursor-pointer transition-all duration-300" onclick="togglePhase(3)">
+                <div class="neuro-card p-6 flex items-center gap-6 group hover:border-accent/30 border border-transparent">
+                    <div class="w-14 h-14 neuro-inset flex items-center justify-center shrink-0">
+                        <span class="text-text-muted font-bold text-xl">3</span>
+                    </div>
+                    <div class="flex-grow">
+                        <h4 class="text-text-muted font-bold uppercase text-xs tracking-widest mb-1">Phase 3: Launch (Days 71-100)</h4>
+                        <p class="text-text-secondary font-medium">Optimize LinkedIn and begin strategic applications.</p>
+                    </div>
+                    <i class="fas fa-chevron-down text-text-muted transition-transform" id="chevron-3"></i>
+                </div>
+                <div id="details-3" class="hidden animate-slide-up mt-4">
+                    <div class="neuro-inset p-8 space-y-6">
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <div class="space-y-3">
+                                <h5 class="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fas fa-rocket text-accent"></i> Market Strategy
+                                </h5>
+                                <ul class="text-sm text-text-secondary space-y-2">
+                                    {% for ms in cur_roadmap.phase3.strategy %}
+                                    <li>• {{ ms }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="space-y-3">
+                                <h5 class="text-sm font-bold text-primary uppercase tracking-wider flex items-center gap-2">
+                                    <i class="fas fa-check-double text-accent"></i> Closing Tip
+                                </h5>
+                                <div class="bg-accent/5 p-4 rounded-xl border border-accent/10">
+                                    <p class="text-sm text-text-primary leading-relaxed italic">
+                                        "{{ cur_roadmap.phase3.tip }}"
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Personality Profile -->
-        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up" style="animation-delay: 0.2s;">
-            <h2 class="text-2xl font-semibold mb-6">Personality Profile</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <!-- Big Five Traits -->
-                <div>
-                    <h3 class="text-lg font-medium mb-4 text-accent">Big Five Traits</h3>
-                    <div id="big-five-traits" class="space-y-4">
-                        <!-- Traits will be populated by JavaScript -->
-                    </div>
-                </div>
-                
-                <!-- Holland Code -->
-                <div>
-                    <h3 class="text-lg font-medium mb-4 text-accent">Holland Code</h3>
-                    <div class="glass-card-dark rounded-lg p-6 text-center">
-                        <div class="text-5xl font-bold text-accent mb-2" id="holland-code">---</div>
-                        <p class="text-gray-400 text-sm" id="holland-description">Complete RIASEC assessment</p>
-                    </div>
-                    
-                    <h3 class="text-lg font-medium mb-4 mt-6 text-accent">Dominant Traits</h3>
-                    <div id="dominant-traits" class="flex flex-wrap gap-2">
-                        <!-- Traits will be populated by JavaScript -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Top Career Recommendations -->
-        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up" style="animation-delay: 0.4s;">
-            <h2 class="text-2xl font-semibold mb-6">Top Career Recommendations</h2>
-            <div id="career-recommendations" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Careers will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Explanation -->
-        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up" style="animation-delay: 0.6s;">
-            <h2 class="text-2xl font-semibold mb-6">Analysis Explanation</h2>
-            <div class="glass-card-dark rounded-lg p-6">
-                <p class="text-gray-300 leading-relaxed" id="explanation-text">
-                    Run the full analysis to see your personalized explanation.
-                </p>
-            </div>
-        </div>
-
-        <!-- Action Plan -->
-        <div class="glass-card rounded-xl p-8 mb-8 animate-slide-up" style="animation-delay: 0.8s;">
-            <h2 class="text-2xl font-semibold mb-6">Your Personalized Action Plan</h2>
-            <div id="action-plan" class="grid md:grid-cols-3 gap-6">
-                <!-- Action plan will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Confidence Breakdown -->
-        <div class="glass-card rounded-xl p-8 animate-slide-up" style="animation-delay: 1s;">
-            <h2 class="text-2xl font-semibold mb-6">Confidence Breakdown</h2>
-            <div id="confidence-breakdown" class="grid md:grid-cols-5 gap-4">
-                <!-- Confidence scores will be populated by JavaScript -->
-            </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 justify-center mt-12">
-            <button onclick="window.print()" class="glass-card hover:bg-glass px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105">
-                Print Results
-            </button>
-            <a href="/dashboard" class="bg-accent hover:bg-accent-dark px-8 py-4 rounded-xl text-lg font-semibold transition-all hover:scale-105 animate-pulse-glow text-center">
-                Back to Dashboard
-            </a>
-        </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-let resultsData = null;
+    const riasecData = {{ riasec | tojson }};
+    const big5Data = {{ big5 | tojson }};
+    const labels = [...Object.keys(riasecData), ...Object.keys(big5Data)];
+    const values = [...Object.values(riasecData), ...Object.values(big5Data)];
 
-// Check if result data is already available from server
-{% if result_data %}
-resultsData = {{ result_data | tojson }};
-{% endif %}
-
-async function loadResults() {
-    // If we already have result data from server, use it
-    if (resultsData) {
-        displayResults(resultsData);
-        return;
-    }
+    const ctx = document.getElementById('resultsRadar').getContext('2d');
+    const colors = getChartColors();
     
-    try {
-        const response = await fetch('/assessment/pipeline', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
+    new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Personality DNA',
+                data: values,
+                backgroundColor: colors.bg,
+                borderColor: colors.border,
+                pointBackgroundColor: colors.border,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: colors.border,
+                borderWidth: 3,
+                fill: true
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    angleLines: { color: colors.grid },
+                    grid: { color: colors.grid },
+                    pointLabels: { color: colors.text, font: { size: 12, weight: 'bold' } },
+                    ticks: { display: false, stepSize: 20 },
+                    suggestedMin: 0,
+                    suggestedMax: 100
+                }
             },
-            body: JSON.stringify({
-                source: 'profile',
-                user_context: {}
-            })
+            plugins: {
+                legend: { display: false }
+            },
+            maintainAspectRatio: false
+        }
+    });
+    function togglePhase(id) {
+        const details = document.getElementById(`details-${id}`);
+        const chevron = document.getElementById(`chevron-${id}`);
+        
+        // Close others
+        [1,2,3].forEach(p => {
+            if (p !== id) {
+                document.getElementById(`details-${p}`).classList.add('hidden');
+                document.getElementById(`chevron-${p}`).style.transform = 'rotate(0deg)';
+            }
         });
-        
-        const result = await response.json();
-        
-        if (response.ok) {
-            resultsData = result;
-            displayResults(result);
-        } else {
-            document.getElementById('explanation-text').textContent = 
-                result.message || 'Please complete both assessments to see your results.';
-        }
-    } catch (error) {
-        console.error('Error loading results:', error);
-        document.getElementById('explanation-text').textContent = 
-            'Failed to load results. Please try again.';
-    }
-}
 
-function displayResults(result) {
-    // Animate confidence circle
-    const overallConfidence = result.confidence_scores?.overall || 0;
-    const circle = document.getElementById('confidence-circle');
-    const circumference = 352;
-    const offset = circumference - (overallConfidence / 100) * circumference;
-    
-    setTimeout(() => {
-        circle.style.strokeDashoffset = offset;
-    }, 100);
-    
-    // Animate confidence value
-    let currentValue = 0;
-    const interval = setInterval(() => {
-        if (currentValue >= overallConfidence) {
-            clearInterval(interval);
+        if (details.classList.contains('hidden')) {
+            details.classList.remove('hidden');
+            chevron.style.transform = 'rotate(180deg)';
         } else {
-            currentValue += 1;
-            document.getElementById('confidence-value').textContent = `${currentValue}%`;
+            details.classList.add('hidden');
+            chevron.style.transform = 'rotate(0deg)';
         }
-    }, 20);
-    
-    // Display Big Five traits
-    const bigFiveContainer = document.getElementById('big-five-traits');
-    const traits = result.personality?.traits?.big_five || {};
-    
-    const traitLabels = {
-        openness: 'Openness',
-        conscientiousness: 'Conscientiousness',
-        extraversion: 'Extraversion',
-        agreeableness: 'Agreeableness',
-        neuroticism: 'Neuroticism'
-    };
-    
-    Object.entries(traits).forEach(([key, value]) => {
-        const div = document.createElement('div');
-        div.innerHTML = `
-            <div class="flex justify-between mb-1">
-                <span class="text-sm">${traitLabels[key] || key}</span>
-                <span class="text-sm text-accent">${value.toFixed(1)}%</span>
-            </div>
-            <div class="w-full bg-gray-700 rounded-full h-2">
-                <div class="progress-bar h-2 rounded-full" style="width: ${value}%"></div>
-            </div>
-        `;
-        bigFiveContainer.appendChild(div);
-    });
-    
-    // Display Holland Code
-    const riasec = result.personality?.traits?.riasec || {};
-    const hollandCode = result.personality?.traits?.holland_code || '';
-    if (hollandCode) {
-        document.getElementById('holland-code').textContent = hollandCode;
-        document.getElementById('holland-description').textContent = 'Your career interests';
     }
-    
-    // Display dominant traits
-    const dominantTraits = result.personality?.dominant_traits || [];
-    const dominantContainer = document.getElementById('dominant-traits');
-    dominantTraits.forEach(trait => {
-        const span = document.createElement('span');
-        span.className = 'bg-accent bg-opacity-20 text-accent px-3 py-1 rounded-full text-sm';
-        span.textContent = trait;
-        dominantContainer.appendChild(span);
-    });
-    
-    // Display career recommendations
-    const careersContainer = document.getElementById('career-recommendations');
-    careersContainer.innerHTML = '';
-    
-    result.top_careers.forEach((career, index) => {
-        const div = document.createElement('div');
-        div.className = 'glass-card-dark rounded-lg p-6 hover:scale-105 transition-transform cursor-pointer';
-        div.innerHTML = `
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-2xl font-bold text-accent">#${index + 1}</span>
-                <span class="text-sm text-gray-400">${career.match_score?.toFixed(1) || 0}% match</span>
-            </div>
-            <h3 class="font-semibold text-lg mb-2">${career.career || career.title || 'Unknown'}</h3>
-            <p class="text-sm text-gray-400 mb-3">${career.description || ''}</p>
-            <div class="flex flex-wrap gap-2">
-                ${(career.skills || []).slice(0, 3).map(skill => 
-                    `<span class="bg-glass px-2 py-1 rounded text-xs">${skill}</span>`
-                ).join('')}
-            </div>
-        `;
-        careersContainer.appendChild(div);
-    });
-    
-    // Display explanation
-    document.getElementById('explanation-text').textContent = result.explanation || 
-        'Based on your personality profile, we have identified career paths that align with your traits and interests.';
-    
-    // Display action plan
-    const actionPlanContainer = document.getElementById('action-plan');
-    const actionPlan = result.action_plan || {};
-    
-    const timeframes = [
-        { key: 'short_term', label: 'Short Term', color: 'bg-green-500' },
-        { key: 'medium_term', label: 'Medium Term', color: 'bg-yellow-500' },
-        { key: 'long_term', label: 'Long Term', color: 'bg-blue-500' }
-    ];
-    
-    timeframes.forEach(({ key, label, color }) => {
-        const div = document.createElement('div');
-        div.className = 'glass-card-dark rounded-lg p-6';
-        div.innerHTML = `
-            <h3 class="font-semibold text-accent mb-4 flex items-center">
-                <span class="w-3 h-3 ${color} rounded-full mr-2"></span>
-                ${label}
-            </h3>
-            <ul class="text-sm text-gray-300 space-y-2">
-                ${(actionPlan[key] || []).map(item => `<li>• ${item}</li>`).join('') || '<li class="text-gray-500">No recommendations yet</li>'}
-            </ul>
-        `;
-        actionPlanContainer.appendChild(div);
-    });
-    
-    // Display confidence breakdown
-    const confidenceContainer = document.getElementById('confidence-breakdown');
-    const confidenceScores = result.confidence_scores || {};
-    
-    const scoreLabels = {
-        psychometric: 'Psychometric',
-        pattern: 'Pattern',
-        career_query: 'Career Query',
-        rag: 'RAG',
-        overall: 'Overall'
-    };
-    
-    Object.entries(confidenceScores).forEach(([key, value]) => {
-        const div = document.createElement('div');
-        div.className = 'glass-card-dark rounded-lg p-4 text-center';
-        div.innerHTML = `
-            <div class="text-2xl font-bold text-accent mb-1">${(value * 100).toFixed(0)}%</div>
-            <div class="text-xs text-gray-400">${scoreLabels[key] || key}</div>
-        `;
-        confidenceContainer.appendChild(div);
-    });
-}
-
-// Load results on page load
-document.addEventListener('DOMContentLoaded', loadResults);
 </script>
 {% endblock %}

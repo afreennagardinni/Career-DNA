@@ -1,400 +1,212 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Career DNA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'accent': '#8B5CF6',
-                        'accent-light': '#A78BFA',
-                        'accent-dark': '#7C3AED',
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in',
-                        'slide-up': 'slideUp 0.5s ease-out',
-                        'pulse-glow': 'pulseGlow 2s ease-in-out infinite',
-                        'float': 'float 3s ease-in-out infinite',
-                        'gradient-shift': 'gradientShift 8s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideUp: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                        pulseGlow: {
-                            '0%, 100%': { boxShadow: '0 0 20px rgba(139, 92, 246, 0.5)' },
-                            '50%': { boxShadow: '0 0 40px rgba(139, 92, 246, 0.8)' },
-                        },
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-10px)' },
-                        },
-                        gradientShift: {
-                            '0%, 100%': { backgroundPosition: '0% 50%' },
-                            '50%': { backgroundPosition: '100% 50%' },
-                        },
-                    },
-                },
-            },
-        }
-    </script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, 
-                rgba(139, 92, 246, 0.1) 0%, 
-                rgba(168, 85, 247, 0.05) 50%, 
-                rgba(139, 92, 246, 0.1) 100%);
-            background-size: 200% 200%;
-            animation: gradientShift 8s ease-in-out infinite;
-            z-index: -1;
-        }
-        
-        .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        .neon-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        .neon-input:focus {
-            border-color: #8B5CF6;
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
-            outline: none;
-        }
-        
-        .neon-button {
-            background: linear-gradient(45deg, #8B5CF6, #7C3AED);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .neon-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-        
-        .neon-button:hover::before {
-            left: 100%;
-        }
-        
-        .floating-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.6;
-            animation: float 6s ease-in-out infinite;
-        }
-    </style>
-</head>
-<body class="text-white font-sans">
-    <!-- Floating Background Orbs -->
-    <div class="floating-orb w-96 h-96 bg-purple-500" style="top: 10%; left: 10%;"></div>
-    <div class="floating-orb w-64 h-64 bg-blue-500" style="top: 60%; right: 15%; animation-delay: 2s;"></div>
-    <div class="floating-orb w-48 h-48 bg-indigo-500" style="top: 30%; left: 60%; animation-delay: 4s;"></div>
+{% extends "base.html" %}
+{% block title %}Register - Career DNA{% endblock %}
 
-    <!-- Main Container -->
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 relative z-10">
-        <div class="w-full max-w-md">
-            <!-- Logo/Brand -->
-            <div class="text-center mb-8 animate-fade-in">
-                <h1 class="text-5xl font-bold mb-2">
-                    <span class="bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">Career DNA</span>
-                </h1>
-                <p class="text-gray-400">Begin your professional journey today</p>
+{% set hide_nav = True %}
+{% set hide_footer = True %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="neuro-card animate-fade-in">
+        <!-- Logo -->
+        <span class="neuro-logo">Career DNA</span>
+
+        <!-- Register Form -->
+        <form id="register-form" class="space-y-1">
+            <input
+                type="text"
+                name="email"
+                id="email"
+                required
+                class="neuro-input"
+                placeholder="Phone number or email"
+            >
+            <input
+                type="text"
+                name="first-name"
+                id="first-name"
+                required
+                class="neuro-input"
+                placeholder="Full name"
+            >
+            <input
+                type="text"
+                name="last-name"
+                id="last-name"
+                required
+                class="neuro-input"
+                placeholder="Username"
+            >
+            <input
+                type="password"
+                name="password"
+                id="password"
+                required
+                class="neuro-input"
+                placeholder="Password"
+            >
+
+            <!-- Error Message -->
+            <div id="error-message" class="hidden text-red-500 text-[11px] mb-2 text-center"></div>
+
+            <div class="pt-2">
+                <button type="submit" class="neuro-btn">
+                    Sign up
+                </button>
             </div>
+        </form>
 
-            <!-- Register Card -->
-            <div class="glass-card rounded-2xl p-8 animate-slide-up">
-                <!-- Register Header -->
-                <div class="text-center mb-8">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full mb-4">
-                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2M9 5a2 2 0 002 2h2a2 2 0 012 2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
-                        </svg>
-                    </div>
-                    <h2 class="text-2xl font-semibold">Create Account</h2>
-                    <p class="text-gray-400 text-sm">Join thousands discovering their dream careers</p>
-                </div>
-
-                <!-- Register Form -->
-                <form id="register-form" action="/auth/register" method="POST" class="space-y-6">
-                    <!-- Name Fields -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="first-name" class="block text-sm font-medium text-gray-300 mb-2">
-                                First Name
-                            </label>
-                            <input
-                                type="text"
-                                id="first-name"
-                                name="first-name"
-                                required
-                                placeholder="John"
-                                class="neon-input w-full px-4 py-3 rounded-lg text-white placeholder-gray-500 focus:outline-none"
-                            >
-                        </div>
-                        <div>
-                            <label for="last-name" class="block text-sm font-medium text-gray-300 mb-2">
-                                Last Name
-                            </label>
-                            <input
-                                type="text"
-                                id="last-name"
-                                name="last-name"
-                                required
-                                placeholder="Doe"
-                                class="neon-input w-full px-4 py-3 rounded-lg text-white placeholder-gray-500 focus:outline-none"
-                            >
-                        </div>
-                    </div>
-
-                    <!-- Email Field -->
-                    <div>
-                        <label for="email" class="block text-sm font-medium text-gray-300 mb-2">
-                            Email Address
-                        </label>
-                        <div class="relative">
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                required
-                                placeholder="your@email.com"
-                                class="neon-input w-full px-4 py-3 rounded-lg text-white placeholder-gray-500 focus:outline-none"
-                            >
-                            <div class="absolute right-3 top-3.5 w-5 h-5 text-purple-400">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a22 22 0 0021.89 4.74L21 8M3 8l7.89-5.26a22 22 0 0021.89-4.74L21 8M3 8l7.89 5.26a22 22 0 0021.89 4.74L21 8"></path>
-                                </svg>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Password Fields -->
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label for="password" class="block text-sm font-medium text-gray-300 mb-2">
-                                Password
-                            </label>
-                            <div class="relative">
-                                <input
-                                    type="password"
-                                    id="password"
-                                    name="password"
-                                    required
-                                    placeholder="•••••••"
-                                    class="neon-input w-full px-4 py-3 pr-12 rounded-lg text-white placeholder-gray-500 focus:outline-none"
-                                >
-                                <div class="absolute right-3 top-3.5 w-5 h-5 text-purple-400 cursor-pointer" onclick="togglePassword()">
-                                <svg id="eye-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 4.5 7.943 1.268 12 2.458 12z"></path>
-                                </svg>
-                            </div>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="confirm-password" class="block text-sm font-medium text-gray-300 mb-2">
-                                Confirm Password
-                            </label>
-                            <div class="relative">
-                                <input
-                                    type="password"
-                                    id="confirm-password"
-                                    name="confirm-password"
-                                    required
-                                    placeholder="•••••••"
-                                    class="neon-input w-full px-4 py-3 pr-12 rounded-lg text-white placeholder-gray-500 focus:outline-none"
-                                >
-                                <div class="absolute right-3 top-3.5 w-5 h-5 text-purple-400 cursor-pointer" onclick="toggleConfirmPassword()">
-                                    <svg id="eye-confirm-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 4.5 7.943 1.268 12 2.458 12z"></path>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Error Message -->
-                    {% if error %}
-                    <div class="bg-red-500 bg-opacity-20 border border-red-500 rounded-lg p-3 text-red-400 text-sm animate-slide-up">
-                        {{ error }}
-                    </div>
-                    {% endif %}
-                    
-                    <div id="error-message" class="hidden bg-red-500 bg-opacity-20 border border-red-500 rounded-lg p-3 text-red-400 text-sm animate-slide-up">
-                        <!-- Error messages will appear here -->
-                    </div>
-
-                    <!-- Success Message -->
-                    {% if success %}
-                    <div class="bg-green-500 bg-opacity-20 border border-green-500 rounded-lg p-3 text-green-400 text-sm animate-slide-up">
-                        {{ success }}
-                    </div>
-                    {% endif %}
-                    
-                    <div id="success-message" class="hidden bg-green-500 bg-opacity-20 border border-green-500 rounded-lg p-3 text-green-400 text-sm animate-slide-up">
-                        <!-- Success messages will appear here -->
-                    </div>
-
-                    <!-- Submit Button -->
-                    <button
-                        type="submit"
-                        class="neon-button w-full py-3 px-4 rounded-lg text-white font-semibold hover:scale-105 transition-all duration-300 relative overflow-hidden"
-                    >
-                        <span class="relative z-10">Create Account</span>
-                    </button>
-                </form>
-
-                <!-- Login Link -->
-                <div class="text-center mt-6 pt-6 border-t border-gray-700">
-                    <p class="text-gray-400 text-sm">
-                        Already have an account?
-                        <a href="/login" class="text-purple-400 hover:text-purple-300 font-semibold transition-colors">
-                            Sign In
-                        </a>
-                    </p>
-                </div>
-            </div>
+        <!-- Login Link -->
+        <div class="mt-8 pt-4 border-t border-gray-200/50">
+            <p class="neuro-link">
+                Already have an account? 
+                <a href="/login" class="neuro-link-bold">Log in</a>
+            </p>
         </div>
     </div>
+</div>
+{% endblock %}
 
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.getElementById('eye-icon');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0012 19c4.9 0 9.09-3.642 9.09-8.108 0-3.511.5 1.5 0 01.293-1.293L6.58 18.707a1.5 1.5 0 01-1.293 1.293z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>';
-            } else {
-                passwordInput.type = 'password';
-                eyeIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 4.5 7.943 1.268 12 2.458 12z"></path>';
-            }
-        }
 
-        function toggleConfirmPassword() {
-            const confirmPasswordInput = document.getElementById('confirm-password');
-            const eyeConfirmIcon = document.getElementById('eye-confirm-icon');
-            
-            if (confirmPasswordInput.type === 'password') {
-                confirmPasswordInput.type = 'text';
-                eyeConfirmIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0012 19c4.9 0 9.09-3.642 9.09-8.108 0-3.511.5 1.5 0 01.293-1.293L6.58 18.707a1.5 1.5 0 01-1.293 1.293z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>';
-            } else {
-                confirmPasswordInput.type = 'password';
-                eyeConfirmIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 4.5 7.943 1.268 12 2.458 12z"></path>';
-            }
-        }
 
-        document.getElementById('register-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = {
-                first_name: formData.get('first-name'),
-                last_name: formData.get('last-name'),
-                email: formData.get('email'),
-                password: formData.get('password'),
-                confirm_password: formData.get('confirm-password')
-            };
-            
-            // Validate passwords match
-            if (data.password !== data.confirm_password) {
-                showError('Passwords do not match');
-                return;
-            }
-            
-            // Hide previous messages
-            hideMessages();
-            
-            // Show loading state
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span class="relative z-10">Creating Account...</span>';
-            submitBtn.disabled = true;
-            
-            try {
-                const response = await fetch('/auth/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: new URLSearchParams(data)
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    showSuccess('Account created successfully! Redirecting to login...');
-                    setTimeout(() => {
-                        window.location.href = '/login';
-                    }, 2000);
-                } else {
-                    showError(result.message || 'Registration failed');
-                }
-            } catch (error) {
-                console.error('Registration error:', error);
-                showError('An error occurred. Please try again.');
-            } finally {
-                // Restore button state
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }
+
+
+{% block scripts %}
+<script>
+// Password visibility toggle for password field
+document.getElementById('toggle-password').addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+    const passwordIcon = document.getElementById('password-icon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordIcon.classList.remove('fa-eye');
+        passwordIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        passwordIcon.classList.remove('fa-eye-slash');
+        passwordIcon.classList.add('fa-eye');
+    }
+});
+
+// Password visibility toggle for confirm password field
+document.getElementById('toggle-confirm-password').addEventListener('click', function() {
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const confirmPasswordIcon = document.getElementById('confirm-password-icon');
+    
+    if (confirmPasswordInput.type === 'password') {
+        confirmPasswordInput.type = 'text';
+        confirmPasswordIcon.classList.remove('fa-eye');
+        confirmPasswordIcon.classList.add('fa-eye-slash');
+    } else {
+document.getElementById('register-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.classList.add('hidden');
+    
+    const formData = new FormData(this);
+    const data = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        confirm_password: formData.get('password'),
+        first_name: formData.get('first-name'),
+        last_name: formData.get('last-name')
+    };
+    
+    if (data.password !== data.confirm_password) {
+        showError('Passwords do not match');
+        return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+        showError('Please enter a valid email address');
+        return;
+    }
+    
+    // Validate password length
+    if (data.password.length < 8) {
+        showError('Password must be at least 8 characters long');
+        return;
+    }
+    
+    // Hide previous messages
+    hideMessages();
+    
+    // Disable submit button and show loading state
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Creating Account...';
+    submitButton.classList.add('opacity-75', 'cursor-not-allowed');
+    
+    try {
+        const response = await fetch('/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
         });
-
-        function showError(message) {
-            const errorDiv = document.getElementById('error-message');
-            errorDiv.textContent = message;
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            showSuccess('Account created successfully! Redirecting to login...');
+            window.location.href = '/login';
+        } else {
+            errorDiv.textContent = result.message || 'Registration failed';
             errorDiv.classList.remove('hidden');
-            document.getElementById('success-message').classList.add('hidden');
         }
+    } catch (error) {
+        console.error('Registration error:', error);
+        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.classList.remove('hidden');
+    } finally {
+    successDiv.classList.remove('hidden');
+    document.getElementById('error-message').classList.add('hidden');
+    
+    // Scroll to success message
+    successDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 
-        function showSuccess(message) {
-            const successDiv = document.getElementById('success-message');
-            successDiv.textContent = message;
-            successDiv.classList.remove('hidden');
-            document.getElementById('error-message').classList.add('hidden');
-        }
+function hideMessages() {
+    document.getElementById('error-message').classList.add('hidden');
+    document.getElementById('success-message').classList.add('hidden');
+}
 
-        function hideMessages() {
-            document.getElementById('error-message').classList.add('hidden');
-            document.getElementById('success-message').classList.add('hidden');
-        }
-    </script>
-</body>
-</html>
+// Add input validation feedback
+document.getElementById('email').addEventListener('blur', function() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (this.value && !emailRegex.test(this.value)) {
+        this.classList.add('border-red-500');
+        this.classList.remove('border-purple-600');
+    } else if (this.value) {
+        this.classList.remove('border-red-500');
+        this.classList.add('border-green-500');
+    }
+});
+
+document.getElementById('password').addEventListener('input', function() {
+    const confirmPassword = document.getElementById('confirm-password');
+    if (confirmPassword.value && confirmPassword.value !== this.value) {
+        confirmPassword.classList.add('border-red-500');
+        confirmPassword.classList.remove('border-purple-600', 'border-green-500');
+    } else if (confirmPassword.value && confirmPassword.value === this.value) {
+        confirmPassword.classList.remove('border-red-500');
+        confirmPassword.classList.add('border-green-500');
+    }
+});
+
+document.getElementById('confirm-password').addEventListener('input', function() {
+    const password = document.getElementById('password');
+    if (this.value && this.value !== password.value) {
+        this.classList.add('border-red-500');
+        this.classList.remove('border-purple-600', 'border-green-500');
+    } else if (this.value && this.value === password.value) {
+        this.classList.remove('border-red-500');
+        this.classList.add('border-green-500');
+    }
+});
+</script>
+{% endblock %}

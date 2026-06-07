@@ -2,299 +2,108 @@
 
 {% block title %}Register - Career DNA{% endblock %}
 
+{% set hide_nav = True %}
+{% set hide_footer = True %}
+
 {% block content %}
-<div class="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 flex items-center justify-center py-12 px-4">
-    <div class="max-w-md w-full">
-        <!-- Register Form Card -->
-        <div class="bg-purple-800 bg-opacity-50 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-purple-600 border-opacity-30">
-            <!-- Header -->
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-white mb-2">Create Account</h1>
-                <p class="text-purple-200">Join thousands discovering their dream careers</p>
+<div class="min-h-screen flex items-center justify-center py-12 px-4">
+    <div class="max-w-[420px] w-full animate-slide-up">
+        <div class="neuro-card overflow-hidden !p-0">
+            <!-- Teal Header Panel -->
+            <div class="auth-header-panel">
+                <p class="text-white/80 text-sm font-medium uppercase tracking-wider mb-1">Join Us</p>
+                <h1 class="text-white text-3xl font-bold">Sign Up</h1>
             </div>
 
-            <form id="register-form" class="space-y-4">
-                <!-- Name Fields Side by Side -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="first-name" class="block text-sm font-medium text-purple-200 mb-1">
-                            First Name
-                        </label>
-                        <input
-                            type="text"
-                            id="first-name"
-                            name="first-name"
-                            required
-                            class="w-full px-3 py-2 bg-purple-700 bg-opacity-50 border border-purple-600 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50 transition-all"
-                            placeholder="First name"
-                        >
+            <!-- Form Content -->
+            <div class="p-10 space-y-6">
+                <form id="register-form" class="space-y-4">
+                    <div class="space-y-1">
+                        <label class="text-text-muted text-[10px] uppercase font-bold tracking-widest ml-1">Email Address</label>
+                        <input type="email" name="email" required class="neuro-input" placeholder="your@email.com">
                     </div>
-                    <div>
-                        <label for="last-name" class="block text-sm font-medium text-purple-200 mb-1">
-                            Last Name
-                        </label>
-                        <input
-                            type="text"
-                            id="last-name"
-                            name="last-name"
-                            required
-                            class="w-full px-3 py-2 bg-purple-700 bg-opacity-50 border border-purple-600 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50 transition-all"
-                            placeholder="Last name"
-                        >
+
+                    <div class="space-y-1">
+                        <label class="text-text-muted text-[10px] uppercase font-bold tracking-widest ml-1">Full Name</label>
+                        <input type="text" name="first-name" required class="neuro-input" placeholder="John Doe">
                     </div>
-                </div>
 
-                <!-- Email -->
-                <div>
-                    <label for="email" class="block text-sm font-medium text-purple-200 mb-1">
-                        Email Address
-                    </label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        required
-                        class="w-full px-3 py-2 bg-purple-700 bg-opacity-50 border border-purple-600 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50 transition-all"
-                        placeholder="Email address"
-                    >
-                </div>
-
-                <!-- Password -->
-                <div>
-                    <label for="password" class="block text-sm font-medium text-purple-200 mb-1">
-                        Password
-                    </label>
-                    <div class="relative">
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            required
-                            class="w-full px-3 py-2 pr-10 bg-purple-700 bg-opacity-50 border border-purple-600 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50 transition-all"
-                            placeholder="Password"
-                        >
-                        <button type="button" id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-300 hover:text-white transition-colors">
-                            <i class="fas fa-eye" id="password-icon"></i>
-                        </button>
+                    <div class="space-y-1">
+                        <label class="text-text-muted text-[10px] uppercase font-bold tracking-widest ml-1">Username</label>
+                        <input type="text" name="last-name" required class="neuro-input" placeholder="johndoe123">
                     </div>
-                </div>
 
-                <!-- Confirm Password -->
-                <div>
-                    <label for="confirm-password" class="block text-sm font-medium text-purple-200 mb-1">
-                        Confirm Password
-                    </label>
-                    <div class="relative">
-                        <input
-                            type="password"
-                            id="confirm-password"
-                            name="confirm-password"
-                            required
-                            class="w-full px-3 py-2 pr-10 bg-purple-700 bg-opacity-50 border border-purple-600 rounded-lg text-white placeholder-purple-300 focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50 transition-all"
-                            placeholder="Confirm password"
-                        >
-                        <button type="button" id="toggle-confirm-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-purple-300 hover:text-white transition-colors">
-                            <i class="fas fa-eye" id="confirm-password-icon"></i>
-                        </button>
+                    <div class="space-y-1">
+                        <label class="text-text-muted text-[10px] uppercase font-bold tracking-widest ml-1">Password</label>
+                        <input type="password" name="password" required class="neuro-input" placeholder="••••••••">
                     </div>
+
+                    <div id="error-message" class="hidden text-red-400 text-xs bg-red-400/10 p-3 rounded-lg border border-red-400/20 text-center"></div>
+
+                    <button type="submit" class="btn-accent w-full py-3.5 mt-4">
+                        Sign Up
+                    </button>
+                </form>
+
+                <div class="relative py-4">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-border"></div></div>
+                    <div class="relative flex justify-center text-xs uppercase"><span class="bg-bg-card px-3 text-text-muted">or</span></div>
                 </div>
 
-                <!-- Error Message -->
-                <div id="error-message" class="hidden bg-red-500 bg-opacity-20 border border-red-500 rounded-lg p-3 text-red-300 text-sm">
-                    <!-- Error messages will appear here -->
-                </div>
-
-                <!-- Success Message -->
-                <div id="success-message" class="hidden bg-green-500 bg-opacity-20 border border-green-500 rounded-lg p-3 text-green-300 text-sm">
-                    <!-- Success messages will appear here -->
-                </div>
-
-                <!-- Submit Button -->
-                <button
-                    type="submit"
-                    class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-semibold py-3 rounded-lg transition-all duration-200 transform hover:scale-105 shadow-lg"
-                >
-                    Create Account
-                </button>
-            </form>
-
-            <!-- Login Link -->
-            <div class="text-center mt-6">
-                <p class="text-purple-200">
-                    Already have an account?
-                    <a href="/login" class="text-purple-300 hover:text-white font-semibold transition-colors">
-                        Sign In
-                    </a>
+                <p class="text-center text-sm text-text-secondary">
+                    Already have an account? 
+                    <a href="/login" class="text-accent-light font-bold hover:underline">Log In</a>
                 </p>
             </div>
         </div>
+
+        <div class="mt-8 text-center">
+            <a href="/" class="logo-text text-xl">Career DNA</a>
+        </div>
     </div>
 </div>
-
 {% endblock %}
 
 {% block scripts %}
 <script>
-// Password visibility toggle for password field
-document.getElementById('toggle-password').addEventListener('click', function() {
-    const passwordInput = document.getElementById('password');
-    const passwordIcon = document.getElementById('password-icon');
-    
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        passwordIcon.classList.remove('fa-eye');
-        passwordIcon.classList.add('fa-eye-slash');
-    } else {
-        passwordInput.type = 'password';
-        passwordIcon.classList.remove('fa-eye-slash');
-        passwordIcon.classList.add('fa-eye');
-    }
-});
-
-// Password visibility toggle for confirm password field
-document.getElementById('toggle-confirm-password').addEventListener('click', function() {
-    const confirmPasswordInput = document.getElementById('confirm-password');
-    const confirmPasswordIcon = document.getElementById('confirm-password-icon');
-    
-    if (confirmPasswordInput.type === 'password') {
-        confirmPasswordInput.type = 'text';
-        confirmPasswordIcon.classList.remove('fa-eye');
-        confirmPasswordIcon.classList.add('fa-eye-slash');
-    } else {
-        confirmPasswordInput.type = 'password';
-        confirmPasswordIcon.classList.remove('fa-eye-slash');
-        confirmPasswordIcon.classList.add('fa-eye');
-    }
-});
-
-// Form submission
 document.getElementById('register-form').addEventListener('submit', async function(e) {
     e.preventDefault();
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.classList.add('hidden');
     
     const formData = new FormData(this);
     const data = {
         email: formData.get('email'),
         password: formData.get('password'),
-        confirm_password: formData.get('confirm-password'),
+        confirm_password: formData.get('password'), // Using same as password for simplicity in this UI
         first_name: formData.get('first-name'),
         last_name: formData.get('last-name')
     };
     
-    // Validate passwords match
-    if (data.password !== data.confirm_password) {
-        showError('Passwords do not match');
-        return;
-    }
-    
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(data.email)) {
-        showError('Please enter a valid email address');
-        return;
-    }
-    
-    // Validate password length
-    if (data.password.length < 8) {
-        showError('Password must be at least 8 characters long');
-        return;
-    }
-    
-    // Hide previous messages
-    hideMessages();
-    
-    // Disable submit button and show loading state
-    const submitButton = this.querySelector('button[type="submit"]');
-    const originalText = submitButton.textContent;
-    submitButton.disabled = true;
-    submitButton.textContent = 'Creating Account...';
-    submitButton.classList.add('opacity-75', 'cursor-not-allowed');
+    const btn = this.querySelector('button');
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Creating Account...';
     
     try {
         const response = await fetch('/auth/register', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         });
-        
         const result = await response.json();
-        
         if (response.ok) {
-            showSuccess('Account created successfully! Redirecting to login...');
-            setTimeout(() => {
-                window.location.href = '/login';
-            }, 2000);
+            window.location.href = '/login';
         } else {
-            showError(result.message || 'Registration failed');
+            errorDiv.textContent = result.message || 'Registration failed';
+            errorDiv.classList.remove('hidden');
         }
     } catch (error) {
-        console.error('Registration error:', error);
-        showError('An error occurred. Please try again.');
+        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.classList.remove('hidden');
     } finally {
-        // Re-enable submit button
-        submitButton.disabled = false;
-        submitButton.textContent = originalText;
-        submitButton.classList.remove('opacity-75', 'cursor-not-allowed');
-    }
-});
-
-function showError(message) {
-    const errorDiv = document.getElementById('error-message');
-    errorDiv.textContent = message;
-    errorDiv.classList.remove('hidden');
-    document.getElementById('success-message').classList.add('hidden');
-    
-    // Scroll to error message
-    errorDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function showSuccess(message) {
-    const successDiv = document.getElementById('success-message');
-    successDiv.textContent = message;
-    successDiv.classList.remove('hidden');
-    document.getElementById('error-message').classList.add('hidden');
-    
-    // Scroll to success message
-    successDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function hideMessages() {
-    document.getElementById('error-message').classList.add('hidden');
-    document.getElementById('success-message').classList.add('hidden');
-}
-
-// Add input validation feedback
-document.getElementById('email').addEventListener('blur', function() {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (this.value && !emailRegex.test(this.value)) {
-        this.classList.add('border-red-500');
-        this.classList.remove('border-purple-600');
-    } else if (this.value) {
-        this.classList.remove('border-red-500');
-        this.classList.add('border-green-500');
-    }
-});
-
-document.getElementById('password').addEventListener('input', function() {
-    const confirmPassword = document.getElementById('confirm-password');
-    if (confirmPassword.value && confirmPassword.value !== this.value) {
-        confirmPassword.classList.add('border-red-500');
-        confirmPassword.classList.remove('border-purple-600', 'border-green-500');
-    } else if (confirmPassword.value && confirmPassword.value === this.value) {
-        confirmPassword.classList.remove('border-red-500');
-        confirmPassword.classList.add('border-green-500');
-    }
-});
-
-document.getElementById('confirm-password').addEventListener('input', function() {
-    const password = document.getElementById('password');
-    if (this.value && this.value !== password.value) {
-        this.classList.add('border-red-500');
-        this.classList.remove('border-purple-600', 'border-green-500');
-    } else if (this.value && this.value === password.value) {
-        this.classList.remove('border-red-500');
-        this.classList.add('border-green-500');
+        btn.disabled = false;
+        btn.textContent = originalText;
     }
 });
 </script>

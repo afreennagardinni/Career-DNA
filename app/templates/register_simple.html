@@ -1,161 +1,212 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Career DNA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #0f0f23 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: sans-serif;
-            color: white;
-        }
-        
-        .register-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 16px;
-            padding: 32px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        
-        .input-field {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.5);
-            border-radius: 8px;
-            padding: 12px 16px;
-            width: 100%;
-            color: white;
-            margin-bottom: 16px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        
-        .input-field:focus {
-            outline: none;
-            border-color: #8B5CF6;
-            box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
-        }
-        
-        .submit-btn {
-            background: linear-gradient(45deg, #8B5CF6, #7C3AED);
-            border: none;
-            border-radius: 8px;
-            padding: 12px 24px;
-            width: 100%;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 24px;
-        }
-        
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
-        }
-        
-        .title {
-            text-align: center;
-            margin-bottom: 32px;
-        }
-        
-        .title h1 {
-            background: linear-gradient(45deg, #8B5CF6, #7C3AED);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-size: 32px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-        
-        .title p {
-            color: rgba(255, 255, 255, 0.7);
-            margin: 0;
-        }
-        
-        .error {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.5);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 16px;
-            color: #f87171;
-        }
-        
-        .login-link {
-            text-align: center;
-            margin-top: 24px;
-            color: rgba(255, 255, 255, 0.7);
-        }
-        
-        .login-link a {
-            color: #8B5CF6;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        
-        .login-link a:hover {
-            color: #A78BFA;
-        }
-    </style>
-</head>
-<body>
-    <div class="register-card">
-        <div class="title">
-            <h1>Career DNA</h1>
-            <p>Begin your professional journey today</p>
-        </div>
-        
-        {% if error %}
-        <div class="error">
-            {{ error }}
-        </div>
-        {% endif %}
-        
-        {% if success %}
-        <div class="error" style="background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.5); color: #86efac;">
-            {{ success }}
-        </div>
-        {% endif %}
-        
-        <form action="/auth/register" method="POST">
-            <div class="input-field">
-                <input type="text" name="first-name" placeholder="First Name" required>
+{% extends "base.html" %}
+{% block title %}Register - Career DNA{% endblock %}
+
+{% set hide_nav = True %}
+{% set hide_footer = True %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="neuro-card animate-fade-in">
+        <!-- Logo -->
+        <span class="neuro-logo">Career DNA</span>
+
+        <!-- Register Form -->
+        <form id="register-form" class="space-y-1">
+            <input
+                type="text"
+                name="email"
+                id="email"
+                required
+                class="neuro-input"
+                placeholder="Phone number or email"
+            >
+            <input
+                type="text"
+                name="first-name"
+                id="first-name"
+                required
+                class="neuro-input"
+                placeholder="Full name"
+            >
+            <input
+                type="text"
+                name="last-name"
+                id="last-name"
+                required
+                class="neuro-input"
+                placeholder="Username"
+            >
+            <input
+                type="password"
+                name="password"
+                id="password"
+                required
+                class="neuro-input"
+                placeholder="Password"
+            >
+
+            <!-- Error Message -->
+            <div id="error-message" class="hidden text-red-500 text-[11px] mb-2 text-center"></div>
+
+            <div class="pt-2">
+                <button type="submit" class="neuro-btn">
+                    Sign up
+                </button>
             </div>
-            
-            <div class="input-field">
-                <input type="text" name="last-name" placeholder="Last Name" required>
-            </div>
-            
-            <div class="input-field">
-                <input type="email" name="email" placeholder="Email Address" required>
-            </div>
-            
-            <div class="input-field">
-                <input type="password" name="password" placeholder="Password" required>
-            </div>
-            
-            <div class="input-field">
-                <input type="password" name="confirm-password" placeholder="Confirm Password" required>
-            </div>
-            
-            <button type="submit" class="submit-btn">Create Account</button>
         </form>
-        
-        <div class="login-link">
-            Already have an account? <a href="/login">Sign In</a>
+
+        <!-- Login Link -->
+        <div class="mt-8 pt-4 border-t border-gray-200/50">
+            <p class="neuro-link">
+                Already have an account? 
+                <a href="/login" class="neuro-link-bold">Log in</a>
+            </p>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}
+
+
+
+
+
+{% block scripts %}
+<script>
+// Password visibility toggle for password field
+document.getElementById('toggle-password').addEventListener('click', function() {
+    const passwordInput = document.getElementById('password');
+    const passwordIcon = document.getElementById('password-icon');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordIcon.classList.remove('fa-eye');
+        passwordIcon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        passwordIcon.classList.remove('fa-eye-slash');
+        passwordIcon.classList.add('fa-eye');
+    }
+});
+
+// Password visibility toggle for confirm password field
+document.getElementById('toggle-confirm-password').addEventListener('click', function() {
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const confirmPasswordIcon = document.getElementById('confirm-password-icon');
+    
+    if (confirmPasswordInput.type === 'password') {
+        confirmPasswordInput.type = 'text';
+        confirmPasswordIcon.classList.remove('fa-eye');
+        confirmPasswordIcon.classList.add('fa-eye-slash');
+    } else {
+document.getElementById('register-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const errorDiv = document.getElementById('error-message');
+    errorDiv.classList.add('hidden');
+    
+    const formData = new FormData(this);
+    const data = {
+        email: formData.get('email'),
+        password: formData.get('password'),
+        confirm_password: formData.get('password'),
+        first_name: formData.get('first-name'),
+        last_name: formData.get('last-name')
+    };
+    
+    if (data.password !== data.confirm_password) {
+        showError('Passwords do not match');
+        return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+        showError('Please enter a valid email address');
+        return;
+    }
+    
+    // Validate password length
+    if (data.password.length < 8) {
+        showError('Password must be at least 8 characters long');
+        return;
+    }
+    
+    // Hide previous messages
+    hideMessages();
+    
+    // Disable submit button and show loading state
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Creating Account...';
+    submitButton.classList.add('opacity-75', 'cursor-not-allowed');
+    
+    try {
+        const response = await fetch('/auth/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            showSuccess('Account created successfully! Redirecting to login...');
+            window.location.href = '/login';
+        } else {
+            errorDiv.textContent = result.message || 'Registration failed';
+            errorDiv.classList.remove('hidden');
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.classList.remove('hidden');
+    } finally {
+    successDiv.classList.remove('hidden');
+    document.getElementById('error-message').classList.add('hidden');
+    
+    // Scroll to success message
+    successDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function hideMessages() {
+    document.getElementById('error-message').classList.add('hidden');
+    document.getElementById('success-message').classList.add('hidden');
+}
+
+// Add input validation feedback
+document.getElementById('email').addEventListener('blur', function() {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (this.value && !emailRegex.test(this.value)) {
+        this.classList.add('border-red-500');
+        this.classList.remove('border-purple-600');
+    } else if (this.value) {
+        this.classList.remove('border-red-500');
+        this.classList.add('border-green-500');
+    }
+});
+
+document.getElementById('password').addEventListener('input', function() {
+    const confirmPassword = document.getElementById('confirm-password');
+    if (confirmPassword.value && confirmPassword.value !== this.value) {
+        confirmPassword.classList.add('border-red-500');
+        confirmPassword.classList.remove('border-purple-600', 'border-green-500');
+    } else if (confirmPassword.value && confirmPassword.value === this.value) {
+        confirmPassword.classList.remove('border-red-500');
+        confirmPassword.classList.add('border-green-500');
+    }
+});
+
+document.getElementById('confirm-password').addEventListener('input', function() {
+    const password = document.getElementById('password');
+    if (this.value && this.value !== password.value) {
+        this.classList.add('border-red-500');
+        this.classList.remove('border-purple-600', 'border-green-500');
+    } else if (this.value && this.value === password.value) {
+        this.classList.remove('border-red-500');
+        this.classList.add('border-green-500');
+    }
+});
+</script>
+{% endblock %}

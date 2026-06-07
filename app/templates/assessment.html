@@ -1,306 +1,277 @@
 {% extends "base.html" %}
 
-{% block title %}Career DNA - Assessment{% endblock %}
+{% block title %}Assessment - Career DNA{% endblock %}
 
 {% block content %}
-<div class="min-h-screen py-12 px-4">
-    <div class="max-w-4xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-12 animate-fade-in">
-            <h1 class="text-4xl font-bold mb-4 glow-text">Personality Assessment</h1>
-            <p class="text-gray-400 text-lg">Answer honestly to get accurate career recommendations</p>
-        </div>
+<style>
+    #question-text {
+        color: #000000 !important;
+        font-weight: 800 !important;
+    }
+    .option-card div, 
+    .option-circle {
+        color: var(--accent) !important;
+        font-weight: 700 !important;
+    }
+    .text-primary, .text-secondary {
+        color: #1a1f2e !important; /* High contrast dark gray/black */
+    }
+</style>
 
-        <!-- Progress Bar -->
-        <div class="glass-card rounded-xl p-6 mb-8 animate-slide-up">
-            <div class="flex justify-between mb-2">
-                <span class="text-sm text-gray-400">Progress</span>
-                <span class="text-sm text-accent" id="progress-text">0%</span>
-            </div>
-            <div class="w-full bg-gray-700 rounded-full h-2">
-                <div class="progress-bar h-2 rounded-full" id="progress-bar" style="width: 0%"></div>
-            </div>
-        </div>
+<script>
+    // Force remove any leftover dark-mode class
+    document.documentElement.classList.remove('dark-mode');
+</script>
 
-        <!-- Assessment Type Selector -->
-        <div class="glass-card rounded-xl p-6 mb-8 animate-slide-up" id="assessment-selector">
-            <h2 class="text-2xl font-semibold mb-6 text-center">Choose Assessment Type</h2>
-            <div class="grid md:grid-cols-2 gap-6">
-                <button onclick="startAssessment('big_five_ocean')" class="glass-card hover:bg-glass p-6 rounded-xl transition-all hover:scale-105 group">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-glow">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2">Big Five (OCEAN)</h3>
-                        <p class="text-gray-400 text-sm">Measure Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism</p>
-                    </div>
-                </button>
-                <button onclick="startAssessment('riasec')" class="glass-card hover:bg-glass p-6 rounded-xl transition-all hover:scale-105 group">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-4 group-hover:animate-pulse-glow">
-                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-semibold mb-2">RIASEC</h3>
-                        <p class="text-gray-400 text-sm">Discover your Holland Code: Realistic, Investigative, Artistic, Social, Enterprising, Conventional</p>
-                    </div>
-                </button>
+<div id="assessment-container" class="max-w-4xl mx-auto py-10 space-y-10">
+    <!-- Progress Header -->
+    <div class="space-y-4">
+        <div class="flex justify-between items-center">
+            <div class="neuro-inset px-4 py-2 flex items-center gap-3">
+                <i class="fas fa-dna text-accent"></i>
+                <span class="text-xs font-bold uppercase tracking-widest text-accent">
+                    Question <span id="current-question-num">1</span> of <span id="total-questions">20</span>
+                </span>
+            </div>
+            <div id="category-badge" class="btn-accent !py-1 !px-4 text-[10px] uppercase tracking-widest rounded-full">
+                Analyzing
             </div>
         </div>
+        
+        <div class="h-4 w-full neuro-inset !rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-gradient-to-r from-accent to-accent-light transition-all duration-500 rounded-full" style="width: 5%"></div>
+        </div>
+    </div>
 
-        <!-- Question Container -->
-        <div class="glass-card rounded-xl p-8 mb-8 hidden animate-slide-up" id="question-container">
-            <div class="mb-6">
-                <span class="text-accent text-sm font-medium">Question <span id="question-number">1</span> of <span id="total-questions">50</span></span>
+    <!-- Question Card -->
+    <div class="neuro-card p-12 text-center space-y-10 animate-slide-up">
+        <h2 id="question-text" class="text-2xl md:text-3xl font-bold leading-tight">
+            Loading your assessment...
+        </h2>
+
+        <!-- Options Container -->
+        <div id="options-container" class="min-h-[200px] flex items-center justify-center">
+            <!-- Scale Options (Circular neuro-btn) -->
+            <div id="scale-options" class="hidden grid grid-cols-5 gap-4 md:gap-8">
+                <button class="option-circle neuro-btn w-14 h-14 md:w-20 md:h-20 !p-0 rounded-full mx-auto" data-score="1">1</button>
+                <button class="option-circle neuro-btn w-14 h-14 md:w-20 md:h-20 !p-0 rounded-full mx-auto" data-score="2">2</button>
+                <button class="option-circle neuro-btn w-14 h-14 md:w-20 md:h-20 !p-0 rounded-full mx-auto" data-score="3">3</button>
+                <button class="option-circle neuro-btn w-14 h-14 md:w-20 md:h-20 !p-0 rounded-full mx-auto" data-score="4">4</button>
+                <button class="option-circle neuro-btn w-14 h-14 md:w-20 md:h-20 !p-0 rounded-full mx-auto" data-score="5">5</button>
             </div>
-            <h2 class="text-2xl font-semibold mb-8 text-center" id="question-text">Loading question...</h2>
-            
-            <!-- Circular Answer Buttons - Grid Layout -->
-            <div class="grid grid-cols-5 gap-4 max-w-2xl mx-auto" id="answer-buttons">
-                <!-- Buttons will be generated by JavaScript -->
+
+            <!-- Card Options (2x2 Grid) -->
+            <div id="card-options" class="hidden grid md:grid-cols-2 gap-6 w-full">
+                <!-- Card templates will be injected here -->
             </div>
         </div>
 
-        <!-- Navigation Buttons -->
-        <div class="flex justify-between gap-4 hidden" id="nav-buttons">
-            <button onclick="previousQuestion()" class="glass-card hover:bg-glass px-6 py-3 rounded-xl transition-all hover:scale-105" id="prev-btn">
-                Previous
+        <div class="flex justify-center pt-6">
+            <button id="next-btn" class="btn-accent px-12 py-4 text-lg hidden animate-slide-up">
+                Next Question
+                <i class="fas fa-arrow-right ml-3"></i>
             </button>
-            <button onclick="nextQuestion()" class="bg-accent hover:bg-accent-dark px-6 py-3 rounded-xl transition-all hover:scale-105 animate-pulse-glow" id="next-btn">
-                Next
-            </button>
-            <button onclick="submitAssessment()" class="bg-accent hover:bg-accent-dark px-6 py-3 rounded-xl transition-all hover:scale-105 animate-pulse-glow hidden" id="submit-btn">
-                Submit
-            </button>
-        </div>
-
-        <!-- Loading State -->
-        <div class="glass-card rounded-xl p-12 text-center hidden" id="loading-container">
-            <div class="animate-spin w-16 h-16 border-4 border-accent border-t-transparent rounded-full mx-auto mb-4"></div>
-            <p class="text-xl text-gray-300">Analyzing your responses...</p>
-            <p class="text-gray-400 mt-2">This may take a moment</p>
         </div>
     </div>
 </div>
 
+<!-- Processing Screen -->
+<div id="processing-screen" class="hidden fixed inset-0 bg-bg/95 backdrop-blur-xl z-[100] flex items-center justify-center p-6">
+    <div class="neuro-card max-w-md w-full p-10 text-center space-y-8 animate-fade-in">
+        <div class="relative w-24 h-24 mx-auto">
+            <div class="absolute inset-0 border-4 border-accent/20 rounded-full"></div>
+            <div class="absolute inset-0 border-4 border-accent rounded-full border-t-transparent animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center text-accent">
+                <i class="fas fa-dna text-3xl"></i>
+            </div>
+        </div>
+        
+        <div class="space-y-2">
+            <h2 class="text-2xl font-bold text-primary">Analyzing Your DNA</h2>
+            <p class="text-secondary">AI agents are processing your traits...</p>
+        </div>
+
+        <div id="processing-steps" class="space-y-3 text-left max-w-[240px] mx-auto">
+            <div class="flex items-center gap-3 text-text-muted transition-colors duration-500" id="step-1">
+                <i class="fas fa-circle-notch animate-spin text-accent"></i>
+                <span class="text-sm">Mapping personality traits</span>
+            </div>
+            <div class="flex items-center gap-3 text-text-muted transition-colors duration-500" id="step-2">
+                <i class="fas fa-circle text-[8px]"></i>
+                <span class="text-sm">Evaluating interests</span>
+            </div>
+            <div class="flex items-center gap-3 text-text-muted transition-colors duration-500" id="step-3">
+                <i class="fas fa-circle text-[8px]"></i>
+                <span class="text-sm">Generating career paths</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .option-circle.selected {
+        background: var(--accent);
+        color: white;
+        box-shadow: 
+            inset 3px 3px 8px var(--neuro-dark),
+            inset -3px -3px 8px var(--neuro-light),
+            0 0 20px var(--accent-glow);
+    }
+    .option-card.selected {
+        border-color: var(--accent);
+        box-shadow: 
+            inset 3px 3px 8px var(--neuro-dark),
+            inset -3px -3px 8px var(--neuro-light),
+            0 0 0 2px var(--accent),
+            0 0 20px var(--accent-glow);
+    }
+</style>
 {% endblock %}
 
 {% block scripts %}
 <script>
-let currentQuestion = 0;
-let questions = [];
-let answers = {};
-let assessmentType = '';
+    let questions = [];
+    let currentIdx = 0;
+    let answers = {}; // Change to dictionary format {QID: value}
 
-// Answer options for Likert scale (1-5)
-const answerOptions = [
-    { value: 1, label: 'Strongly Disagree', color: 'bg-red-500' },
-    { value: 2, label: 'Disagree', color: 'bg-orange-500' },
-    { value: 3, label: 'Neutral', color: 'bg-yellow-500' },
-    { value: 4, label: 'Agree', color: 'bg-green-500' },
-    { value: 5, label: 'Strongly Agree', color: 'bg-emerald-500' }
-];
+    const container = document.getElementById('assessment-container');
+    const questionText = document.getElementById('question-text');
+    const currentNum = document.getElementById('current-question-num');
+    const totalNum = document.getElementById('total-questions');
+    const progressBar = document.getElementById('progress-bar');
+    const categoryBadge = document.getElementById('category-badge');
+    const nextBtn = document.getElementById('next-btn');
+    const processingScreen = document.getElementById('processing-screen');
+    const scaleOptions = document.getElementById('scale-options');
+    const cardOptions = document.getElementById('card-options');
 
-async function startAssessment(type) {
-    assessmentType = type;
-    
-    // Show loading
-    document.getElementById('assessment-selector').classList.add('hidden');
-    document.getElementById('question-container').classList.remove('hidden');
-    document.getElementById('nav-buttons').classList.remove('hidden');
-    
-    // Fetch questions
-    try {
-        const response = await fetch(`/assessment/questions/${type}`);
-        const data = await response.json();
-        
-        if (response.ok && data.questions) {
-            questions = data.questions;
-        } else {
-            throw new Error(data.message || 'Failed to load questions');
-        }
-        
-        document.getElementById('total-questions').textContent = questions.length;
-        generateAnswerButtons();
-        displayQuestion(0);
-    } catch (error) {
-        console.error('Error fetching questions:', error);
-        alert('Failed to load questions. Please try again.');
-    }
-}
-
-function generateAnswerButtons() {
-    const container = document.getElementById('answer-buttons');
-    container.innerHTML = '';
-    
-    answerOptions.forEach(option => {
-        const button = document.createElement('button');
-        button.className = `circular-btn ${option.color} hover:opacity-80 transition-all`;
-        button.innerHTML = `<span class="text-2xl font-bold">${option.value}</span>`;
-        button.title = option.label;
-        button.onclick = () => selectAnswer(option.value);
-        container.appendChild(button);
-    });
-}
-
-function displayQuestion(index) {
-    if (index < 0 || index >= questions.length) return;
-    
-    currentQuestion = index;
-    const question = questions[index];
-    
-    document.getElementById('question-number').textContent = index + 1;
-    document.getElementById('question-text').textContent = question.text;
-    
-    // Update progress
-    const progress = ((index + 1) / questions.length) * 100;
-    document.getElementById('progress-bar').style.width = `${progress}%`;
-    document.getElementById('progress-text').textContent = `${Math.round(progress)}%`;
-    
-    // Update button states
-    document.getElementById('prev-btn').disabled = index === 0;
-    document.getElementById('prev-btn').classList.toggle('opacity-50', index === 0);
-    
-    if (index === questions.length - 1) {
-        document.getElementById('next-btn').classList.add('hidden');
-        document.getElementById('submit-btn').classList.remove('hidden');
-    } else {
-        document.getElementById('next-btn').classList.remove('hidden');
-        document.getElementById('submit-btn').classList.add('hidden');
-    }
-    
-    // Highlight selected answer if exists
-    const selectedValue = answers[question.id];
-    const buttons = document.querySelectorAll('#answer-buttons button');
-    buttons.forEach((btn, i) => {
-        btn.classList.remove('selected');
-        if (answerOptions[i].value === selectedValue) {
-            btn.classList.add('selected');
-        }
-    });
-}
-
-function selectAnswer(value) {
-    const question = questions[currentQuestion];
-    answers[question.id] = value;
-    
-    // Highlight selected button
-    const buttons = document.querySelectorAll('#answer-buttons button');
-    buttons.forEach((btn, i) => {
-        btn.classList.remove('selected');
-        if (answerOptions[i].value === value) {
-            btn.classList.add('selected');
-        }
-    });
-    
-    // Auto-advance after short delay
-    setTimeout(() => {
-        if (currentQuestion < questions.length - 1) {
-            nextQuestion();
-        }
-    }, 300);
-}
-
-function previousQuestion() {
-    if (currentQuestion > 0) {
-        displayQuestion(currentQuestion - 1);
-    }
-}
-
-function nextQuestion() {
-    if (currentQuestion < questions.length - 1) {
-        displayQuestion(currentQuestion + 1);
-    }
-}
-
-async function submitAssessment() {
-    console.log('=== ASSESSMENT SUBMISSION DEBUG ===');
-    console.log('Assessment Type:', assessmentType);
-    console.log('Answers object:', answers);
-    
-    // Show loading
-    document.getElementById('question-container').classList.add('hidden');
-    document.getElementById('nav-buttons').classList.add('hidden');
-    document.getElementById('loading-container').classList.remove('hidden');
-    
-    // Prepare answers
-    const answerArray = Object.entries(answers).map(([question_id, value]) => ({
-        question_id,
-        value
-    }));
-    
-    const payload = {
-        assessment_type: assessmentType,
-        answers: answerArray
-    };
-    
-    console.log('Prepared payload:', payload);
-    console.log('Payload JSON string:', JSON.stringify(payload, null, 2));
-    
-    try {
-        console.log('Sending POST request to /assessment/submit-answers');
-        
-        const response = await fetch('/assessment/submit-answers', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        });
-        
-        console.log('Response status:', response.status);
-        console.log('Response headers:', response.headers);
-        
-        let result;
+    async function fetchQuestions() {
         try {
-            result = await response.json();
-            console.log('Response JSON:', result);
-        } catch (jsonError) {
-            console.error('Failed to parse JSON response:', jsonError);
-            const responseText = await response.text();
-            console.log('Raw response text:', responseText);
-            throw new Error('Invalid JSON response from server');
+            const response = await fetch('/assessment/api/questions');
+            const data = await response.json();
+            questions = data.questions;
+            totalNum.textContent = questions.length;
+            updateQuestion();
+        } catch (error) {
+            console.error('Error fetching questions:', error);
+            questionText.textContent = "Error loading questions. Please refresh.";
         }
-        
-        if (response.ok) {
-            console.log('Submission successful!');
-            console.log('Result:', result);
-            // Redirect to results page using server-provided URL
-            const redirectUrl = result.redirect_url || '/dashboard';
-            window.location.href = redirectUrl;
-        } else {
-            console.log('Submission failed with status:', response.status);
-            console.log('Error response:', result);
-            
-            // Handle authentication errors specifically
-            if (response.status === 401) {
-                alert('Please log in to submit your assessment. Redirecting to login page...');
-                setTimeout(() => {
-                    window.location.href = '/login';
-                }, 2000);
-            } else {
-                const errorMessage = result.message || result.error || 'Failed to submit assessment';
-                alert(`Error (${response.status}): ${errorMessage}`);
-            }
-            // Go back to question
-            document.getElementById('loading-container').classList.add('hidden');
-            document.getElementById('question-container').classList.remove('hidden');
-            document.getElementById('nav-buttons').classList.remove('hidden');
-        }
-    } catch (error) {
-        console.error('=== SUBMISSION ERROR ===');
-        console.error('Error type:', error.name);
-        console.error('Error message:', error.message);
-        console.error('Error stack:', error.stack);
-        
-        alert(`Network error: ${error.message}. Please try again.`);
-        document.getElementById('loading-container').classList.add('hidden');
-        document.getElementById('question-container').classList.remove('hidden');
-        document.getElementById('nav-buttons').classList.remove('hidden');
     }
-}
+
+    function updateQuestion() {
+        const q = questions[currentIdx];
+        questionText.textContent = q.text;
+        currentNum.textContent = currentIdx + 1;
+        progressBar.style.width = `${((currentIdx + 1) / questions.length) * 100}%`;
+        categoryBadge.textContent = q.type === 'scale_5' ? 'Personality' : 'Interests';
+        
+        nextBtn.classList.add('hidden');
+        
+        if (q.type === 'scale_5') {
+            cardOptions.classList.add('hidden');
+            scaleOptions.classList.remove('hidden');
+            scaleOptions.classList.add('grid');
+            resetCircles();
+        } else {
+            scaleOptions.classList.add('hidden');
+            scaleOptions.classList.remove('grid');
+            cardOptions.classList.remove('hidden');
+            cardOptions.classList.add('grid');
+            renderCards(q.options);
+        }
+    }
+
+    function resetCircles() {
+        document.querySelectorAll('.option-circle').forEach(btn => btn.classList.remove('selected'));
+    }
+
+    function renderCards(options) {
+        cardOptions.innerHTML = '';
+        options.forEach(opt => {
+            const card = document.createElement('div');
+            card.className = 'option-card neuro-card p-6 cursor-pointer hover:scale-[1.02] transition-all flex flex-col items-center gap-4';
+            card.dataset.id = opt.id;
+            card.innerHTML = `
+                <div class="text-4xl">${opt.emoji}</div>
+                <div class="text-sm font-bold text-center">${opt.text}</div>
+            `;
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                nextBtn.classList.remove('hidden');
+            });
+            cardOptions.appendChild(card);
+        });
+    }
+
+    document.querySelectorAll('.option-circle').forEach(btn => {
+        btn.addEventListener('click', function() {
+            resetCircles();
+            this.classList.add('selected');
+            nextBtn.classList.remove('hidden');
+        });
+    });
+
+    nextBtn.addEventListener('click', function() {
+        const q = questions[currentIdx];
+        let val;
+        if (q.type === 'scale_5') {
+            val = document.querySelector('.option-circle.selected').dataset.score;
+        } else {
+            val = document.querySelector('.option-card.selected').dataset.id;
+        }
+        
+        answers[q.id] = val;
+
+        if (currentIdx < questions.length - 1) {
+            currentIdx++;
+            updateQuestion();
+        } else {
+            submitAssessment();
+        }
+    });
+
+    async function submitAssessment() {
+        container.classList.add('opacity-50', 'pointer-events-none');
+        processingScreen.classList.remove('hidden');
+
+        // Simulate steps
+        await new Promise(r => setTimeout(r, 1200));
+        updateStep(1);
+        await new Promise(r => setTimeout(r, 1200));
+        updateStep(2);
+        await new Promise(r => setTimeout(r, 1200));
+        updateStep(3);
+
+        try {
+            const response = await fetch('/assessment/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ answers })
+            });
+            const result = await response.json();
+            if (response.ok) {
+                window.location.href = result.redirect;
+            }
+        } catch (error) {
+            console.error('Submission error:', error);
+            alert('Failed to submit assessment. Please try again.');
+            window.location.reload();
+        }
+    }
+
+    function updateStep(idx) {
+        const step = document.getElementById(`step-${idx}`);
+        step.classList.remove('text-text-muted');
+        step.classList.add('text-accent-light');
+        step.querySelector('i').className = 'fas fa-check-circle';
+        
+        if (idx < 3) {
+            const next = document.getElementById(`step-${idx + 1}`);
+            next.querySelector('i').className = 'fas fa-circle-notch animate-spin text-accent';
+        }
+    }
+
+    fetchQuestions();
 </script>
 {% endblock %}

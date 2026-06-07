@@ -1,0 +1,368 @@
+{% extends "base.html" %}
+
+{% block title %}Personalised Videos - Career DNA{% endblock %}
+
+{% block content %}
+<div class="space-y-8 animate-fade-in pb-20">
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 pb-6 border-b border-border">
+        <div class="space-y-2">
+            <a href="/dashboard" class="text-xs font-bold text-accent hover:underline flex items-center gap-1.5 transition-colors">
+                <i class="fas fa-chevron-left"></i> Back to Student Dashboard
+            </a>
+            <h1 class="text-4xl font-extrabold gradient-text">🎥 Recommended Video Library</h1>
+            <p class="text-secondary text-sm">Curated career pathways and motivation tailored to your <strong class="text-accent">{{ personality }}</strong> personality type.</p>
+        </div>
+        
+        <!-- Results Tabs -->
+        <div class="flex justify-center gap-2 flex-wrap sm:self-center">
+            <a href="/results/{{ result.id }}" class="neuro-btn !rounded-full px-5 py-2 text-xs">🧬 My DNA</a>
+            <a href="/assessment/videos/{{ result.id }}" class="btn-accent !rounded-full px-5 py-2 text-xs">🎥 Videos</a>
+            <a href="/assessment/mentors/{{ result.id }}" class="neuro-btn !rounded-full px-5 py-2 text-xs">🧑💼 Mentors</a>
+            <a href="/assessment/skill-plan/{{ result.id }}" class="neuro-btn !rounded-full px-5 py-2 text-xs">📚 Skill Plan</a>
+            <a href="/assessment/trends/{{ result.id }}" class="neuro-btn !rounded-full px-5 py-2 text-xs">📈 Trends</a>
+        </div>
+    </div>
+
+    <!-- Gamified Learning Target Tracker -->
+    <div class="neuro-card p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-full bg-accent/15 flex items-center justify-center text-accent text-xl shadow-inner shrink-0">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="space-y-1">
+                <h4 class="font-bold text-primary flex items-center gap-2">
+                    Weekly Video Learning Target
+                    <span class="text-xs bg-green-500/10 text-green-500 font-bold px-2 py-0.5 rounded-full">+150 XP</span>
+                </h4>
+                <p class="text-xs text-text-muted">Watch and mark recommended videos to achieve mastery.</p>
+            </div>
+        </div>
+        <div class="w-full md:w-72 space-y-2">
+            <div class="flex justify-between items-center text-xs font-bold">
+                <span class="text-text-muted">Overall Progress</span>
+                <span class="text-accent" id="overall-percentage">0% Completed</span>
+            </div>
+            <div class="h-3 w-full neuro-inset !rounded-full overflow-hidden">
+                <div id="overall-progress-bar" class="h-full bg-gradient-to-r from-accent to-accent-light rounded-full transition-all duration-700" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Theater Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- LEFT COLUMN: Main Embedded Video Player Theater (8 cols) -->
+        <div class="lg:col-span-8 space-y-6">
+            <div class="neuro-card overflow-hidden p-0 relative border border-border/40 shadow-2xl">
+                <!-- Large Embedded Video Screen -->
+                <div class="relative w-full aspect-video bg-neuro-dark/80 flex items-center justify-center" id="theater-screen">
+                    <!-- Default Screen when no video is selected -->
+                    <div id="theater-placeholder" class="text-center p-8 space-y-4 max-w-md">
+                        <div class="w-20 h-20 neuro-inset flex items-center justify-center mx-auto text-accent text-3xl animate-bounce">
+                            <i class="fas fa-play"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-primary">Ready for Learning</h3>
+                        <p class="text-xs text-text-secondary leading-relaxed">
+                            Select any curated recommended video from the playlist sidebar on the right to start playing directly in-page and track your watching progress.
+                        </p>
+                    </div>
+
+                    <!-- YouTube Iframe Embed -->
+                    <iframe id="theater-iframe" class="absolute inset-0 w-full h-full hidden" 
+                            src="" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                            referrerpolicy="strict-origin-when-cross-origin" 
+                            allowfullscreen></iframe>
+                </div>
+
+                <!-- Video Description Card -->
+                <div id="theater-details" class="p-6 space-y-4 hidden border-t border-border/30 bg-neuro-dark/20">
+                    <div class="flex flex-wrap items-center justify-between gap-4">
+                        <div class="space-y-1">
+                            <span id="theater-channel" class="text-[10px] font-black text-accent uppercase tracking-widest">CHANNEL</span>
+                            <h2 id="theater-title" class="text-xl font-bold text-primary leading-snug">Video Title</h2>
+                        </div>
+                        <button id="theater-complete-btn" onclick="toggleTheaterComplete()" class="neuro-btn !text-xs font-bold !py-2.5 !px-5 transition-all flex items-center gap-2">
+                            <i class="fas fa-check-circle"></i> Mark as Watched
+                        </button>
+                    </div>
+
+                    <!-- Personalized Why summary -->
+                    <div class="bg-accent/5 p-4 rounded-xl border border-accent/15 space-y-2">
+                        <div class="flex items-center gap-2 text-accent-light text-[10px] font-black uppercase tracking-wider">
+                            <i class="fas fa-sparkles"></i> Deep Fit Alignment
+                        </div>
+                        <p id="theater-why" class="text-xs text-secondary leading-relaxed italic">
+                            Personalized reason why this video is chosen.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Interactive Playlist Sidebar (4 cols) -->
+        <div class="lg:col-span-4 space-y-4">
+            <h3 class="text-lg font-bold text-primary px-1 flex items-center justify-between">
+                <span>Personalised Playlist</span>
+                <span class="text-xs text-text-muted font-normal">{{ videos|length }} Videos</span>
+            </h3>
+
+            <div class="space-y-4 max-h-[600px] overflow-y-auto pr-1" id="playlist-container">
+                {% if videos %}
+                    {% for video in videos %}
+                    <div id="video-card-{{ loop.index }}" 
+                         data-index="{{ loop.index }}"
+                         data-title="{{ video.title }}" 
+                         data-channel="{{ video.channel }}" 
+                         data-url="{{ video.url }}" 
+                        data-personality="{{ (video.personality_tags[0] if video.personality_tags else '') }}"
+                         data-duration="{{ video.duration }}" 
+                         data-why="{{ video.why }}"
+                         class="video-playlist-card neuro-card p-4 flex gap-4 cursor-pointer border border-transparent hover:border-accent/40 hover:scale-[1.02] transition-all duration-300 relative group">
+                        
+                        <!-- Mini Thumbnail Cover -->
+                        <div class="relative w-24 aspect-video bg-black/60 rounded-lg overflow-hidden shrink-0 border border-border/30">
+                            <img src="{{ video.thumbnail }}" alt="{{ video.title }}" class="w-full h-full object-cover">
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/35 group-hover:bg-black/20 transition-colors">
+                                <i class="fas fa-play text-white text-xs"></i>
+                            </div>
+                            <span class="absolute bottom-1 right-1 bg-black/75 text-white text-[8px] font-bold px-1 rounded">
+                                {{ video.duration }}
+                            </span>
+                        </div>
+
+                        <!-- Mini Content -->
+                        <div class="flex-grow min-w-0 flex flex-col justify-between space-y-1">
+                            <h4 class="text-xs font-bold text-primary leading-tight truncate-2-lines group-hover:text-accent transition-colors">
+                                {{ video.title }}
+                            </h4>
+                            <div class="flex justify-between items-center gap-2">
+                                <span class="text-[9px] font-bold text-text-muted uppercase truncate">{{ video.channel }}</span>
+                                
+                                <!-- Mini Checkbox and Status -->
+                                <button onclick="event.stopPropagation(); toggleCardComplete({{ loop.index }})" 
+                                        id="card-check-{{ loop.index }}" 
+                                        class="w-5 h-5 rounded-full neuro-inset flex items-center justify-center text-[10px] text-text-muted hover:text-accent hover:border-accent/30 transition-all cursor-pointer">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Completed Glowing Indicator Overlay -->
+                        <div class="absolute top-2 right-2 hidden" id="card-badge-{{ loop.index }}">
+                            <span class="text-[7px] bg-green-500/10 text-green-500 font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider">Watched</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="py-12 text-center space-y-3 neuro-card">
+                        <div class="w-12 h-12 neuro-inset flex items-center justify-center mx-auto text-text-muted text-xl">
+                            <i class="fas fa-video-slash"></i>
+                        </div>
+                        <p class="text-xs text-text-secondary italic">No recommended videos found.</p>
+                        <a href="/assessment" class="btn-accent text-xs">Retake Assessment</a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Canvas for Confetti animation -->
+<canvas id="confetti-canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-50"></canvas>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    // State of watched videos
+    const watchedState = JSON.parse(localStorage.getItem('watched_videos_DNA_{{ result.id }}') || '{}');
+    let currentActiveIndex = null;
+
+    // Extract YouTube Video ID
+    function getYouTubeId(url) {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+    }
+
+    // Initialize UI on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        // Render completed states
+        const totalCards = document.querySelectorAll('.video-playlist-card').length;
+        if (totalCards > 0) {
+            for (let i = 1; i <= totalCards; i++) {
+                if (watchedState[i]) {
+                    markCardCompletedUI(i, true);
+                }
+            }
+            updateOverallProgress();
+            
+            // Auto-select the first video to load in theater
+            selectVideo(1);
+        }
+
+        // Add click listener to all cards
+        document.querySelectorAll('.video-playlist-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const idx = parseInt(this.getAttribute('data-index'));
+                selectVideo(idx);
+            });
+        });
+    });
+
+    // Select and load a video into the theater player
+    function selectVideo(index) {
+        const card = document.getElementById(`video-card-${index}`);
+        if (!card) return;
+
+        currentActiveIndex = index;
+
+        // Toggle active visual highlight state
+        document.querySelectorAll('.video-playlist-card').forEach(c => {
+            c.classList.remove('border-accent/40', 'bg-accent/5', 'accent-glow');
+        });
+        card.classList.add('border-accent/40', 'bg-accent/5', 'accent-glow');
+
+        // Extract metadata
+        const title = card.getAttribute('data-title');
+        const channel = card.getAttribute('data-channel');
+        const url = card.getAttribute('data-url');
+        const why = card.getAttribute('data-why');
+        const ytid = getYouTubeId(url);
+
+        // Update main theater iframe
+        const iframe = document.getElementById('theater-iframe');
+        const placeholder = document.getElementById('theater-placeholder');
+        const detailsBlock = document.getElementById('theater-details');
+
+        if (ytid) {
+            iframe.src = `https://www.youtube.com/embed/${ytid}?autoplay=0&enablejsapi=1`;
+            iframe.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+        } else {
+            iframe.classList.add('hidden');
+            placeholder.classList.remove('hidden');
+        }
+
+        // Update metadata values
+        document.getElementById('theater-title').innerText = title;
+        document.getElementById('theater-channel').innerText = channel;
+        document.getElementById('theater-why').innerText = why;
+        detailsBlock.classList.remove('hidden');
+
+        // Update the big complete button state
+        updateTheaterCompleteBtnUI(index);
+        
+        // Scroll theater into view on smaller screens
+        if (window.innerWidth < 1024 && index > 1) {
+            document.getElementById('theater-screen').scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Toggle complete status inside the theater details card
+    function toggleTheaterComplete() {
+        if (currentActiveIndex === null) return;
+        toggleCardComplete(currentActiveIndex);
+    }
+
+    // Toggle complete state on a card
+    function toggleCardComplete(index) {
+        const isWatched = !watchedState[index];
+        watchedState[index] = isWatched;
+        
+        // Save state to local storage
+        localStorage.setItem('watched_videos_DNA_{{ result.id }}', JSON.stringify(watchedState));
+
+        // Update UI
+        markCardCompletedUI(index, isWatched);
+        updateOverallProgress();
+
+        // Update big complete button
+        if (currentActiveIndex === index) {
+            updateTheaterCompleteBtnUI(index);
+        }
+
+        // Confetti explosion on check!
+        if (isWatched) {
+            triggerConfetti();
+            // Send watch event to server
+            const card = document.getElementById(`video-card-${index}`);
+            const personality = card ? card.getAttribute('data-personality') : '';
+            fetch('/assessment/signals/video', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ videoPersonalityType: personality, watchedPercent: 100 })
+            }).catch(()=>{});
+        }
+    }
+
+    // Mark card completed in the UI
+    function markCardCompletedUI(index, isCompleted) {
+        const card = document.getElementById(`video-card-${index}`);
+        const badge = document.getElementById(`card-badge-${index}`);
+        const btn = document.getElementById(`card-check-${index}`);
+        
+        if (!card) return;
+
+        if (isCompleted) {
+            badge.classList.remove('hidden');
+            btn.classList.remove('neuro-inset', 'text-text-muted');
+            btn.classList.add('bg-green-500', 'text-white', 'shadow-lg');
+            btn.innerHTML = '<i class="fas fa-check-double"></i>';
+        } else {
+            badge.classList.add('hidden');
+            btn.classList.remove('bg-green-500', 'text-white', 'shadow-lg');
+            btn.classList.add('neuro-inset', 'text-text-muted');
+            btn.innerHTML = '<i class="fas fa-check"></i>';
+        }
+    }
+
+    // Update big complete button UI in the theater details
+    function updateTheaterCompleteBtnUI(index) {
+        const btn = document.getElementById('theater-complete-btn');
+        if (!btn) return;
+
+        if (watchedState[index]) {
+            btn.innerHTML = '<i class="fas fa-check-double mr-1.5"></i> Watched! (+150 XP)';
+            btn.classList.remove('neuro-btn');
+            btn.classList.add('bg-green-500', 'text-white', 'shadow-lg', 'scale-105');
+        } else {
+            btn.innerHTML = '<i class="fas fa-check-circle mr-1.5"></i> Mark as Watched';
+            btn.classList.remove('bg-green-500', 'text-white', 'shadow-lg', 'scale-105');
+            btn.classList.add('neuro-btn');
+        }
+    }
+
+    // Calculate and update the overall progress bar
+    function updateOverallProgress() {
+        const totalCards = document.querySelectorAll('.video-playlist-card').length;
+        if (totalCards === 0) return;
+
+        let completedCount = 0;
+        for (let i = 1; i <= totalCards; i++) {
+            if (watchedState[i]) {
+                completedCount++;
+            }
+        }
+
+        const percentage = Math.round((completedCount / totalCards) * 100);
+        
+        // Update bar width
+        document.getElementById('overall-progress-bar').style.width = `${percentage}%`;
+        // Update percentage label
+        document.getElementById('overall-percentage').innerText = `${percentage}% Completed (${completedCount}/${totalCards})`;
+    }
+
+    // Canvas Confetti explosion helper
+    function triggerConfetti() {
+        confetti({
+            particleCount: 150,
+            spread: 80,
+            origin: { y: 0.6 }
+        });
+    }
+</script>
+{% endblock %}

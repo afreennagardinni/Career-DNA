@@ -30,19 +30,21 @@ def match_careers(riasec_scores, big5_scores):
     matches = []
     
     for c in careers:
-        # Assuming career has a riasec code or holland_code
-        h_code = c.get('holland_code', '')
-        if top_code in h_code:
-            matches.append({
-                'name': c.get('title', c.get('name', 'Unknown Career')),
-                'match_score': 90
-            })
+        h_codes = c.get('holland_codes', [])
+        # Check if top RIASEC code is in any of the career's Holland codes
+        if any(top_code in h_code for h_code in h_codes):
+            match = c.copy()
+            # Simple scoring: 90% if it matches the top code
+            match['match_score'] = "95%" if h_codes and h_codes[0].startswith(top_code) else "88%"
+            matches.append(match)
     
     # Fallback if no match
     if not matches:
-        matches = [{'name': 'Software Engineer', 'match_score': 94}]
+        matches = [careers[0].copy()] if careers else []
+        if matches:
+            matches[0]['match_score'] = "94%"
         
-    return sorted(matches, key=lambda x: x['match_score'], reverse=True)
+    return sorted(matches, key=lambda x: x.get('match_score', '0%'), reverse=True)
 
 def calculate_scores(answers: dict, questions: list) -> dict:
     # Initialize scores
@@ -80,15 +82,19 @@ def calculate_scores(answers: dict, questions: list) -> dict:
             if question.get('direction') == 'negative':
                 score = 6 - score
             
-            dim = question['big5_dimension'][0].upper()
-            big5[dim] += score
-            big5_counts[dim] += 1
+            # Big Five scoring
+            dim_key = question.get('big5_dimension')
+            if dim_key:
+                dim = dim_key[0].upper()
+                big5[dim] += score
+                big5_counts[dim] += 1
             
-            # RIASEC from scale answers
-            if score >= 4 and 'high' in question.get('riasec_map',{}):
-                riasec[question['riasec_map']['high']] += 1
-            elif score <= 2 and 'low' in question.get('riasec_map',{}):
-                riasec[question['riasec_map']['low']] += 1
+            # RIASEC scoring from scale answers
+            riasec_map = question.get('riasec_map', {})
+            if score >= 4 and 'high' in riasec_map:
+                riasec[riasec_map['high']] += (score - 3) # Weighted
+            elif score <= 2 and 'low' in riasec_map:
+                riasec[riasec_map['low']] += (3 - score) # Weighted
     
     # Normalize RIASEC to 0-100
     max_riasec = max(riasec.values()) if any(riasec.values()) else 1
@@ -112,7 +118,7 @@ def calculate_scores(answers: dict, questions: list) -> dict:
         'riasec': riasec_normalized,
         'big5': big5_normalized,
         'dna_type': dna_type,
-        'top_career': top_careers[0]['name'],
+        'top_career': top_careers[0].get('title', 'Unknown Career') if top_careers else 'Generalist',
         'career_matches': top_careers
     }
 
@@ -121,27 +127,68 @@ def determine_dna_type(riasec, big5):
     top2 = sorted(riasec, key=riasec.get, reverse=True)[:2]
     code = ''.join(top2)
     
-    # Map to DNA type name based on ACTUAL scores
+    # Base mapping
     dna_map = {
-        'IR': 'The Analytical Innovator',
-        'RI': 'The Analytical Innovator',
-        'IA': 'The Research Creative',
-        'AI': 'The Research Creative',
-        'IC': 'The Systematic Investigator',
-        'CI': 'The Systematic Investigator',
-        'IS': 'The Social Scientist',
-        'SI': 'The Social Scientist',
-        'EA': 'The Creative Entrepreneur',
-        'AE': 'The Creative Entrepreneur',
-        'ES': 'The Social Leader',
-        'SE': 'The Social Leader',
-        'EC': 'The Business Strategist',
-        'CE': 'The Business Strategist',
-        'RA': 'The Technical Artist',
-        'AR': 'The Technical Artist',
-        'RC': 'The Systematic Builder',
-        'CR': 'The Systematic Builder',
-        'SA': 'The Empathetic Designer',
-        'AS': 'The Empathetic Designer',
+        'IR': 'Analytical Innovator', 'RI': 'Analytical Innovator',
+        'IA': 'Research Creative', 'AI': 'Research Creative',
+        'IC': 'Systematic Investigator', 'CI': 'Systematic Investigator',
+        'IS': 'Social Scientist', 'SI': 'Social Scientist',
+        'EA': 'Creative Entrepreneur', 'AE': 'Creative Entrepreneur',
+        'ES': 'Social Leader', 'SE': 'Social Leader',
+        'EC': 'Business Strategist', 'CE': 'Business Strategist',
+        'RA': 'Technical Artist', 'AR': 'Technical Artist',
+        'RC': 'Systematic Builder', 'CR': 'Systematic Builder',
+        'SA': 'Empathetic Designer', 'AS': 'Empathetic Designer',
     }
-    return dna_map.get(code, 'The Versatile Explorer')
+    
+    base_name = dna_map.get(code, 'Versatile Explorer')
+    
+    # Add Big Five Modifiers
+    if big5.get('O', 0) > 70:
+        base_name = "Visionary " + base_name
+    elif big5.get('C', 0) > 70:
+        base_name = "Strategic " + base_name
+    elif big5.get('E', 0) > 70:
+        base_name = "Dynamic " + base_name
+    
+    return "The " + base_name
+
+def match_careers(riasec, big5):
+    data = load_data('careers.json')
+    careers = data.get('careers', []) if isinstance(data, dict) else data
+    
+    top_code = sorted(riasec, key=riasec.get, reverse=True)[0]
+    
+    scored_careers = []
+    for c in careers:
+        if not isinstance(c, dict): continue
+        score = 0
+        h_codes = c.get('holland_codes', [])
+        
+        # RIASEC Match (0-60 points)
+        if any(top_code in h_code for h_code in h_codes):
+            score += 40
+            if h_codes and h_codes[0].startswith(top_code):
+                score += 20
+        
+        # Big Five Traits Match (0-40 points)
+        # Example: Data roles benefit from high Conscientiousness
+        if "data" in c['title'].lower() or "engineer" in c['title'].lower():
+            if big5.get('C', 0) > 60: score += 20
+            if big5.get('I', 0) > 60: score += 20
+        
+        # Creative roles benefit from high Openness
+        if "design" in c['title'].lower() or "creative" in c['title'].lower():
+            if big5.get('O', 0) > 60: score += 20
+            if big5.get('A', 0) > 60: score += 20
+
+        # Social roles benefit from high Agreeableness
+        if "social" in c['title'].lower() or "manager" in c['title'].lower():
+            if big5.get('A', 0) > 60: score += 20
+            if big5.get('E', 0) > 60: score += 20
+
+        c['match_percent'] = min(score + 30, 98) # Base 30% + traits
+        c['match_score'] = f"{c['match_percent']}%"
+        scored_careers.append(c)
+        
+    return sorted(scored_careers, key=lambda x: x['match_percent'], reverse=True)

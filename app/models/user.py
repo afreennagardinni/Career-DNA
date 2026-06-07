@@ -6,6 +6,7 @@ Represents a user in the Career DNA platform.
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.extensions import db
 from app.models.base import BaseModel
+from datetime import datetime
 
 
 class User(BaseModel):
@@ -30,9 +31,46 @@ class User(BaseModel):
     xp = db.Column(db.Integer, default=0)
     streak_count = db.Column(db.Integer, default=0)
     
+    # Personalised Content Engine fields
+    personality_type = db.Column(db.String(100), nullable=True, index=True)
+    assigned_mentor_id = db.Column(db.Integer, db.ForeignKey('mentors.id', ondelete='SET NULL'), nullable=True)
+    skill_plan_id = db.Column(db.Integer, db.ForeignKey('skill_plans.id', ondelete='SET NULL'), nullable=True)
+    
+    # Personality Drift tracking fields
+    drift_detected = db.Column(db.Boolean, default=False, nullable=False)
+    pending_personality_type = db.Column(db.String(100), nullable=True)
+    personality_changed_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    
     # Relationships
     assessments = db.relationship('Assessment', backref='user', lazy='dynamic', cascade='all, delete-orphan')
     profile = db.relationship('Profile', backref='user', uselist=False, cascade='all, delete-orphan')
+    assigned_mentor = db.relationship('Mentor', foreign_keys=[assigned_mentor_id], backref='assigned_students')
+    skill_plan = db.relationship('SkillPlan', foreign_keys=[skill_plan_id], backref='student_user', uselist=False)
+    
+    # camelCase Properties for Compatibility
+    @property
+    def personalityType(self):
+        return self.personality_type
+    
+    @personalityType.setter
+    def personalityType(self, value):
+        self.personality_type = value
+
+    @property
+    def assignedMentorId(self):
+        return self.assigned_mentor_id
+    
+    @assignedMentorId.setter
+    def assignedMentorId(self, value):
+        self.assigned_mentor_id = value
+
+    @property
+    def skillPlanId(self):
+        return self.skill_plan_id
+    
+    @skillPlanId.setter
+    def skillPlanId(self, value):
+        self.skill_plan_id = value
     
     def set_password(self, password):
         """
@@ -112,7 +150,13 @@ class User(BaseModel):
             'last_name': self.last_name,
             'full_name': self.full_name,
             'is_active': self.is_active,
-            'is_admin': self.is_admin
+            'is_admin': self.is_admin,
+            'personality_type': self.personality_type,
+            'personalityType': self.personality_type,
+            'assigned_mentor_id': self.assigned_mentor_id,
+            'assignedMentorId': self.assigned_mentor_id,
+            'skill_plan_id': self.skill_plan_id,
+            'skillPlanId': self.skill_plan_id
         })
         return data
     
