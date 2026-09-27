@@ -64,7 +64,7 @@
 </section>
 
 <!-- Stats Row -->
-<section class="py-20 bg-neuro-dark/30 rounded-3xl mb-20">
+<section class="py-20 bg-neuro-dark/30 rounded-3xl">
     <div class="grid md:grid-cols-3 gap-8 px-8">
         <div class="neuro-card p-10 text-center">
             <div class="text-4xl font-bold text-accent-light mb-2">500K+</div>
@@ -79,9 +79,13 @@
             <div class="text-text-muted uppercase tracking-wider text-sm font-semibold">Forever Access</div>
         </div>
     </div>
-<!-- Footer -->
-<footer class="mt-20 pt-16 pb-12 px-12 bg-accent rounded-3xl text-white shadow-xl mb-12">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 pb-12">
+</section>
+
+{% endblock %}
+
+{% block page_footer %}
+<footer class="pt-16 pb-12 px-12 bg-accent text-white shadow-xl" style="margin-top: auto;">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 pb-12">
         <div class="space-y-4">
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center text-white">
@@ -118,8 +122,7 @@
             </div>
         </div>
     </div>
-    <div class="border-t border-white/20 pt-6 text-center text-[10px] text-white/70 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span>&copy; 2026 Career DNA Platform. All Rights Reserved. Built for high-potential students.</span>
+    <div class="max-w-7xl mx-auto border-t border-white/20 pt-6 text-[10px] text-white/70 flex flex-col sm:flex-row items-center justify-end gap-4">
         <div class="flex gap-6">
             <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
@@ -127,3 +130,4 @@
     </div>
 </footer>
 {% endblock %}
+

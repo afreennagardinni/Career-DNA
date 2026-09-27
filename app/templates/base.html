@@ -277,7 +277,7 @@
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex flex-col">
     {% if not hide_nav %}
     <nav class="navbar">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
@@ -483,12 +483,11 @@
     </script>
     {% endif %}
 
-    <main class="{% if not full_width %}max-w-7xl mx-auto px-4 py-8{% endif %}">
+    <main class="{% if not full_width %}max-w-7xl mx-auto px-4 py-8 flex-1{% endif %}">
         {% block content %}{% endblock %}
     </main>
 
-
-
+    {% block page_footer %}{% endblock %}
 
     {% block scripts %}{% endblock %}
 </body>
