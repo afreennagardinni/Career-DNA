@@ -13,6 +13,6 @@ if __name__ == '__main__':
     # Run development server
     app.run(
         host='0.0.0.0',
-        port=5000,
-        debug=True
+        port=int(os.environ.get('PORT',50000)),
+        debug=False
     )
